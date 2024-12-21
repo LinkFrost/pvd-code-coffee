@@ -8,8 +8,8 @@ _Note: This website is a work in progress, we are currently working on V0._
 
 - [x] Setup repo
 - [x] Deploy to Vercel
-- [ ] Create basic layout (navbar, footer)
-- [ ] Create pages (home, about us)
+- [-] Create basic layout (navbar, footer)
+- [-] Create pages (home, about us)
 - [ ] Scaffold home page layout
 - [ ] Fill in basic content (about us, contact, organizers)
 - [ ] Create Contact form
