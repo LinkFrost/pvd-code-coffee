@@ -9,6 +9,14 @@ import {
 } from "./ui/navigation-menu";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import localFont from "@next/font/local";
+
+export const dinFont = localFont({
+  src: "fonts/DINAlternate-Bold.ttf",
+  variable: "--font-din",
+});
+
+console.log("din", dinFont);
 
 const ActiveLink = ({ href }: { href: string }) => {
   const pathname = usePathname();
@@ -32,7 +40,9 @@ export const TopNav = () => {
     <NavigationMenu>
       <Link href="/" passHref legacyBehavior>
         <div className="mr-auto flex flex-row items-center gap-4 hover:cursor-pointer">
-          <span className="text-accent text-2xl font-semibold sm:text-5xl">
+          <span
+            className={`${dinFont.variable} text-accent font-din text-2xl font-semibold sm:text-5xl`}
+          >
             PROVIDENCE
           </span>
           <Image
