@@ -3,6 +3,7 @@ import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { TopNav } from "~/components/TopNav";
+import localFont from "next/font/local";
 
 export const metadata: Metadata = {
   title: "PVD Code & Coffee",
@@ -11,12 +12,17 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
+export const dinFont = localFont({
+  src: "../../public/fonts/DINAlternate-Bold.ttf",
+  variable: "--font-din",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body className="flex flex-col">
+      <body className={`${dinFont.variable} flex flex-col`}>
         <TopNav />
         {children}
       </body>

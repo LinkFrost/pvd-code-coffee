@@ -9,16 +9,8 @@ import {
 } from "./ui/navigation-menu";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import localFont from "@next/font/local";
 
-export const dinFont = localFont({
-  src: "fonts/DINAlternate-Bold.ttf",
-  variable: "--font-din",
-});
-
-console.log("din", dinFont);
-
-const ActiveLink = ({ href }: { href: string }) => {
+const ActiveLink = ({ href, name }: { href: string; name: string }) => {
   const pathname = usePathname();
   const isActive = href === pathname;
 
@@ -29,7 +21,7 @@ const ActiveLink = ({ href }: { href: string }) => {
       asChild
     >
       <Link href={href} passHref>
-        About
+        <span className="font-din text-lg">{name}</span>
       </Link>
     </NavigationMenuLink>
   );
@@ -40,9 +32,7 @@ export const TopNav = () => {
     <NavigationMenu>
       <Link href="/" passHref legacyBehavior>
         <div className="mr-auto flex flex-row items-center gap-4 hover:cursor-pointer">
-          <span
-            className={`${dinFont.variable} text-accent font-din text-2xl font-semibold sm:text-5xl`}
-          >
+          <span className="text-accent font-din text-2xl font-semibold sm:text-5xl">
             PROVIDENCE
           </span>
           <Image
@@ -56,7 +46,7 @@ export const TopNav = () => {
       </Link>
 
       <NavigationMenuItem>
-        <ActiveLink href="/about"></ActiveLink>
+        <ActiveLink href="/about" name="About"></ActiveLink>
       </NavigationMenuItem>
     </NavigationMenu>
   );
