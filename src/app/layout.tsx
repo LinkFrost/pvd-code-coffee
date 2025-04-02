@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export const dinFont = localFont({
+const dinFont = localFont({
   src: "../../public/fonts/DINAlternate-Bold.ttf",
   variable: "--font-din",
 });
