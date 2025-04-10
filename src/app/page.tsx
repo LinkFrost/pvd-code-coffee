@@ -2,11 +2,8 @@ import Image from "next/image";
 import { api, HydrateClient } from "../trpc/server";
 
 export default async function HomePage() {
-  const {
-    groupByUrlname: {
-      events: { edges },
-    },
-  } = await api.meetup.getPastEvents();
+  const upcomingEvent = await api.meetup.getEvents("UPCOMING");
+  const pastEvents = await api.meetup.getEvents("PAST");
 
   return (
     <HydrateClient>
@@ -28,20 +25,22 @@ export default async function HomePage() {
           <h1 className="mb-4 font-din text-2xl font-semibold">
             Upcoming Event:
           </h1>
-          <p className="mb-8 text-xl">Insert MeetUp embed here</p>
+
+          <div></div>
 
           <h1 className="mb-4 font-din text-2xl font-semibold">Past Events:</h1>
+
           <p className="mb-4 text-xl">
             Insert MeetUp embeds/photos of previous events, gallery perhaps?
           </p>
 
           <div className="grid grid-cols-4 gap-4">
-            {edges.map((event) => (
-              <div key={event.node.id} className="flex flex-col gap-4">
-                {event.node.title}
-                {event.node.featuredEventPhoto && (
+            {pastEvents.map((event) => (
+              <div key={event.id} className="flex flex-col gap-4">
+                {event.title}
+                {event.featuredEventPhoto && (
                   <Image
-                    src={event.node.featuredEventPhoto.standardUrl}
+                    src={event.featuredEventPhoto}
                     alt="test"
                     width="200"
                     height="200"

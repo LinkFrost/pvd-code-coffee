@@ -3,7 +3,7 @@ import { graphqlClient } from "~/lib/graphql-client";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-export type MeetupResponse = {
+export type MeetupEventResponse = {
   groupByUrlname: {
     id: string;
     events: {
@@ -22,12 +22,14 @@ export type MeetupResponse = {
 };
 
 export const meetupRouter = createTRPCRouter({
-  getPastEvents: publicProcedure.query(async () => {
-    const query = `
+  getEvents: publicProcedure
+    .input(z.enum(["PAST", "UPCOMING"]))
+    .query(async ({ input }) => {
+      const query = `
       {
         groupByUrlname(urlname: "providence-code-coffee ") {
           id
-          events(status: PAST) {
+          events(${input === "UPCOMING" ? "first: 1" : "status: PAST"}) {
             edges {
               node {
                 id
@@ -47,14 +49,20 @@ export const meetupRouter = createTRPCRouter({
       }
     `;
 
-    try {
-      const response = await graphqlClient.request<MeetupResponse>(query);
+      try {
+        const response =
+          await graphqlClient.request<MeetupEventResponse>(query);
 
-      return response;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      throw new Error("Failed to fetch data from Meetup API", err);
-    }
-  }),
+        return response.groupByUrlname.events.edges.map((event) => ({
+          id: event.node.id,
+          title: event.node.title,
+          dateTime: event.node.dateTime,
+          featuredEventPhoto: event.node.featuredEventPhoto?.standardUrl,
+        }));
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (err: any) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        throw new Error("Failed to fetch data from Meetup API", err);
+      }
+    }),
 });
