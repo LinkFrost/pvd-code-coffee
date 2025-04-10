@@ -14,6 +14,18 @@ importers:
       '@t3-oss/env-nextjs':
         specifier: ^0.10.1
         version: 0.10.1(typescript@5.7.2)(zod@3.24.1)
+      '@tanstack/react-query':
+        specifier: ^5.69.0
+        version: 5.72.2(react@18.3.1)
+      '@trpc/client':
+        specifier: ^11.0.0
+        version: 11.0.4(@trpc/server@11.0.4(typescript@5.7.2))(typescript@5.7.2)
+      '@trpc/react-query':
+        specifier: ^11.0.0
+        version: 11.0.4(@tanstack/react-query@5.72.2(react@18.3.1))(@trpc/client@11.0.4(@trpc/server@11.0.4(typescript@5.7.2))(typescript@5.7.2))(@trpc/server@11.0.4(typescript@5.7.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.7.2)
+      '@trpc/server':
+        specifier: ^11.0.0
+        version: 11.0.4(typescript@5.7.2)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -41,6 +53,12 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
+      superjson:
+        specifier: ^2.2.1
+        version: 2.2.2
       tailwind-merge:
         specifier: ^2.5.5
         version: 2.5.5
@@ -820,6 +838,35 @@ packages:
       typescript:
         optional: true
 
+  '@tanstack/query-core@5.72.2':
+    resolution: {integrity: sha512-fxl9/0yk3mD/FwTmVEf1/H6N5B975H0luT+icKyX566w6uJG0x6o+Yl+I38wJRCaogiMkstByt+seXfDbWDAcA==}
+
+  '@tanstack/react-query@5.72.2':
+    resolution: {integrity: sha512-SVNHzyBUYiis+XiCl+8yiPZmMYei2AKYY94wM/zpvB5l1jxqOo82FQTziSJ4pBi96jtYqvYrTMxWynmbQh3XKw==}
+    peerDependencies:
+      react: ^18 || ^19
+
+  '@trpc/client@11.0.4':
+    resolution: {integrity: sha512-2xIXqRNc8wH3zgcGp1yZ8P2ZL15BoFWq2RS8S3ldjvxsdJfnoYmcvCNzySw8nIrWbKiXl9prdw+bGIUOdG/omw==}
+    peerDependencies:
+      '@trpc/server': 11.0.4
+      typescript: '>=5.7.2'
+
+  '@trpc/react-query@11.0.4':
+    resolution: {integrity: sha512-rpzwKzE4r1bhuVvNZXI0eLaXZz7SkEAJ0VsJUo172gN3r8HqUoQjXcVKw+ZUre1RgxWbUf9jpILdfDOUTNZEvw==}
+    peerDependencies:
+      '@tanstack/react-query': ^5.67.1
+      '@trpc/client': 11.0.4
+      '@trpc/server': 11.0.4
+      react: '>=18.2.0'
+      react-dom: '>=18.2.0'
+      typescript: '>=5.7.2'
+
+  '@trpc/server@11.0.4':
+    resolution: {integrity: sha512-beDEGEw+slNiYxLUpZ8HKU1mnZBoP/VLMtrKh2ABKl7VC0PQV9XcDMVjB0GcSW15nTSiOnGDGyFDeudp4dH2qw==}
+    peerDependencies:
+      typescript: '>=5.7.2'
+
   '@types/eslint@8.56.12':
     resolution: {integrity: sha512-03ruubjWyOHlmljCVoxSuNDdmfZDzsrrz0P2LeJsOXr+ZwFQ+0yQIwNCwt/GYhV7Z31fgtXJTAEs+FYlEL851g==}
 
@@ -1074,6 +1121,10 @@ packages:
 
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+
+  copy-anything@3.0.5:
+    resolution: {integrity: sha512-yCEafptTtb4bk7GLEQoM8KVJpxAfdBJYaXyzQEgQQQgYrZiDp8SJmGKlYza6CYjEDNstAdNdKA3UuoULlEbS6w==}
+    engines: {node: '>=12.13'}
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -1706,6 +1757,10 @@ packages:
     resolution: {integrity: sha512-LvIm3/KWzS9oRFHugab7d+M/GcBXuXX5xZkzPmN+NxihdQlZUQ4dWuSV1xR/sq6upL1TJEDrfBgRepHFdBtSNQ==}
     engines: {node: '>= 0.4'}
 
+  is-what@4.1.16:
+    resolution: {integrity: sha512-ZhMwEosbFJkA0YhFnNDgTM4ZxDRsS6HqTo7qsZM08fehyRYIYa0yHu5R6mgo1n/8MgaPBXiPimPD77baVFYg+A==}
+    engines: {node: '>=12.13'}
+
   isarray@2.0.5:
     resolution: {integrity: sha512-xHjhDr3cNBK0BzdUJSPXZntQUx/mwMS5Rw4A7lPJ90XGAO6ISP/ePDNuo0vhqOZU+UD5JoodwCAAoZQd3FeAKw==}
 
@@ -2145,6 +2200,9 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  server-only@0.0.1:
+    resolution: {integrity: sha512-qepMx2JxAa5jjfzxG79yPPq+8BuFToHd1hm7kI+Z4zAq1ftQiP7HcxMhDDItrbtwVeLg/cY2JnKnrcFkmiswNA==}
+
   set-function-length@1.2.2:
     resolution: {integrity: sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg==}
     engines: {node: '>= 0.4'}
@@ -2270,6 +2328,10 @@ packages:
     resolution: {integrity: sha512-8EbVDiu9iN/nESwxeSxDKe0dunta1GOlHufmSSXxMD2z2/tMZpDMpvXQGsc+ajGo8y2uYUmixaSRUc/QPoQ0GA==}
     engines: {node: '>=16 || 14 >=14.17'}
     hasBin: true
+
+  superjson@2.2.2:
+    resolution: {integrity: sha512-5JRxVqC8I8NuOUjzBbvVJAKNM8qoVuH0O77h4WInc/qC2q5IreqKxYwgkga3PfA22OayK2ikceb/B26dztPl+Q==}
+    engines: {node: '>=16'}
 
   supports-color@7.2.0:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
@@ -2917,6 +2979,31 @@ snapshots:
     optionalDependencies:
       typescript: 5.7.2
 
+  '@tanstack/query-core@5.72.2': {}
+
+  '@tanstack/react-query@5.72.2(react@18.3.1)':
+    dependencies:
+      '@tanstack/query-core': 5.72.2
+      react: 18.3.1
+
+  '@trpc/client@11.0.4(@trpc/server@11.0.4(typescript@5.7.2))(typescript@5.7.2)':
+    dependencies:
+      '@trpc/server': 11.0.4(typescript@5.7.2)
+      typescript: 5.7.2
+
+  '@trpc/react-query@11.0.4(@tanstack/react-query@5.72.2(react@18.3.1))(@trpc/client@11.0.4(@trpc/server@11.0.4(typescript@5.7.2))(typescript@5.7.2))(@trpc/server@11.0.4(typescript@5.7.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.7.2)':
+    dependencies:
+      '@tanstack/react-query': 5.72.2(react@18.3.1)
+      '@trpc/client': 11.0.4(@trpc/server@11.0.4(typescript@5.7.2))(typescript@5.7.2)
+      '@trpc/server': 11.0.4(typescript@5.7.2)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      typescript: 5.7.2
+
+  '@trpc/server@11.0.4(typescript@5.7.2)':
+    dependencies:
+      typescript: 5.7.2
+
   '@types/eslint@8.56.12':
     dependencies:
       '@types/estree': 1.0.6
@@ -3225,6 +3312,10 @@ snapshots:
   commander@4.1.1: {}
 
   concat-map@0.0.1: {}
+
+  copy-anything@3.0.5:
+    dependencies:
+      is-what: 4.1.16
 
   cross-spawn@7.0.6:
     dependencies:
@@ -3977,6 +4068,8 @@ snapshots:
       call-bind: 1.0.8
       get-intrinsic: 1.2.6
 
+  is-what@4.1.16: {}
+
   isarray@2.0.5: {}
 
   isexe@2.0.0: {}
@@ -4355,6 +4448,8 @@ snapshots:
 
   semver@7.6.3: {}
 
+  server-only@0.0.1: {}
+
   set-function-length@1.2.2:
     dependencies:
       define-data-property: 1.1.4
@@ -4539,6 +4634,10 @@ snapshots:
       mz: 2.7.0
       pirates: 4.0.6
       ts-interface-checker: 0.1.13
+
+  superjson@2.2.2:
+    dependencies:
+      copy-anything: 3.0.5
 
   supports-color@7.2.0:
     dependencies:

@@ -5,6 +5,8 @@ import { type Metadata } from "next";
 import { TopNav } from "~/components/TopNav";
 import localFont from "next/font/local";
 
+import { TRPCReactProvider } from "~/trpc/react";
+
 export const metadata: Metadata = {
   title: "PVD Code & Coffee",
   description:
@@ -23,8 +25,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body className={`${dinFont.variable} flex flex-col`}>
-        <TopNav />
-        {children}
+        <TRPCReactProvider>
+          <TopNav />
+          {children}
+        </TRPCReactProvider>
       </body>
     </html>
   );
