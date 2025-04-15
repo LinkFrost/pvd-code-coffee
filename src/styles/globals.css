@@ -34,6 +34,8 @@
 
     --accent: 48 98% 50%;
 
+    --accent-red: 360 79% 62%;
+
     --accent-foreground: 0 0% 9%;
 
     --destructive: 0 84.2% 60.2%;
@@ -115,5 +117,46 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@theme {
+  --color-yellow-50: "#fff9e6";
+  --color-yellow-100: "#fff3cc";
+  --color-yellow-200: "#fee799";
+  --color-yellow-300: "#fddb66";
+  --color-yellow-400: "#fdd033";
+  --color-yellow-500: "#fccb05";
+  /* // Core brand yellow */
+  --color-yellow-600: "#d9af04";
+  --color-yellow-700: "#b69204";
+  --color-yellow-800: "#937503";
+  --color-yellow-900: "#705902";
+  --color-red-50: "#fdeaeb";
+  --color-red-100: "#fbd5d6";
+  --color-red-200: "#f7acad";
+  --color-red-300: "#f38384";
+  --color-red-400: "#ef5a5b";
+  --color-red-500: "#EB5152";
+  /* // Core brand red */
+  --color-red-600: "#d83a3b";
+  --color-red-700: "#b52f30";
+  --color-red-800: "#922526";
+  --color-red-900: "#6f1c1d";
+}
+
+@theme {
+  --container-center: true;
+  --container-padding: 2rem;
+  --container-max-width-sm: 300px;
+  --container-max-width-md: 800px;
+  --container-max-width-lg: 1000px;
+  --container-max-width-xl: 1200px;
+  --container-max-width-2xl: 1400px;
+}
+
+@layer {
+  .container {
+    @apply mx-auto max-w-[300px] px-[var(--container-padding)] md:max-w-[var(--container-max-width-md)] lg:max-w-[var(--container-max-width-lg)] xl:max-w-[var(--container-max-width-xl)] 2xl:max-w-[var(--container-max-width-2xl)];
   }
 }

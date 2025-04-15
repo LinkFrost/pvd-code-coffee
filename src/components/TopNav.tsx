@@ -27,12 +27,14 @@ const ActiveLink = ({ href, name }: { href: string; name: string }) => {
   );
 };
 
-export const TopNav = () => {
+export const TopNav = ({ font }: { font: string }) => {
   return (
     <NavigationMenu>
       <Link href="/" passHref legacyBehavior>
-        <div className="mr-auto flex flex-row items-center gap-4 hover:cursor-pointer">
-          <span className="text-accent font-din text-2xl font-semibold sm:text-5xl">
+        <div className="flex flex-row items-center gap-4 hover:cursor-pointer md:mr-auto">
+          <span
+            className={`text-2xl font-semibold text-accent sm:text-5xl ${font} font-din`}
+          >
             PROVIDENCE
           </span>
           <Image

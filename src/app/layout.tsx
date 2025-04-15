@@ -25,8 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body className={`${dinFont.variable} flex flex-col`}>
+        {/* <body className={`flex flex-col`}> */}
         <TRPCReactProvider>
-          <TopNav />
+          <TopNav font={dinFont.variable} />
           {children}
         </TRPCReactProvider>
       </body>
