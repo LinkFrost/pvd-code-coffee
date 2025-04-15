@@ -151,3 +151,7 @@
     @apply mx-auto max-w-md content-center lg:max-w-[1000px] 2xl:max-w-[1600px];
   }
 }
+
+body {
+  @apply bg-gray-100;
+}

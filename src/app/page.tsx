@@ -1,18 +1,10 @@
-import { api, HydrateClient } from "../trpc/server";
+import { HydrateClient } from "../trpc/server";
 import { UpcomingEventCard } from "~/components/UpcomingEventCard";
-import PastEventCard from "~/components/PastEventCard";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-} from "~/components/ui/carousel";
+import { Suspense } from "react";
+import { UpcomingEventCard_Loading } from "~/components/loading/UpcomingEventCard_Loading";
+import { PastEvents } from "~/components/PastEvents";
 
 export default async function HomePage() {
-  const upcomingEvent = await api.meetup.getEvents("UPCOMING");
-  const pastEvents = await api.meetup.getEvents("PAST");
-
   return (
     <HydrateClient>
       <div className="flex flex-col justify-center align-middle">
@@ -41,56 +33,21 @@ export default async function HomePage() {
                 different) interests, or simply use this space as a workspace!
               </p>
             </div>
-
             <div>
               <h3 className="mb-4 font-din text-2xl font-semibold">
                 Upcoming Event
               </h3>
-
-              {upcomingEvent[0] && (
-                <UpcomingEventCard
-                  id={upcomingEvent[0].id}
-                  name={upcomingEvent[0].name}
-                  description={upcomingEvent[0].description}
-                  dateTime={upcomingEvent[0].dateTime}
-                  endTime={upcomingEvent[0].endTime}
-                  venue={upcomingEvent[0].venue}
-                  eventUrl={upcomingEvent[0].eventUrl}
-                  eventPhoto={upcomingEvent[0].eventPhoto}
-                  attendeeCount={upcomingEvent[0].attendeeCount}
-                />
-              )}
+              <Suspense fallback={<UpcomingEventCard_Loading />}>
+                <UpcomingEventCard />
+              </Suspense>
             </div>
-
             <div>
               <h3 className="mb-4 font-din text-2xl font-semibold">
                 Past Events
               </h3>
-
-              <Carousel className="w-full">
-                <CarouselContent>
-                  {pastEvents.map((event) => (
-                    <CarouselItem
-                      key={event.id}
-                      className="md:basis-1/2 lg:basis-1/3"
-                    >
-                      <PastEventCard
-                        id={event.id}
-                        name={event.name}
-                        description={event.description}
-                        dateTime={event.dateTime}
-                        endTime={event.endTime}
-                        venue={event.venue}
-                        eventUrl={event.eventUrl}
-                        eventPhoto={event.eventPhoto}
-                        attendeeCount={event.attendeeCount}
-                      />
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="left-2" />
-                <CarouselNext className="right-2" />
-              </Carousel>
+              <Suspense fallback={<UpcomingEventCard_Loading />}>
+                <PastEvents />
+              </Suspense>
             </div>
           </div>
         </section>
