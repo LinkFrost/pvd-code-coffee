@@ -17,8 +17,8 @@ export default async function HomePage() {
     <HydrateClient>
       <main className="flex flex-col justify-center align-middle">
         <section className="bg-accent">
-          <div className="container flex flex-col items-center py-12">
-            <h1 className="mb-4 font-din text-3xl font-bold">
+          <div className="responsiveContainer flex flex-col items-center py-12">
+            <h1 className="mb-4 break-words font-din text-3xl font-bold">
               Welcome to Code & Coffee!
             </h1>
 
@@ -34,7 +34,7 @@ export default async function HomePage() {
         </section>
 
         <section className="bg-gray-100">
-          <div className="container mx-auto flex flex-col gap-8 py-12">
+          <div className="responsiveContainer mx-auto flex flex-col gap-8 py-12">
             <div className="flex flex-col items-center">
               <h2 className="mb-4 text-center font-din text-3xl font-bold">
                 Our Events
