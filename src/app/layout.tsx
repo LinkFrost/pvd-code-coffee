@@ -6,6 +6,7 @@ import { TopNav } from "~/components/TopNav";
 import localFont from "next/font/local";
 
 import { TRPCReactProvider } from "~/trpc/react";
+import { Footer } from "~/components/Footer";
 
 export const metadata: Metadata = {
   title: "PVD Code & Coffee",
@@ -29,6 +30,7 @@ export default function RootLayout({
         <TRPCReactProvider>
           <TopNav font={dinFont.variable} />
           {children}
+          <Footer font={dinFont.variable} />
         </TRPCReactProvider>
       </body>
     </html>

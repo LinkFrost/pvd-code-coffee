@@ -6,7 +6,7 @@ import type { MeetupEvent } from "~/server/api/routers/meetup";
 
 export default function PastEventCard(event: MeetupEvent) {
   return (
-    <Card className="h-full overflow-hidden border border-accent border-opacity-30 shadow-md hover:border-2">
+    <Card className="h-full overflow-hidden border border-accent border-opacity-30 shadow-md">
       <div className="relative h-48">
         <Image
           src={event.eventPhoto ?? "/placeholder.svg"}

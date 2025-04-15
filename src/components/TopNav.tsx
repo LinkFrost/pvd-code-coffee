@@ -30,22 +30,25 @@ const ActiveLink = ({ href, name }: { href: string; name: string }) => {
 export const TopNav = ({ font }: { font: string }) => {
   return (
     <NavigationMenu>
-      <Link href="/" passHref legacyBehavior>
-        <div className="flex flex-row items-center gap-4 hover:cursor-pointer md:mr-auto">
-          <span
-            className={`text-2xl font-semibold text-accent sm:text-5xl ${font} font-din`}
-          >
-            PROVIDENCE
-          </span>
-          <Image
-            src="./Code-and-Coffee_white_ampersand.svg"
-            alt="Code & Coffee"
-            width={0}
-            height={0}
-            style={{ width: "auto", height: "75px" }}
-          />
-        </div>
-      </Link>
+      <NavigationMenuItem>
+        <Link href="/" passHref legacyBehavior>
+          <div className="flex flex-row items-center gap-4 hover:cursor-pointer md:mr-auto">
+            <span
+              className={`text-2xl font-semibold text-accent sm:text-5xl ${font} font-din`}
+            >
+              PROVIDENCE
+            </span>
+
+            <Image
+              src="./Code-and-Coffee_white_ampersand.svg"
+              alt="Code & Coffee"
+              width={0}
+              height={0}
+              style={{ width: "auto", height: "75px" }}
+            />
+          </div>
+        </Link>
+      </NavigationMenuItem>
 
       <NavigationMenuItem>
         <ActiveLink href="/about" name="About"></ActiveLink>
