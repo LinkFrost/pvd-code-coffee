@@ -21,7 +21,7 @@ const ActiveLink = ({ href, name }: { href: string; name: string }) => {
       asChild
     >
       <Link href={href} passHref>
-        <span className="font-din text-lg">{name}</span>
+        <span className="font-din text-xl">{name}</span>
       </Link>
     </NavigationMenuLink>
   );

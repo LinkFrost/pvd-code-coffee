@@ -5,7 +5,7 @@ import Link from "next/link";
 export const Footer = ({ font }: { font: string }) => {
   return (
     <footer className="bg-black py-4 text-white">
-      <div className="container mx-auto px-4">
+      <div className="responsiveContainer">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           <Link href="/" passHref legacyBehavior>
             <div className="flex flex-row items-center gap-4 hover:cursor-pointer md:mr-auto">

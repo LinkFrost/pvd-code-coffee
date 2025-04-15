@@ -25,11 +25,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body className={`${dinFont.variable} flex flex-col`}>
-        {/* <body className={`flex flex-col`}> */}
+      <body className={`${dinFont.variable} flex min-h-screen flex-col`}>
         <TRPCReactProvider>
           <TopNav font={dinFont.variable} />
-          {children}
+          <main className="flex-1">{children}</main>
           <Footer font={dinFont.variable} />
         </TRPCReactProvider>
       </body>
