@@ -7,7 +7,7 @@ import type { MeetupEvent } from "~/server/api/routers/meetup";
 
 export const UpcomingEventCard = (event: MeetupEvent) => {
   return (
-    <Card className="overflow-hidden border-[#fccb05] border-opacity-30 shadow-md">
+    <Card className="overflow-hidden border-2 border-accent border-opacity-50 shadow-md">
       <div className="md:flex">
         <div className="relative h-60 md:h-auto md:w-1/3">
           <Image
@@ -17,16 +17,19 @@ export const UpcomingEventCard = (event: MeetupEvent) => {
             className="object-cover"
           />
         </div>
+
         <CardContent className="p-6 md:w-2/3">
           <h4 className="font-din text-xl">{event.name}</h4>
 
           <div className="mt-4 space-y-2">
             <div className="flex items-center text-gray-600">
-              <Calendar className="mr-2 h-4 w-4 text-[#fccb05]" />
+              <Calendar className="mr-2 h-4 w-4 text-accent" />
+
               <span>{dateConstructor(event.dateTime, event.endTime)}</span>
             </div>
+
             <div className="flex items-center text-gray-600">
-              <MapPin className="mr-2 h-4 w-4 text-[#fccb05]" />
+              <MapPin className="mr-2 h-4 w-4 text-accent" />
 
               <span>{event.venue?.name}</span>
             </div>
