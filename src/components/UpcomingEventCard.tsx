@@ -20,21 +20,28 @@ export const UpcomingEventCard = async () => {
             className="object-cover"
           />
         </div>
+
         <CardContent className="p-6 md:w-2/3">
           <h4 className="font-din text-xl">{event.name}</h4>
+
           <div className="mt-4 space-y-2">
             <div className="flex items-center text-gray-600">
               <Calendar className="mr-2 h-4 w-4 text-accent" />
+
               <span>{dateConstructor(event.dateTime, event.endTime)}</span>
             </div>
+
             <div className="flex items-center text-gray-600">
               <MapPin className="mr-2 h-4 w-4 text-accent" />
+
               <span>{event.venue?.name}</span>
             </div>
           </div>
+
           <p className="mt-4 text-gray-700">
             {event.description.split("\n")[0]?.split("Short Description: ")}
           </p>
+
           <div className="mt-6">
             <Button
               className="font-din text-black"
