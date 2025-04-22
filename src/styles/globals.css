@@ -148,7 +148,8 @@
 @layer {
   .responsiveContainer {
     /* @apply mx-auto max-w-[300px] px-[var(--container-padding)] md:max-w-[var(--container-max-width-md)] lg:max-w-[var(--container-max-width-lg)] xl:max-w-[var(--container-max-width-xl)] 2xl:max-w-[var(--container-max-width-2xl)]; */
-    @apply mx-auto max-w-md content-center lg:max-w-[1000px] 2xl:max-w-[1600px];
+    /* @apply mx-auto max-w-md content-center lg:max-w-[1000px] 2xl:max-w-[1600px]; */
+    @apply mx-auto max-w-[450px] content-center px-4 md:max-w-[800px] lg:max-w-[1000px] 2xl:max-w-[1400px];
   }
 }
 
