@@ -7,7 +7,7 @@ import "./src/env.js";
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
-    domains: ["secure.meetupstatic.com"],
+    domains: ["secure.meetupstatic.com", "media.licdn.com"],
   },
 };
 

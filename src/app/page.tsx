@@ -14,8 +14,6 @@ export default async function HomePage() {
               Welcome to Code & Coffee!
             </h1>
 
-            <div className="mx-auto mb-8 h-1 w-48 bg-black"></div>
-
             <p className="max-w-3xl text-center text-2xl">
               The community-led meetup for devs to get together and
               professionally grow.

@@ -44,7 +44,7 @@ export const UpcomingEventCard = async () => {
 
           <div className="mt-6">
             <Button
-              className="font-din text-black"
+              className="font-din text-white"
               variant={"cncDefault"}
               asChild
             >
