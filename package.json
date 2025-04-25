@@ -20,6 +20,8 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache"
   },
   "dependencies": {
+    "@icons-pack/react-simple-icons": "^12.7.0",
+    "@radix-ui/react-dialog": "^1.1.11",
     "@radix-ui/react-navigation-menu": "^1.2.3",
     "@radix-ui/react-slot": "^1.2.0",
     "@t3-oss/env-nextjs": "^0.10.1",

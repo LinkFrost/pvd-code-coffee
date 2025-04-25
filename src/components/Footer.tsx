@@ -1,6 +1,7 @@
 import { Github, Linkedin, Instagram } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { SiDiscord } from "@icons-pack/react-simple-icons";
 
 export const Footer = ({ font }: { font: string }) => {
   return (
@@ -26,13 +27,13 @@ export const Footer = ({ font }: { font: string }) => {
           </Link>
 
           <div className="flex flex-wrap justify-center gap-4">
-            {/* <Link
+            <Link
               href="https://discord.com/invite/b7zkz9d9PR"
               className="text-gray-300 hover:text-accent"
             >
-              <Discord className="h-6 w-6" />
+              <SiDiscord />
               <span className="sr-only">Discord</span>
-            </Link> */}
+            </Link>
 
             <Link
               href="https://www.instagram.com/pvdcodecoffee/"
