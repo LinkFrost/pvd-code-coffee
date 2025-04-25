@@ -5,11 +5,15 @@ import { eventStructureSteps, organizers, principles } from "~/lib/constants";
 export default function About() {
   return (
     <div className="flex flex-col justify-center align-middle">
-      <section className="bg-accent">
-        <div className="responsiveContainer flex flex-col items-center py-20">
+      <section className="h-56 bg-accent">
+        <div className="responsiveContainer flex h-full flex-col items-center justify-between py-16">
           <h1 className="break-words font-din text-3xl font-bold">
-            About PVD Code & Coffee
+            About PVD Code & Coffee!
           </h1>
+
+          <p className="max-w-3xl text-center text-2xl">
+            A little bit about who we are and what we do.
+          </p>
         </div>
       </section>
 
