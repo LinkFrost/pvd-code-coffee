@@ -26,17 +26,17 @@ export const Footer = ({ font }: { font: string }) => {
           </Link>
 
           <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              href="https://github.com/LinkFrost/pvd-code-coffee"
+            {/* <Link
+              href="https://discord.com/invite/b7zkz9d9PR"
               className="text-gray-300 hover:text-accent"
             >
-              <Github className="h-6 w-6" />
-              <span className="sr-only">GitHub</span>
-            </Link>
+              <Discord className="h-6 w-6" />
+              <span className="sr-only">Discord</span>
+            </Link> */}
 
             <Link
               href="https://www.instagram.com/pvdcodecoffee/"
-              className="text-gray-300 hover:text-[#fccb05]"
+              className="text-gray-300 hover:text-accent"
             >
               <Instagram className="h-6 w-6" />
               <span className="sr-only">Instagram</span>
@@ -48,6 +48,14 @@ export const Footer = ({ font }: { font: string }) => {
             >
               <Linkedin className="h-6 w-6" />
               <span className="sr-only">LinkedIn</span>
+            </Link>
+
+            <Link
+              href="https://github.com/LinkFrost/pvd-code-coffee"
+              className="text-gray-300 hover:text-accent"
+            >
+              <Github className="h-6 w-6" />
+              <span className="sr-only">GitHub</span>
             </Link>
           </div>
         </div>
