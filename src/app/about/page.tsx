@@ -46,8 +46,9 @@ export default function About() {
           <h3 className="font-din text-3xl font-semibold">Event Structure</h3>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            {eventStructureSteps.map((eventStructure) => (
+            {eventStructureSteps.map((eventStructure, index) => (
               <InfoCard
+                key={index}
                 title={eventStructure.stepName}
                 details={eventStructure.details}
               />
@@ -83,8 +84,12 @@ export default function About() {
           </h3>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            {principles.map((principle) => (
-              <InfoCard title={principle.title} details={principle.details} />
+            {principles.map((principle, index) => (
+              <InfoCard
+                key={index}
+                title={principle.title}
+                details={principle.details}
+              />
             ))}
           </div>
         </div>
