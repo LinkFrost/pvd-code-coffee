@@ -27,40 +27,40 @@ export const OrganizerCard = (organizer: {
       <div className="p-6">
         <h3 className="font-din text-xl">{organizer.name}</h3>
 
-        <p className="mb-3 text-sm font-medium text-[#EB5152]">
+        <p className="text-accentRed mb-3 text-base font-medium">
           {organizer.role}
         </p>
 
-        <p className="mb-4 text-gray-600">{organizer.bio}</p>
+        <p className="mb-4 text-base text-gray-600">{organizer.bio}</p>
 
         <div className="flex space-x-3 pt-2">
           {organizer.links.github && (
             <Link
               href={organizer.links.github}
-              className="text-gray-500 hover:text-[#fccb05]"
+              className="text-gray-500 hover:text-accent"
               aria-label={`${organizer.name}'s GitHub`}
             >
-              <Github className="h-5 w-5" />
+              <Github className="text-accentRed h-5 w-5" />
             </Link>
           )}
 
           {organizer.links.linkedIn && (
             <Link
               href={organizer.links.linkedIn}
-              className="text-gray-500 hover:text-[#fccb05]"
+              className="text-gray-500 hover:text-accent"
               aria-label={`${organizer.name}'s LinkedIn`}
             >
-              <Linkedin className="h-5 w-5" />
+              <Linkedin className="text-accentRed h-5 w-5" />
             </Link>
           )}
 
           {organizer.links.website && (
             <Link
               href={organizer.links.website}
-              className="text-gray-500 hover:text-[#fccb05]"
+              className="text-gray-500 hover:text-accent"
               aria-label={`${organizer.name}'s Website`}
             >
-              <ExternalLink className="h-5 w-5" />
+              <ExternalLink className="text-accentRed h-5 w-5" />
             </Link>
           )}
         </div>

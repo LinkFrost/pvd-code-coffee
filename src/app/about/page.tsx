@@ -44,18 +44,16 @@ export default function About() {
   return (
     <div className="flex flex-col justify-center align-middle">
       <section className="bg-accent">
-        <div className="responsiveContainer flex flex-col items-center py-12">
-          <h1 className="mb-4 break-words font-din text-3xl font-bold">
-            A little bit about PVD Code & Coffee
+        <div className="responsiveContainer flex flex-col items-center py-20">
+          <h1 className="break-words font-din text-3xl font-bold">
+            About PVD Code & Coffee
           </h1>
-
-          <div className="mx-auto mb-4 h-1 w-48 bg-black"></div>
         </div>
       </section>
 
       <section className="bg-gray-100">
         <div className="responsiveContainer flex flex-col gap-8 py-12">
-          <h3 className="font-din text-2xl font-semibold">What we do</h3>
+          <h3 className="font-din text-3xl font-semibold">What we do</h3>
 
           <p className="text-xl">
             We are the Providence chapter for the community-led meetup for devs
@@ -83,7 +81,7 @@ export default function About() {
 
       <section className="bg-yellow-100">
         <div className="responsiveContainer flex flex-col gap-8 py-12">
-          <h3 className="font-din text-2xl font-semibold">Event Structure</h3>
+          <h3 className="font-din text-3xl font-semibold">Event Structure</h3>
 
           <div className="border-accentRed rounded-lg border-l-4 bg-white p-6 shadow-sm">
             <h3 className="mb-3 font-din text-xl">Introductions</h3>
@@ -143,7 +141,7 @@ export default function About() {
 
       <section className="bg-gray-100">
         <div className="responsiveContainer flex flex-col gap-8 py-12">
-          <h3 className="font-din text-2xl font-semibold">Organizers</h3>
+          <h3 className="font-din text-3xl font-semibold">Organizers</h3>
 
           <div className="grid gap-8 md:grid-cols-3">
             {organizers.map((organizer) => (
