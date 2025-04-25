@@ -5,6 +5,14 @@
 import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+  images: {
+    domains: [
+      "secure.meetupstatic.com",
+      "media.licdn.com",
+      "k3ss83nfoe.ufs.sh",
+    ],
+  },
+};
 
 export default config;

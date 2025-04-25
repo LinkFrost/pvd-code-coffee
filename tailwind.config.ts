@@ -9,6 +9,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],
+        din: ["var(--font-din)"],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -41,6 +42,9 @@ export default {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+        },
+        accentRed: {
+          DEFAULT: "hsl(var(--accent-red))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
