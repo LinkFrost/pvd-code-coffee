@@ -20,7 +20,7 @@ export default function About() {
       role: "Socials and Website Lead",
       image:
         "https://media.licdn.com/dms/image/v2/C4D03AQFxCrur6XpveQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1647353327127?e=1750896000&v=beta&t=8b1TJZNpAqXZb6lvImVUn6KAQEoZawWfUNKxWSspnU0",
-      bio: "Ipsum esse laboris adipisicing incididunt nisi excepteur nulla dolor mollit. Quis elit velit adipisicing pariatur velit esse non ad. Aute amet proident eiusmod laboris aute aute veniam adipisicing tempor cupidatat commodo est.",
+      bio: "Working as a Software Engineer at Citizens Bank, Ashir handles the social media and marketing side of PVD Code & Coffee. After studying Computer Science at UMass Amherst and getting started on his career, he's ready to help the community as he works on his software engineering skills!",
       links: {
         github: "https://github.com/LinkFrost",
         linkedIn: "https://github.com/theHarrisCode",

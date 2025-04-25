@@ -37,6 +37,7 @@ export const OrganizerCard = (organizer: {
           {organizer.links.github && (
             <Link
               href={organizer.links.github}
+              target="_blank"
               className="text-gray-500 hover:text-accent"
               aria-label={`${organizer.name}'s GitHub`}
             >
@@ -47,6 +48,7 @@ export const OrganizerCard = (organizer: {
           {organizer.links.linkedIn && (
             <Link
               href={organizer.links.linkedIn}
+              target="_blank"
               className="text-gray-500 hover:text-accent"
               aria-label={`${organizer.name}'s LinkedIn`}
             >
@@ -57,6 +59,7 @@ export const OrganizerCard = (organizer: {
           {organizer.links.website && (
             <Link
               href={organizer.links.website}
+              target="_blank"
               className="text-gray-500 hover:text-accent"
               aria-label={`${organizer.name}'s Website`}
             >
