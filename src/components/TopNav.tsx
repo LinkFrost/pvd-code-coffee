@@ -74,6 +74,7 @@ export const TopNav = ({ font }: { font: string }) => {
               width={0}
               height={0}
               style={{ width: "auto", height: "75px" }}
+              className="!h-[50px] md:!h-[75px]"
             />
           </div>
         </Link>

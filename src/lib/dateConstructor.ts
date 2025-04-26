@@ -37,5 +37,5 @@ export const dateConstructor = (fromDate: string, toDate: string) => {
     hour12: true,
   });
 
-  return `${weekday}, ${month} ${day}${suffix} from ${startTime}-${endTime}`;
+  return [`${weekday}, ${month} ${day}${suffix}`, `${startTime}-${endTime}`];
 };

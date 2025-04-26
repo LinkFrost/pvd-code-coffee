@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Calendar, Users } from "lucide-react";
+import { Calendar, Clock, Users } from "lucide-react";
 import { Card, CardContent } from "~/components/ui/card";
 import { dateConstructor } from "~/lib/dateConstructor";
 import type { MeetupEvent } from "~/server/api/routers/meetup";
@@ -23,7 +23,13 @@ export default function PastEventCard(event: MeetupEvent) {
           <div className="flex items-center text-sm text-gray-600">
             <Calendar className="mr-2 h-4 w-4 text-accent" />
 
-            <span>{dateConstructor(event.dateTime, event.endTime)}</span>
+            <span>{dateConstructor(event.dateTime, event.endTime)[0]}</span>
+          </div>
+
+          <div className="flex items-center text-sm text-gray-600">
+            <Clock className="mr-2 h-4 w-4 text-accent" />
+
+            <span>{dateConstructor(event.dateTime, event.endTime)[1]}</span>
           </div>
 
           <div className="flex items-center text-sm text-gray-600">
