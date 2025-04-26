@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Calendar, MapPin, ArrowRight } from "lucide-react";
+import { Calendar, MapPin, ArrowRight, Clock } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import { dateConstructor } from "~/lib/dateConstructor";
@@ -28,7 +28,17 @@ export const UpcomingEventCard = async () => {
             <div className="flex items-center text-gray-600">
               <Calendar className="mr-2 h-4 w-4 text-accent" />
 
-              <span>{dateConstructor(event.dateTime, event.endTime)}</span>
+              <div className="flex flex-col">
+                <span>{dateConstructor(event.dateTime, event.endTime)[0]}</span>
+              </div>
+            </div>
+
+            <div className="flex items-center text-gray-600">
+              <Clock className="mr-2 h-4 w-4 text-accent" />
+
+              <div className="flex flex-col">
+                <span>{dateConstructor(event.dateTime, event.endTime)[1]}</span>
+              </div>
             </div>
 
             <div className="flex items-center text-gray-600">
