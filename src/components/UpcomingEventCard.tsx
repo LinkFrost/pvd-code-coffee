@@ -7,9 +7,9 @@ import { api } from "~/trpc/server";
 
 export const UpcomingEventCard = async () => {
   const upcomingEvent = await api.meetup.getEvents("UPCOMING");
-  const event = upcomingEvent[0]!;
+  const event = upcomingEvent[0];
 
-  return (
+  return event ? (
     <Card className="overflow-hidden border-2 border-accent border-opacity-50 shadow-md">
       <div className="md:flex">
         <div className="relative h-60 md:h-auto md:w-1/3">
@@ -70,5 +70,7 @@ export const UpcomingEventCard = async () => {
         </CardContent>
       </div>
     </Card>
+  ) : (
+    <p className="text-center text-lg">No Upcoming Events</p>
   );
 };
