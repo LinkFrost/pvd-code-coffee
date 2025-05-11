@@ -2,7 +2,6 @@ export const dateConstructor = (fromDate: string, toDate: string) => {
   const startDate = new Date(fromDate);
   const endDate = new Date(toDate);
 
-  // Get day suffix (st, nd, rd, th)
   const getDaySuffix = (day: number) => {
     if (day >= 11 && day <= 13) return "th";
 
@@ -20,8 +19,14 @@ export const dateConstructor = (fromDate: string, toDate: string) => {
     }
   };
 
-  const weekday = startDate.toLocaleString("en-US", { weekday: "long" });
-  const month = startDate.toLocaleString("en-US", { month: "long" });
+  const weekday = startDate.toLocaleString("en-US", {
+    weekday: "long",
+    timeZone: "America/New_York",
+  });
+  const month = startDate.toLocaleString("en-US", {
+    month: "long",
+    timeZone: "America/New_York",
+  });
   const day = startDate.getDate();
   const suffix = getDaySuffix(day);
 
@@ -29,12 +34,14 @@ export const dateConstructor = (fromDate: string, toDate: string) => {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
+    timeZone: "America/New_York",
   });
 
   const endTime = endDate.toLocaleString("en-US", {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
+    timeZone: "America/New_York",
   });
 
   return [`${weekday}, ${month} ${day}${suffix}`, `${startTime}-${endTime}`];
