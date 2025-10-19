@@ -20,6 +20,13 @@ import {
 } from "./ui/sheet";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import {
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  UserButton,
+} from "@clerk/nextjs";
 
 const NavLink = ({
   href,
@@ -81,6 +88,20 @@ export const TopNav = ({ font }: { font: string }) => {
 
         <nav className="hidden items-center gap-6 md:flex">
           <NavLink href="/about" name="About" />
+
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+
+          {/* <SignUpButton>
+            <button className="text-ceramic-white h-10 cursor-pointer rounded-full bg-[#6c47ff] px-4 text-sm font-medium sm:h-12 sm:px-5 sm:text-base">
+              Sign Up
+            </button>
+          </SignUpButton> */}
+
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         </nav>
 
         <Sheet open={isOpen} onOpenChange={setIsOpen}>

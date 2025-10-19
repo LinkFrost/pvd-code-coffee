@@ -1,12 +1,11 @@
 import "~/styles/globals.css";
-
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { TopNav } from "~/components/TopNav";
 import localFont from "next/font/local";
-
 import { TRPCReactProvider } from "~/trpc/react";
 import { Footer } from "~/components/Footer";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "PVD Code & Coffee",
@@ -26,11 +25,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body className={`${dinFont.variable} flex min-h-screen flex-col`}>
-        <TRPCReactProvider>
-          <TopNav font={dinFont.variable} />
-          <main className="flex-1">{children}</main>
-          <Footer font={dinFont.variable} />
-        </TRPCReactProvider>
+        <ClerkProvider>
+          <TRPCReactProvider>
+            <TopNav font={dinFont.variable} />
+            <main className="flex-1">{children}</main>
+            <Footer font={dinFont.variable} />
+          </TRPCReactProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
