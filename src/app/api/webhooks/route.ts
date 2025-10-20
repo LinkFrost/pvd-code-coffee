@@ -20,17 +20,20 @@ export async function POST(req: NextRequest) {
 
     const caller = createCaller(ctx);
 
-    await caller.clearkWebhookRouter.clerkEvent({
-      type: eventType,
-      data: {
+    if (eventType === "user.created" || eventType === "user.updated") {
+      await caller.clearkWebhookRouter.clerkCreateUpdateUser({
+        type: eventType,
+        data: {
+          ...(eventData as UserJSON),
+          email_address:
+            (eventData as UserJSON).email_addresses?.[0]?.email_address ?? null,
+        },
+      });
+    } else if (eventType === "user.deleted") {
+      await caller.clearkWebhookRouter.clerkDeleteUser({
         id: eventData.id!,
-        first_name: (eventData as UserJSON).first_name,
-        last_name: (eventData as UserJSON).last_name,
-        email_address:
-          (eventData as UserJSON).email_addresses?.[0]?.email_address ?? null,
-        username: (eventData as UserJSON).username,
-      },
-    });
+      });
+    }
 
     return new Response("Webhook received", { status: 200 });
   } catch (err) {

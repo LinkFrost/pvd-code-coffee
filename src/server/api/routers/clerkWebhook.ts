@@ -5,7 +5,7 @@ import { db } from "~/server/db";
 import { users_table } from "~/server/db/schema";
 
 export const clearkWebhookRouter = createTRPCRouter({
-  clerkEvent: publicProcedure
+  clerkCreateUpdateUser: publicProcedure
     .input(
       z.object({
         type: z.string(),
@@ -44,15 +44,16 @@ export const clearkWebhookRouter = createTRPCRouter({
             .where(eq(users_table.clerk_id, input.data.id));
 
           break;
-        case "user.deleted":
-          await db
-            .delete(users_table)
-            .where(eq(users_table.clerk_id, input.data.id));
-
-          break;
         default:
           console.log(`Unhandled webhook event: ${input.type}`, input.data);
       }
+
+      return { success: true };
+    }),
+  clerkDeleteUser: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      await db.delete(users_table).where(eq(users_table.clerk_id, input.id));
 
       return { success: true };
     }),
