@@ -3,7 +3,7 @@ import { createCaller } from "~/server/api/root";
 import { createTRPCContext } from "~/server/api/trpc";
 import type { NextRequest } from "next/server";
 import { env } from "~/env";
-import type { UserJSON } from "@clerk/nextjs/server";
+import type { UserJSON, DeletedObjectJSON } from "@clerk/nextjs/server";
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     });
 
     const eventType = evt.type;
-    const eventData = evt.data as UserJSON;
+    const eventData = evt.data as UserJSON | DeletedObjectJSON;
 
     const ctx = await createTRPCContext({
       headers: req.headers,
@@ -23,8 +23,12 @@ export async function POST(req: NextRequest) {
     await caller.clearkWebhookRouter.clerkEvent({
       type: eventType,
       data: {
-        ...eventData,
-        email_address: eventData.email_addresses[0]?.email_address ?? "",
+        id: eventData.id!,
+        first_name: (eventData as UserJSON).first_name,
+        last_name: (eventData as UserJSON).last_name,
+        email_address:
+          (eventData as UserJSON).email_addresses?.[0]?.email_address ?? null,
+        username: (eventData as UserJSON).username,
       },
     });
 

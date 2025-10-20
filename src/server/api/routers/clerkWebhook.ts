@@ -1,3 +1,4 @@
+import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { db } from "~/server/db";
@@ -13,7 +14,7 @@ export const clearkWebhookRouter = createTRPCRouter({
             id: z.string(),
             first_name: z.string().nullable(),
             last_name: z.string().nullable(),
-            email_address: z.string().email(),
+            email_address: z.string().email().nullable(),
             username: z.string().nullable(),
           })
           .passthrough(),
@@ -32,12 +33,22 @@ export const clearkWebhookRouter = createTRPCRouter({
 
           break;
         case "user.updated":
-          console.log("User updated:", input.data);
-          // TODO: Update user data in your database
+          await db
+            .update(users_table)
+            .set({
+              first_name: input.data.first_name,
+              last_name: input.data.last_name,
+              email_address: input.data.email_address,
+              username: input.data.username,
+            })
+            .where(eq(users_table.clerk_id, input.data.id));
+
           break;
         case "user.deleted":
-          console.log("User deleted:", input.data);
-          // TODO: Handle user deletion in your database
+          await db
+            .delete(users_table)
+            .where(eq(users_table.clerk_id, input.data.id));
+
           break;
         default:
           console.log(`Unhandled webhook event: ${input.type}`, input.data);
