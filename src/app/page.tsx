@@ -27,24 +27,29 @@ export default async function HomePage() {
               <h2 className="mb-4 text-center font-din text-3xl font-bold">
                 Our Events
               </h2>
+
               <p className="max-w-3xl text-center text-xl">
                 Join in on discussions surrounding tech, present a project you
                 are working on, meet other people with similar (or completely
                 different) interests, or simply use this space as a workspace!
               </p>
             </div>
+
             <div>
               <h3 className="mb-4 font-din text-2xl font-semibold">
                 Upcoming Event
               </h3>
+
               <Suspense fallback={<UpcomingEventCard_Loading />}>
                 <UpcomingEventCard />
               </Suspense>
             </div>
+
             <div>
               <h3 className="mb-4 font-din text-2xl font-semibold">
                 Past Events
               </h3>
+
               <Suspense fallback={<UpcomingEventCard_Loading />}>
                 <PastEvents />
               </Suspense>

@@ -16,6 +16,7 @@ export const clearkWebhookRouter = createTRPCRouter({
             last_name: z.string().nullable(),
             email_address: z.string().email().nullable(),
             username: z.string().nullable(),
+            image_url: z.string().nullable(),
           })
           .passthrough(),
       }),
@@ -29,6 +30,7 @@ export const clearkWebhookRouter = createTRPCRouter({
             last_name: input.data.last_name,
             email_address: input.data.email_address,
             username: input.data.username,
+            image_url: input.data.image_url,
           });
 
           break;
@@ -40,6 +42,7 @@ export const clearkWebhookRouter = createTRPCRouter({
               last_name: input.data.last_name,
               email_address: input.data.email_address,
               username: input.data.username,
+              image_url: input.data.image_url,
             })
             .where(eq(users_table.clerk_id, input.data.id));
 

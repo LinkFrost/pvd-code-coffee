@@ -17,7 +17,7 @@ export const Footer = ({ font }: { font: string }) => {
               </span>
 
               <Image
-                src="./Code-and-Coffee_white_ampersand.svg"
+                src="/Code-and-Coffee_white_ampersand.svg"
                 alt="Code & Coffee"
                 width={0}
                 height={0}

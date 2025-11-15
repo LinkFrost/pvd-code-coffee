@@ -1,5 +1,6 @@
 import {
   int,
+  bigint,
   text,
   index,
   singlestoreTableCreator,
@@ -25,6 +26,26 @@ export const users_table = createTable(
     last_name: text(),
     email_address: text(),
     username: text(),
+    image_url: text(),
   },
-  (table) => [index("clerk_id_index").on(table.clerk_id)],
+  (table) => [
+    index("clerk_id_index").on(table.clerk_id),
+    index("username_index").on(table.username),
+  ],
+);
+
+export const projects_table = createTable(
+  "projects",
+  {
+    id: int("id").primaryKey().autoincrement(),
+    user_id: bigint({ mode: "bigint" }),
+    github_id: int("github_id"),
+    github_url: text(),
+    name: text(),
+    description: text(),
+  },
+  (table) => [
+    index("user_id_index").on(table.user_id),
+    index("github_id_index").on(table.github_id),
+  ],
 );

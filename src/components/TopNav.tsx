@@ -10,7 +10,7 @@ import {
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { DotIcon, Menu, User, X } from "lucide-react";
 import {
   Sheet,
   SheetClose,
@@ -26,6 +26,7 @@ import {
   SignUpButton,
   SignedIn,
   UserButton,
+  useUser,
 } from "@clerk/nextjs";
 
 const NavLink = ({
@@ -56,6 +57,8 @@ const NavLink = ({
 };
 
 export const TopNav = ({ font }: { font: string }) => {
+  const user = useUser();
+
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -76,7 +79,7 @@ export const TopNav = ({ font }: { font: string }) => {
             </span>
 
             <Image
-              src="./Code-and-Coffee_white_ampersand.svg"
+              src="/Code-and-Coffee_white_ampersand.svg"
               alt="Code & Coffee"
               width={0}
               height={0}
@@ -87,20 +90,32 @@ export const TopNav = ({ font }: { font: string }) => {
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
+          <NavLink href="/news" name="News" />
+
+          <NavLink href="/community" name="Community" />
+
+          <NavLink href="/projects" name="Projects" />
+
           <NavLink href="/about" name="About" />
 
           <SignedOut>
-            <SignInButton />
+            <SignInButton mode="modal">
+              <span className="font-din text-xl hover:cursor-pointer">
+                Sign In
+              </span>
+            </SignInButton>
           </SignedOut>
 
-          {/* <SignUpButton>
-            <button className="text-ceramic-white h-10 cursor-pointer rounded-full bg-[#6c47ff] px-4 text-sm font-medium sm:h-12 sm:px-5 sm:text-base">
-              Sign Up
-            </button>
-          </SignUpButton> */}
-
           <SignedIn>
-            <UserButton />
+            <UserButton>
+              <UserButton.MenuItems>
+                <UserButton.Link
+                  label="My Profile"
+                  href={`/profile/${user.user?.username}`}
+                  labelIcon={<User className="!h-4 !w-4" />}
+                />
+              </UserButton.MenuItems>
+            </UserButton>
           </SignedIn>
         </nav>
 

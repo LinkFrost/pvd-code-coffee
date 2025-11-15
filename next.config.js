@@ -11,6 +11,7 @@ const config = {
       "secure.meetupstatic.com",
       "media.licdn.com",
       "k3ss83nfoe.ufs.sh",
+      "img.clerk.com",
     ],
   },
 };

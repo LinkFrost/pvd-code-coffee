@@ -93,3 +93,5 @@ export const principles = [
       "Learning should feel good. Celebrate progress, laugh at bugs, and build things that make you—and others—smile.",
   },
 ];
+
+export const provider = "oauth_github";
