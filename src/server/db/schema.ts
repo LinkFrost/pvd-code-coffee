@@ -27,6 +27,7 @@ export const users_table = createTable(
     email_address: text(),
     username: text(),
     image_url: text(),
+    bio: text(),
   },
   (table) => [
     index("clerk_id_index").on(table.clerk_id),
