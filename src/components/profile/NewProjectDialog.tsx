@@ -1,0 +1,313 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { useForm } from "@tanstack/react-form";
+import { useRouter } from "next/navigation";
+import { Button } from "~/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+import { Textarea } from "~/components/ui/textarea";
+import { api } from "~/trpc/react";
+import { Spinner } from "../ui/spinner";
+
+type GithubRepo = {
+  id: number;
+  name: string;
+  description: string | null;
+  html_url: string;
+};
+
+type NameStatus = "idle" | "checking" | "available" | "taken";
+
+export function NewProjectDialog({
+  username,
+  githubRepos,
+}: {
+  username: string;
+  githubRepos: GithubRepo[];
+}) {
+  const [open, setOpen] = useState(false);
+  const [nameStatus, setNameStatus] = useState<NameStatus>("idle");
+
+  const router = useRouter();
+
+  const utils = api.useUtils();
+
+  const createProject = api.projects.createProject.useMutation({
+    onSuccess: () => {
+      setOpen(false);
+      setNameStatus("idle");
+      router.refresh();
+    },
+  });
+
+  const repoMap = useMemo(
+    () => new Map(githubRepos.map((repo) => [String(repo.id), repo])),
+    [githubRepos],
+  );
+
+  const form = useForm({
+    defaultValues: {
+      repoId: "",
+      name: "",
+      description: "",
+      github_id: 0,
+      github_url: "",
+    },
+    onSubmit: async ({ value }) => {
+      const selectedRepo = repoMap.get(value.repoId);
+
+      if (!selectedRepo) {
+        return;
+      }
+
+      const isAvailable = await utils.projects.isProjectNameAvailable.fetch({
+        name: value.name.trim(),
+      });
+
+      if (!isAvailable) {
+        setNameStatus("taken");
+        return;
+      }
+
+      await createProject.mutateAsync({
+        username,
+        github_id: selectedRepo.id,
+        github_url: selectedRepo.html_url,
+        name: value.name,
+        description: value.description,
+      });
+    },
+  });
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        setOpen(nextOpen);
+
+        if (!nextOpen) {
+          setNameStatus("idle");
+        }
+      }}
+    >
+      <DialogTrigger asChild>
+        <Button variant="cncDefault">New Project</Button>
+      </DialogTrigger>
+
+      <DialogContent className="sm:max-w-[540px]">
+        <DialogHeader>
+          <DialogTitle>Create a new project</DialogTitle>
+
+          <DialogDescription>
+            Choose a GitHub repository to create your project from, and enter
+            additional details below.
+          </DialogDescription>
+        </DialogHeader>
+
+        <form
+          className="space-y-6"
+          onSubmit={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            if (document.activeElement instanceof HTMLElement) {
+              document.activeElement.blur();
+            }
+
+            void form.handleSubmit();
+          }}
+        >
+          <form.Field
+            name="repoId"
+            validators={{
+              onChange: ({ value }) =>
+                value.trim().length === 0
+                  ? "Please select a repository."
+                  : undefined,
+              onSubmit: ({ value }) =>
+                value.trim().length === 0
+                  ? "Please select a repository."
+                  : undefined,
+            }}
+          >
+            {(field) => (
+              <div className="grid gap-2">
+                <Label htmlFor="repoId">GitHub Repository</Label>
+
+                <Select
+                  value={field.state.value}
+                  onOpenChange={(isOpen) => {
+                    if (!isOpen) {
+                      field.handleBlur();
+                    }
+                  }}
+                  onValueChange={(repoId) => {
+                    field.handleChange(repoId);
+
+                    const selectedRepo = repoMap.get(repoId);
+
+                    if (!selectedRepo) return;
+
+                    form.setFieldValue("name", selectedRepo.name);
+                    form.setFieldValue(
+                      "description",
+                      selectedRepo.description ?? "",
+                    );
+                    form.setFieldValue("github_id", selectedRepo.id);
+                    form.setFieldValue("github_url", selectedRepo.html_url);
+
+                    setNameStatus("idle");
+                  }}
+                >
+                  <SelectTrigger id="repoId" name={field.name}>
+                    <SelectValue placeholder="Select a repository" />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    {githubRepos.map((repo) => (
+                      <SelectItem key={repo.id} value={String(repo.id)}>
+                        {repo.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {field.state.meta.errors[0] && (
+                  <p className="text-sm text-red-600">
+                    {field.state.meta.errors[0]}
+                  </p>
+                )}
+              </div>
+            )}
+          </form.Field>
+
+          <form.Subscribe selector={(state) => state.values.repoId}>
+            {(repoId) =>
+              repoId ? (
+                <div className="space-y-4">
+                  <form.Field
+                    name="name"
+                    validators={{
+                      onChange: ({ value }) =>
+                        value.trim().length === 0
+                          ? "Project name is required."
+                          : undefined,
+                      onSubmit: ({ value }) =>
+                        value.trim().length === 0
+                          ? "Project name is required."
+                          : undefined,
+                    }}
+                  >
+                    {(field) => (
+                      <div className="grid gap-2">
+                        <Label htmlFor="projectName">Project Name</Label>
+
+                        <Input
+                          id="projectName"
+                          name={field.name}
+                          value={field.state.value}
+                          onChange={(event) => {
+                            field.handleChange(event.target.value);
+                            setNameStatus("idle");
+                          }}
+                          onBlur={async (event) => {
+                            field.handleBlur();
+
+                            const name = event.target.value.trim();
+
+                            if (!name) return;
+
+                            setNameStatus("checking");
+
+                            const isAvailable =
+                              await utils.projects.isProjectNameAvailable.fetch(
+                                { name },
+                              );
+
+                            setNameStatus(isAvailable ? "available" : "taken");
+                          }}
+                        />
+
+                        {nameStatus === "taken" && (
+                          <p className="text-sm text-red-600">
+                            Project name is already taken.
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </form.Field>
+
+                  <form.Field name="description">
+                    {(field) => (
+                      <div className="grid gap-2">
+                        <Label htmlFor="projectDescription">Description</Label>
+
+                        <Textarea
+                          id="projectDescription"
+                          name={field.name}
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChange={(event) =>
+                            field.handleChange(event.target.value)
+                          }
+                        />
+                      </div>
+                    )}
+                  </form.Field>
+                </div>
+              ) : null
+            }
+          </form.Subscribe>
+
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type="button" variant="outline">
+                Cancel
+              </Button>
+            </DialogClose>
+
+            <form.Subscribe
+              selector={(state) => ({
+                isSubmitting: state.isSubmitting,
+                repoId: state.values.repoId,
+              })}
+            >
+              {({ isSubmitting, repoId }) => (
+                <Button
+                  type="submit"
+                  disabled={
+                    isSubmitting ||
+                    !repoId ||
+                    nameStatus === "taken" ||
+                    nameStatus === "checking"
+                  }
+                >
+                  {isSubmitting ? "Saving..." : "Save"}
+                  {(isSubmitting || nameStatus === "checking") && <Spinner />}
+                </Button>
+              )}
+            </form.Subscribe>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}

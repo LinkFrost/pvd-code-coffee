@@ -2,6 +2,7 @@ import { createCallerFactory, createTRPCRouter } from "../../server/api/trpc";
 import { meetupRouter } from "./routers/meetup";
 import { clearkWebhookRouter } from "./routers/clerkWebhook";
 import { usersRouter } from "./routers/users";
+import { projectsRouter } from "./routers/projects";
 
 /**
  * This is the primary router for your server.
@@ -12,6 +13,7 @@ export const appRouter = createTRPCRouter({
   meetup: meetupRouter,
   clearkWebhookRouter: clearkWebhookRouter,
   users: usersRouter,
+  projects: projectsRouter,
 });
 
 // export type definition of API

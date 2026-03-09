@@ -19,7 +19,7 @@ export default function About() {
 
       <section className="bg-gray-100">
         <div className="responsiveContainer flex flex-col gap-8 py-12">
-          <h3 className="font-din text-3xl font-semibold">What we do</h3>
+          <h2 className="font-din text-3xl font-semibold">What we do</h2>
 
           <p className="text-xl">
             We are the Providence chapter for the community-led meetup for devs
@@ -36,6 +36,7 @@ export default function About() {
             <a
               className="text-accentRed hover:text-red-700"
               target="_blank"
+              rel="noopener noreferrer"
               href="https://codeandcoffee.org/"
             >
               {" "}
@@ -47,7 +48,7 @@ export default function About() {
 
       <section className="bg-yellow-50">
         <div className="responsiveContainer flex flex-col gap-8 py-12">
-          <h3 className="font-din text-3xl font-semibold">Event Structure</h3>
+          <h2 className="font-din text-3xl font-semibold">Event Structure</h2>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {eventStructureSteps.map((eventStructure, index) => (
@@ -63,7 +64,7 @@ export default function About() {
 
       <section className="bg-gray-100">
         <div className="responsiveContainer flex flex-col gap-8 py-12">
-          <h3 className="font-din text-3xl font-semibold">Organizers</h3>
+          <h2 className="font-din text-3xl font-semibold">Organizers</h2>
 
           <div className="grid gap-8 md:grid-cols-3">
             {organizers.map((organizer) => (
@@ -83,9 +84,9 @@ export default function About() {
 
       <section className="bg-yellow-50">
         <div className="responsiveContainer flex flex-col gap-8 py-12">
-          <h3 className="font-din text-3xl font-semibold">
+          <h2 className="font-din text-3xl font-semibold">
             Guidelines & Principles
-          </h3>
+          </h2>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {principles.map((principle, index) => (

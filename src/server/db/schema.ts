@@ -2,6 +2,7 @@ import {
   int,
   bigint,
   text,
+  timestamp,
   index,
   singlestoreTableCreator,
 } from "drizzle-orm/singlestore-core";
@@ -44,9 +45,12 @@ export const projects_table = createTable(
     github_url: text(),
     name: text(),
     description: text(),
+    created_on: timestamp("created_on", { mode: "date" }).notNull(),
+    updated_on: timestamp("updated_on", { mode: "date" }).notNull(),
   },
   (table) => [
     index("user_id_index").on(table.user_id),
     index("github_id_index").on(table.github_id),
+    index("name_index").on(table.name),
   ],
 );

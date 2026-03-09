@@ -29,6 +29,8 @@ export const Footer = ({ font }: { font: string }) => {
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="https://discord.com/invite/b7zkz9d9PR"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-gray-300 hover:text-accent"
             >
               <SiDiscord />
@@ -37,6 +39,8 @@ export const Footer = ({ font }: { font: string }) => {
 
             <Link
               href="https://www.instagram.com/pvdcodecoffee/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-gray-300 hover:text-accent"
             >
               <Instagram className="h-6 w-6" />
@@ -45,6 +49,8 @@ export const Footer = ({ font }: { font: string }) => {
 
             <Link
               href="https://www.linkedin.com/company/pvd-code-coffee"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-gray-300 hover:text-accent"
             >
               <Linkedin className="h-6 w-6" />
@@ -53,6 +59,8 @@ export const Footer = ({ font }: { font: string }) => {
 
             <Link
               href="https://github.com/LinkFrost/pvd-code-coffee"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-gray-300 hover:text-accent"
             >
               <Github className="h-6 w-6" />

@@ -28,3 +28,29 @@ export const { trpc: api, HydrateClient } = createHydrationHelpers<AppRouter>(
   caller,
   getQueryClient,
 );
+
+type ApiResultSuccess<T> = {
+  success: true;
+  data: T;
+};
+
+type ApiResultFailure = {
+  success: false;
+  error: unknown;
+};
+
+export async function apiResult<T>(
+  promise: Promise<T>,
+): Promise<ApiResultSuccess<T> | ApiResultFailure> {
+  try {
+    return {
+      success: true,
+      data: await promise,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error,
+    };
+  }
+}
