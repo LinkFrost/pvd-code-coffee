@@ -15,7 +15,7 @@ type GithubRepo = {
   html_url: string;
 };
 
-const OwnerNewProjectAction = async ({
+const NewProject = async ({
   username,
   userId,
 }: {
@@ -143,7 +143,7 @@ export default async function Profile(props: {
             <h2 className="font-din text-3xl font-semibold">Projects</h2>
             {isLoggedInUser && (
               <Suspense fallback={<Spinner className="size-6" />}>
-                <OwnerNewProjectAction
+                <NewProject
                   username={user.username ?? params.username}
                   userId={session?.userId}
                 />
