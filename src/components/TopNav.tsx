@@ -3,14 +3,13 @@
 import Link from "next/link";
 import {
   NavigationMenu,
-  NavigationMenuItem,
   NavigationMenuLink,
   navigationMenuTriggerStyle,
 } from "./ui/navigation-menu";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { DotIcon, Menu, User, X } from "lucide-react";
+import { Menu, User } from "lucide-react";
 import {
   Sheet,
   SheetClose,
@@ -23,7 +22,6 @@ import { useRouter } from "next/navigation";
 import {
   SignedOut,
   SignInButton,
-  SignUpButton,
   SignedIn,
   UserButton,
   useUser,
