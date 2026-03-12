@@ -119,7 +119,7 @@ export const TopNav = ({ font }: { font: string }) => {
           </SignedIn>
         </nav>
 
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <Sheet open={isOpen} onOpenChange={setIsOpen} modal={false}>
           <SheetTitle className="sr-only">NavBar Menu</SheetTitle>
 
           <SheetTrigger asChild className="md:hidden">
@@ -132,11 +132,55 @@ export const TopNav = ({ font }: { font: string }) => {
 
           <SheetContent side="top" className="border-0 bg-black text-white">
             <div className="mt-8 flex w-full flex-col items-center gap-6">
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <span className="font-din text-xl hover:cursor-pointer">
+                    Sign In
+                  </span>
+                </SignInButton>
+              </SignedOut>
+
+              <SignedIn>
+                <UserButton>
+                  <UserButton.MenuItems>
+                    <UserButton.Link
+                      label="My Profile"
+                      href={`/profile/${user.user?.username}`}
+                      labelIcon={<User className="!h-4 !w-4" />}
+                    />
+                  </UserButton.MenuItems>
+                </UserButton>
+              </SignedIn>
+
               <SheetClose asChild>
                 <NavLink
                   href="/"
                   name="Home"
                   handleClick={() => handleNavigation("/")}
+                />
+              </SheetClose>
+
+              <SheetClose asChild>
+                <NavLink
+                  href="/news"
+                  name="News"
+                  handleClick={() => handleNavigation("/news")}
+                />
+              </SheetClose>
+
+              <SheetClose asChild>
+                <NavLink
+                  href="/community"
+                  name="Community"
+                  handleClick={() => handleNavigation("/community")}
+                />
+              </SheetClose>
+
+              <SheetClose asChild>
+                <NavLink
+                  href="/projects"
+                  name="Projects"
+                  handleClick={() => handleNavigation("/projects")}
                 />
               </SheetClose>
 
