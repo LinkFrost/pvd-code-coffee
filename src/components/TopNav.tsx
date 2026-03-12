@@ -87,10 +87,8 @@ export const TopNav = ({ font }: { font: string }) => {
           </div>
         </Link>
 
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-6 lg:flex">
           <NavLink href="/news" name="News" />
-
-          <NavLink href="/community" name="Community" />
 
           <NavLink href="/projects" name="Projects" />
 
@@ -120,7 +118,7 @@ export const TopNav = ({ font }: { font: string }) => {
         <Sheet open={isOpen} onOpenChange={setIsOpen} modal={false}>
           <SheetTitle className="sr-only">NavBar Menu</SheetTitle>
 
-          <SheetTrigger asChild className="md:hidden">
+          <SheetTrigger asChild className="lg:hidden">
             <Button variant="ghost" size="icon" className="text-white">
               <Menu className="!h-8 !w-8 text-accent" />
 
@@ -163,14 +161,6 @@ export const TopNav = ({ font }: { font: string }) => {
                   href="/news"
                   name="News"
                   handleClick={() => handleNavigation("/news")}
-                />
-              </SheetClose>
-
-              <SheetClose asChild>
-                <NavLink
-                  href="/community"
-                  name="Community"
-                  handleClick={() => handleNavigation("/community")}
                 />
               </SheetClose>
 

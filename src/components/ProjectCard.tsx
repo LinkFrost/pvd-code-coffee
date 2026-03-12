@@ -52,7 +52,9 @@ export function ProjectCard({
       <CardHeader>
         <CardTitle className="font-din text-2xl">{projectName}</CardTitle>
 
-        <CardDescription>Built by {creatorName}</CardDescription>
+        <CardDescription>
+          Built by <span className="font-medium">{creatorName}</span>
+        </CardDescription>
       </CardHeader>
 
       <CardContent className="space-y-3">

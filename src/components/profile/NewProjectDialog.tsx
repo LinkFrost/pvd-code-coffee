@@ -269,6 +269,7 @@ export function NewProjectDialog({
                           onChange={(event) =>
                             field.handleChange(event.target.value)
                           }
+                          rows={4}
                         />
                       </div>
                     )}
@@ -300,6 +301,7 @@ export function NewProjectDialog({
                     nameStatus === "taken" ||
                     nameStatus === "checking"
                   }
+                  variant="cncDefault"
                 >
                   {isSubmitting ? "Saving..." : "Save"}
                   {(isSubmitting || nameStatus === "checking") && <Spinner />}

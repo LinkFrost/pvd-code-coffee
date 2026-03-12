@@ -46,7 +46,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="bg-yellow-50">
+      <section className="bg-yellow-100">
         <div className="responsiveContainer flex flex-col gap-8 py-12">
           <h2 className="font-din text-3xl font-semibold">Event Structure</h2>
 
@@ -82,7 +82,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="bg-yellow-50">
+      <section className="bg-yellow-100">
         <div className="responsiveContainer flex flex-col gap-8 py-12">
           <h2 className="font-din text-3xl font-semibold">
             Guidelines & Principles

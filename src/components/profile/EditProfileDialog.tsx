@@ -52,7 +52,9 @@ export function EditProfileDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="cncDefault">Edit Profile</Button>
+        <Button variant="cncDefault" className="self-end sm:self-auto">
+          Edit Profile
+        </Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">
@@ -83,6 +85,7 @@ export function EditProfileDialog({
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   onChange={(event) => field.handleChange(event.target.value)}
+                  rows={4}
                 />
               </div>
             )}
@@ -97,7 +100,11 @@ export function EditProfileDialog({
 
             <form.Subscribe selector={(state) => state.isSubmitting}>
               {(isSubmitting) => (
-                <Button type="submit" disabled={isSubmitting}>
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  variant="cncDefault"
+                >
                   {isSubmitting ? "Saving..." : "Save Changes"}
                   {isSubmitting && <Spinner />}
                 </Button>

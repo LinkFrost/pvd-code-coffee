@@ -23,7 +23,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html
+      lang="en"
+      className={`${GeistSans.variable}`}
+      suppressHydrationWarning
+    >
       <body className={`${dinFont.variable} flex min-h-screen flex-col`}>
         <ClerkProvider>
           <TRPCReactProvider>
