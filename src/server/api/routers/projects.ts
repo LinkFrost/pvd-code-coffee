@@ -33,7 +33,9 @@ export const projectsRouter = createTRPCRouter({
         .from(projects_table)
         .where(eq(projects_table.user_id, BigInt(foundUser.id)));
 
-      return projects;
+      return projects.sort(
+        (a, b) => b.updated_on.getTime() - a.updated_on.getTime(),
+      );
     }),
   isProjectNameAvailable: publicProcedure
     .input(z.object({ name: z.string().trim().min(1) }))

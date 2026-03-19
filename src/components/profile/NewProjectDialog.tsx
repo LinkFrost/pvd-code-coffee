@@ -78,10 +78,9 @@ export function NewProjectDialog({
         return;
       }
 
-      const isAvailable =
-        api.projects.isProjectNameAvailable.useQuery({
-          name: value.name.trim(),
-        }).data ?? false;
+      const isAvailable = await utils.projects.isProjectNameAvailable.fetch({
+        name: value.name.trim(),
+      });
 
       if (!isAvailable) {
         setNameStatus("taken");
