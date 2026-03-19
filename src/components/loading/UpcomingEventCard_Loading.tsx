@@ -2,7 +2,7 @@ import { Skeleton } from "../ui/skeleton";
 
 export const UpcomingEventCard_Loading = () => {
   return (
-    <div className="animate-pulse overflow-hidden rounded-xl border-2 border-accent border-opacity-50 shadow-md">
+    <div className="animate-pulse overflow-hidden rounded-xl border border-neutral-200 bg-white shadow">
       <div className="md:flex">
         <div className="relative h-60 md:h-auto md:w-1/3">
           <Skeleton className="h-full w-full" />

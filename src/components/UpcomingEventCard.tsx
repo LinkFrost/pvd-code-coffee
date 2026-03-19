@@ -10,7 +10,7 @@ export const UpcomingEventCard = async () => {
   const event = upcomingEvent[0];
 
   return event ? (
-    <Card className="overflow-hidden border-2 border-accent border-opacity-50 shadow-md">
+    <Card className="overflow-hidden transition-shadow hover:shadow-md">
       <div className="md:flex">
         <div className="relative h-60 md:h-auto md:w-1/3">
           <Image
