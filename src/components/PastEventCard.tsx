@@ -3,6 +3,7 @@ import { Calendar, Clock, Users } from "lucide-react";
 import { Card, CardContent } from "~/components/ui/card";
 import { dateConstructor } from "~/lib/dateConstructor";
 import type { MeetupEvent } from "~/server/api/routers/meetup";
+import Link from "next/link";
 
 export default function PastEventCard(event: MeetupEvent) {
   return (
@@ -17,7 +18,9 @@ export default function PastEventCard(event: MeetupEvent) {
       </div>
 
       <CardContent className="p-4">
-        <h4 className="font-din">{event.name}</h4>
+        <Link href={event.eventUrl} target="_blank" rel="noopener noreferrer">
+          <h4 className="font-din hover:text-accentRed">{event.name}</h4>
+        </Link>
 
         <div className="mt-3 space-y-2">
           <div className="flex items-center text-sm text-gray-600">

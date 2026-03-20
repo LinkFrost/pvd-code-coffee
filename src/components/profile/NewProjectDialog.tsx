@@ -101,6 +101,8 @@ export function NewProjectDialog({
     <Dialog
       open={open}
       onOpenChange={(nextOpen) => {
+        form.reset();
+
         setOpen(nextOpen);
 
         if (!nextOpen) {
