@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Badge } from "~/components/ui/badge";
-import { cn } from "~/lib/utils";
+import { cn } from "~/lib/twUtils";
 import {
   projectStatusBadgeClassName,
   projectTagBadgeClassName,

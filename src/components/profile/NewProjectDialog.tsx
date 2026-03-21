@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
-import { ProjectTagsCombobox } from "~/components/profile/ProjectTagsCombobox";
+import { ProjectTagsCombobox } from "~/components/projects/ProjectTagsCombobox";
 import {
   DEFAULT_PROJECT_TAG_SUGGESTIONS,
   PROJECT_STATUSES,

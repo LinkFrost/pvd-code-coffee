@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { api, apiResult, HydrateClient } from "~/trpc/server";
 import Image from "next/image";
 import { EditProfileDialog } from "~/components/profile/EditProfileDialog";
-import { NewProjectSection } from "~/components/profile/NewProjectSection";
+import { NewProjectSection } from "~/components/projects/NewProjectButton";
 import { ProjectCard } from "~/components/ProjectCard";
 import { Suspense } from "react";
 import { Spinner } from "~/components/ui/spinner";
