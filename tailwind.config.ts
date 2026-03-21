@@ -4,7 +4,8 @@ import * as tailwindAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
-  content: ["./src/**/*.tsx"],
+  // Include .ts so class strings in lib files (e.g. ~/lib/projects badge maps) are generated.
+  content: ["./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       fontFamily: {

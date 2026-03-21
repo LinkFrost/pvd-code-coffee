@@ -1,11 +1,76 @@
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import {
+  parseProjectTags,
+  type ProjectStatus,
+  projectStatusSchema,
+  projectTagsInputSchema,
+  serializeProjectTags,
+} from "~/lib/projects";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { db } from "~/server/db";
 import { projects_table, users_table } from "~/server/db/schema";
 
 export const projectsRouter = createTRPCRouter({
+  getAllProjects: publicProcedure.query(async () => {
+    const rows = await db
+      .select({
+        id: projects_table.id,
+        github_url: projects_table.github_url,
+        name: projects_table.name,
+        description: projects_table.description,
+        tags: projects_table.tags,
+        status: projects_table.status,
+        created_on: projects_table.created_on,
+        updated_on: projects_table.updated_on,
+        creator_username: users_table.username,
+      })
+      .from(projects_table)
+      .innerJoin(users_table, eq(projects_table.user_id, users_table.id))
+      .orderBy(desc(projects_table.updated_on));
+
+    return rows.map((row) => ({
+      ...row,
+      tags: parseProjectTags(row.tags),
+      status: row.status as ProjectStatus,
+    }));
+  }),
+
+  getProjectByName: publicProcedure
+    .input(z.object({ name: z.string().trim().min(1) }))
+    .query(async ({ input }) => {
+      const rows = await db
+        .select({
+          id: projects_table.id,
+          github_url: projects_table.github_url,
+          name: projects_table.name,
+          description: projects_table.description,
+          tags: projects_table.tags,
+          status: projects_table.status,
+          created_on: projects_table.created_on,
+          updated_on: projects_table.updated_on,
+          creator_username: users_table.username,
+          creator_first_name: users_table.first_name,
+          creator_last_name: users_table.last_name,
+        })
+        .from(projects_table)
+        .innerJoin(users_table, eq(projects_table.user_id, users_table.id))
+        .where(eq(projects_table.name, input.name))
+        .limit(1);
+
+      const row = rows[0];
+      if (!row) {
+        return null;
+      }
+
+      return {
+        ...row,
+        tags: parseProjectTags(row.tags),
+        status: row.status as ProjectStatus,
+      };
+    }),
+
   getProjectsByUsername: publicProcedure
     .input(z.object({ username: z.string() }))
     .query(async ({ input }) => {
@@ -27,15 +92,21 @@ export const projectsRouter = createTRPCRouter({
           github_url: projects_table.github_url,
           name: projects_table.name,
           description: projects_table.description,
+          tags: projects_table.tags,
+          status: projects_table.status,
           created_on: projects_table.created_on,
           updated_on: projects_table.updated_on,
         })
         .from(projects_table)
         .where(eq(projects_table.user_id, BigInt(foundUser.id)));
 
-      return projects.sort(
-        (a, b) => b.updated_on.getTime() - a.updated_on.getTime(),
-      );
+      return projects
+        .map((p) => ({
+          ...p,
+          tags: parseProjectTags(p.tags),
+          status: p.status as ProjectStatus,
+        }))
+        .sort((a, b) => b.updated_on.getTime() - a.updated_on.getTime());
     }),
   isProjectNameAvailable: publicProcedure
     .input(z.object({ name: z.string().trim().min(1) }))
@@ -55,6 +126,8 @@ export const projectsRouter = createTRPCRouter({
         github_url: z.string().url(),
         name: z.string().trim().min(1),
         description: z.string().trim().optional(),
+        tags: projectTagsInputSchema,
+        status: projectStatusSchema,
       }),
     )
     .mutation(async ({ input }) => {
@@ -81,6 +154,8 @@ export const projectsRouter = createTRPCRouter({
           github_url: input.github_url,
           name: nameToUse,
           description: input.description?.trim() ?? null,
+          tags: serializeProjectTags(input.tags),
+          status: input.status,
           created_on: new Date(),
           updated_on: new Date(),
         });
@@ -104,12 +179,16 @@ export const projectsRouter = createTRPCRouter({
           name: z.string().trim().min(1).optional(),
           description: z.string().trim().optional(),
           github_url: z.string().url().optional(),
+          tags: projectTagsInputSchema.optional(),
+          status: projectStatusSchema.optional(),
         })
         .refine(
           (input) =>
             input.name !== undefined ||
             input.description !== undefined ||
-            input.github_url !== undefined,
+            input.github_url !== undefined ||
+            input.tags !== undefined ||
+            input.status !== undefined,
           {
             message: "At least one project field must be provided",
           },
@@ -133,6 +212,8 @@ export const projectsRouter = createTRPCRouter({
         name?: string;
         description?: string | null;
         github_url?: string;
+        tags?: string;
+        status?: string;
         updated_on: Date;
       } = {
         updated_on: new Date(),
@@ -148,6 +229,14 @@ export const projectsRouter = createTRPCRouter({
 
       if (input.github_url !== undefined) {
         updateValues.github_url = input.github_url;
+      }
+
+      if (input.tags !== undefined) {
+        updateValues.tags = serializeProjectTags(input.tags);
+      }
+
+      if (input.status !== undefined) {
+        updateValues.status = input.status;
       }
 
       try {

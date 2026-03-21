@@ -24,6 +24,12 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
+import { ProjectTagsCombobox } from "~/components/profile/ProjectTagsCombobox";
+import {
+  DEFAULT_PROJECT_TAG_SUGGESTIONS,
+  PROJECT_STATUSES,
+  type ProjectStatus,
+} from "~/lib/projects";
 import { api } from "~/trpc/react";
 import { Spinner } from "../ui/spinner";
 
@@ -70,6 +76,8 @@ export function NewProjectDialog({
       description: "",
       github_id: 0,
       github_url: "",
+      tags: [] as string[],
+      status: "In Development" as (typeof PROJECT_STATUSES)[number],
     },
     onSubmit: async ({ value }) => {
       const selectedRepo = repoMap.get(value.repoId);
@@ -93,6 +101,8 @@ export function NewProjectDialog({
         github_url: selectedRepo.html_url,
         name: value.name,
         description: value.description,
+        tags: value.tags,
+        status: value.status,
       });
     },
   });
@@ -275,6 +285,94 @@ export function NewProjectDialog({
                       </div>
                     )}
                   </form.Field>
+
+                  <form.Field
+                    name="tags"
+                    validators={{
+                      onChange: ({ value }) =>
+                        value.length < 1
+                          ? "Select at least one tag."
+                          : undefined,
+                      onSubmit: ({ value }) =>
+                        value.length < 1
+                          ? "Select at least one tag."
+                          : undefined,
+                    }}
+                  >
+                    {(field) => (
+                      <div className="grid gap-2">
+                        <Label htmlFor="projectTags">Tags</Label>
+
+                        <ProjectTagsCombobox
+                          id="projectTags"
+                          inModalDialog
+                          options={DEFAULT_PROJECT_TAG_SUGGESTIONS}
+                          value={field.state.value}
+                          onChange={(next) => field.handleChange(next)}
+                          placeholder="Search tags…"
+                        />
+                        {field.state.meta.errors[0] && (
+                          <p className="text-sm text-red-600">
+                            {field.state.meta.errors[0]}
+                          </p>
+                        )}
+                        <p className="text-xs text-neutral-500">
+                          Choose one or more tags from the list.
+                        </p>
+                      </div>
+                    )}
+                  </form.Field>
+
+                  <form.Field
+                    name="status"
+                    validators={{
+                      onChange: ({ value }) =>
+                        !PROJECT_STATUSES.includes(value as ProjectStatus)
+                          ? "Select a status."
+                          : undefined,
+                      onSubmit: ({ value }) =>
+                        !PROJECT_STATUSES.includes(value as ProjectStatus)
+                          ? "Select a status."
+                          : undefined,
+                    }}
+                  >
+                    {(field) => (
+                      <div className="grid gap-2">
+                        <Label htmlFor="projectStatus">Status</Label>
+
+                        <Select
+                          value={field.state.value}
+                          onOpenChange={(isOpen) => {
+                            if (!isOpen) {
+                              field.handleBlur();
+                            }
+                          }}
+                          onValueChange={(v) =>
+                            field.handleChange(
+                              v as (typeof PROJECT_STATUSES)[number],
+                            )
+                          }
+                        >
+                          <SelectTrigger id="projectStatus" name={field.name}>
+                            <SelectValue placeholder="Select status" />
+                          </SelectTrigger>
+
+                          <SelectContent>
+                            {PROJECT_STATUSES.map((s) => (
+                              <SelectItem key={s} value={s}>
+                                {s}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {field.state.meta.errors[0] && (
+                          <p className="text-sm text-red-600">
+                            {field.state.meta.errors[0]}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </form.Field>
                 </div>
               ) : null
             }
@@ -291,14 +389,18 @@ export function NewProjectDialog({
               selector={(state) => ({
                 isSubmitting: state.isSubmitting,
                 repoId: state.values.repoId,
+                tags: state.values.tags,
+                status: state.values.status,
               })}
             >
-              {({ isSubmitting, repoId }) => (
+              {({ isSubmitting, repoId, tags, status }) => (
                 <Button
                   type="submit"
                   disabled={
                     isSubmitting ||
                     !repoId ||
+                    tags.length < 1 ||
+                    !PROJECT_STATUSES.includes(status) ||
                     nameStatus === "taken" ||
                     nameStatus === "checking"
                   }

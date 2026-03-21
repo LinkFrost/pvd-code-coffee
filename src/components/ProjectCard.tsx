@@ -1,4 +1,13 @@
 import Link from "next/link";
+import { Github } from "lucide-react";
+
+import {
+  type ProjectStatus,
+  projectStatusBadgeClassName,
+  projectTagBadgeClassName,
+} from "~/lib/projects";
+import { cn } from "~/lib/utils";
+import { Badge } from "./ui/badge";
 import {
   Card,
   CardContent,
@@ -7,7 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Github } from "lucide-react";
+import { formatDate } from "~/lib/dateConstructor";
 
 type ProjectCardProps = {
   name: string | null;
@@ -16,7 +25,11 @@ type ProjectCardProps = {
   creatorName: string;
   createdOn: Date;
   updatedOn: Date;
+  tags: string[];
+  status: ProjectStatus;
 };
+
+const VISIBLE_TAGS = 3;
 
 export function ProjectCard({
   name,
@@ -25,6 +38,8 @@ export function ProjectCard({
   creatorName,
   createdOn,
   updatedOn,
+  tags,
+  status,
 }: ProjectCardProps) {
   const projectName = name ?? "Untitled Project";
 
@@ -35,12 +50,8 @@ export function ProjectCard({
       ? `${description.slice(0, 120)}...`
       : (description?.trim() ?? "No description yet.");
 
-  const formatDate = (date: Date) =>
-    new Intl.DateTimeFormat("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    }).format(date);
+  const shownTags = tags.slice(0, VISIBLE_TAGS);
+  const extraCount = Math.max(0, tags.length - VISIBLE_TAGS);
 
   return (
     <Card className="relative h-full transition-shadow hover:shadow-md">
@@ -62,7 +73,36 @@ export function ProjectCard({
         <p className="text-sm text-neutral-700">{previewDescription}</p>
       </CardContent>
 
-      <CardFooter>
+      <CardFooter className="flex flex-col gap-4">
+        <div className="flex w-full items-start justify-between gap-3">
+          <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5">
+            {shownTags.map((tag) => (
+              <Badge
+                key={tag}
+                variant="secondary"
+                className={cn("font-normal", projectTagBadgeClassName(tag))}
+              >
+                {tag}
+              </Badge>
+            ))}
+
+            {extraCount > 0 && (
+              <Badge variant="secondary" className="font-normal">
+                +{extraCount}
+              </Badge>
+            )}
+          </div>
+
+          <Badge
+            className={cn(
+              "shrink-0 font-normal",
+              projectStatusBadgeClassName(status),
+            )}
+          >
+            {status}
+          </Badge>
+        </div>
+
         <div className="flex w-full items-end justify-between gap-4">
           <div className="space-y-1 text-xs text-neutral-500">
             <p>Created: {formatDate(createdOn)}</p>

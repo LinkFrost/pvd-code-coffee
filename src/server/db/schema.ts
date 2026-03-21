@@ -45,6 +45,8 @@ export const projects_table = createTable(
     github_url: text(),
     name: text(),
     description: text(),
+    tags: text().notNull().default("[]"),
+    status: text().notNull().default("In Development"),
     created_on: timestamp("created_on", { mode: "date" }).notNull(),
     updated_on: timestamp("updated_on", { mode: "date" }).notNull(),
   },

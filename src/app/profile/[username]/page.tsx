@@ -1,59 +1,11 @@
-import { auth, clerkClient } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { api, apiResult, HydrateClient } from "~/trpc/server";
 import Image from "next/image";
-import { provider } from "~/lib/constants";
 import { EditProfileDialog } from "~/components/profile/EditProfileDialog";
-import { NewProjectDialog } from "~/components/profile/NewProjectDialog";
+import { NewProjectSection } from "~/components/profile/NewProjectSection";
 import { ProjectCard } from "~/components/ProjectCard";
 import { Suspense } from "react";
 import { Spinner } from "~/components/ui/spinner";
-
-type GithubRepo = {
-  id: number;
-  name: string;
-  description: string | null;
-  html_url: string;
-};
-
-const NewProject = async ({
-  username,
-  userId,
-}: {
-  username: string;
-  userId: string | null | undefined;
-}) => {
-  let githubRepos: GithubRepo[] = [];
-
-  if (!userId) {
-    return <NewProjectDialog username={username} githubRepos={githubRepos} />;
-  }
-
-  try {
-    const clerk = await clerkClient();
-    const clerkResponse = await clerk.users.getUserOauthAccessToken(
-      userId,
-      provider,
-    );
-    const accessToken = clerkResponse.data[0]?.token;
-
-    if (accessToken) {
-      const response = await fetch("https://api.github.com/user/repos", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          Accept: "application/vnd.github.v3+json",
-        },
-      });
-
-      if (response.ok) {
-        githubRepos = (await response.json()) as GithubRepo[];
-      }
-    }
-  } catch (error) {
-    console.log("Clerk OAuth token not found:", error);
-  }
-
-  return <NewProjectDialog username={username} githubRepos={githubRepos} />;
-};
 
 export default async function Profile(props: {
   params: Promise<{ username: string }>;
@@ -143,7 +95,7 @@ export default async function Profile(props: {
             <h2 className="font-din text-3xl font-semibold">Projects</h2>
             {isLoggedInUser && (
               <Suspense fallback={<Spinner className="size-6" />}>
-                <NewProject
+                <NewProjectSection
                   username={user.username ?? params.username}
                   userId={session?.userId}
                 />
@@ -172,6 +124,8 @@ export default async function Profile(props: {
                   creatorName={user?.username ?? params.username}
                   createdOn={project.created_on}
                   updatedOn={project.updated_on}
+                  tags={project.tags}
+                  status={project.status}
                 />
               ))}
             </div>
