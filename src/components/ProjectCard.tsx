@@ -55,14 +55,12 @@ export function ProjectCard({
 
   return (
     <Card className="relative h-full transition-shadow hover:shadow-md">
-      <Link
-        href={projectHref}
-        aria-label={`Open ${projectName}`}
-        className="absolute inset-0 z-10 rounded-xl"
-      />
-
       <CardHeader>
-        <CardTitle className="font-din text-2xl">{projectName}</CardTitle>
+        <Link href={projectHref} aria-label={`Open ${projectName}`}>
+          <CardTitle className="font-din text-2xl hover:text-accentRed">
+            {projectName}
+          </CardTitle>
+        </Link>
 
         <CardDescription>
           Built by <span className="font-medium">{creatorName}</span>

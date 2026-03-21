@@ -53,7 +53,7 @@ export default async function ProjectDetails(props: {
               By{" "}
               <Link
                 href={`/profile/${encodeURIComponent(project.creator_username ?? "")}`}
-                className="font-medium underline-offset-4 hover:underline"
+                className="font-medium hover:text-accentRed"
               >
                 {project.creator_username}
               </Link>

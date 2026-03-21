@@ -378,7 +378,7 @@ export function NewProjectDialog({
             }
           </form.Subscribe>
 
-          <DialogFooter>
+          <DialogFooter className="gap-4">
             <DialogClose asChild>
               <Button type="button" variant="outline">
                 Cancel
