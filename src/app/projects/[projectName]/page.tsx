@@ -38,7 +38,7 @@ export default async function ProjectDetails(props: {
     notFound();
   }
 
-  await fetchProjectReadme(project.github_url);
+  const projectReadme = await fetchProjectReadme(project.github_url);
 
   return (
     <HydrateClient>
@@ -91,6 +91,14 @@ export default async function ProjectDetails(props: {
                 ? project.description.trim()
                 : "No description provided yet."}
             </p>
+
+            {projectReadme ? (
+              <pre className="whitespace-pre-wrap font-sans text-sm text-neutral-800">
+                {projectReadme}
+              </pre>
+            ) : (
+              <p>No README available.</p>
+            )}
           </div>
         </section>
       </div>

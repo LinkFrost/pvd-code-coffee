@@ -43,7 +43,7 @@ export default async function Projects() {
         <section className="bg-gray-100">
           <div className="responsiveContainer flex flex-col gap-8 py-10">
             <div className="flex items-center justify-between gap-4">
-              <h2 className="font-din text-3xl font-semibold">All projects</h2>
+              <h2 className="font-din text-3xl font-semibold">All Projects</h2>
 
               {showNewProject && currentUsername && (
                 <Suspense fallback={<Spinner className="size-6" />}>
