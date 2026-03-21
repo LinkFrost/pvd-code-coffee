@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "./ui/card";
@@ -59,8 +60,10 @@ export function ProjectCard({
 
       <CardContent className="space-y-3">
         <p className="text-sm text-neutral-700">{previewDescription}</p>
+      </CardContent>
 
-        <div className="flex items-end justify-between gap-4">
+      <CardFooter>
+        <div className="flex w-full items-end justify-between gap-4">
           <div className="space-y-1 text-xs text-neutral-500">
             <p>Created: {formatDate(createdOn)}</p>
             <p>Updated: {formatDate(updatedOn)}</p>
@@ -78,7 +81,7 @@ export function ProjectCard({
             </Link>
           )}
         </div>
-      </CardContent>
+      </CardFooter>
     </Card>
   );
 }
