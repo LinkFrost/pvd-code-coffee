@@ -74,6 +74,7 @@ export function NewProjectDialog({
       repoId: "",
       name: "",
       description: "",
+      project_url: "",
       github_id: 0,
       github_url: "",
       tags: [] as string[],
@@ -101,6 +102,7 @@ export function NewProjectDialog({
         github_url: selectedRepo.html_url,
         name: value.name,
         description: value.description,
+        project_url: value.project_url.trim() || undefined,
         tags: value.tags,
         status: value.status,
       });
@@ -281,6 +283,32 @@ export function NewProjectDialog({
                             field.handleChange(event.target.value)
                           }
                           rows={4}
+                        />
+                      </div>
+                    )}
+                  </form.Field>
+
+                  <form.Field name="project_url">
+                    {(field) => (
+                      <div className="grid gap-2">
+                        <Label htmlFor="projectUrl">
+                          Project URL{" "}
+                          <span className="font-normal text-neutral-500">
+                            (optional)
+                          </span>
+                        </Label>
+
+                        <Input
+                          id="projectUrl"
+                          name={field.name}
+                          type="text"
+                          placeholder="https://"
+                          autoComplete="off"
+                          value={field.state.value}
+                          onBlur={field.handleBlur}
+                          onChange={(event) =>
+                            field.handleChange(event.target.value)
+                          }
                         />
                       </div>
                     )}

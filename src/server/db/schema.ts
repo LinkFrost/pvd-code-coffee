@@ -43,6 +43,7 @@ export const projects_table = createTable(
     user_id: bigint({ mode: "bigint" }),
     github_id: int("github_id"),
     github_url: text(),
+    project_url: text(),
     name: text(),
     description: text(),
     tags: text().notNull().default("[]"),

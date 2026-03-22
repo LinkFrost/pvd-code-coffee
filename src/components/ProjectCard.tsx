@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Github } from "lucide-react";
+import { ExternalLink, Github } from "lucide-react";
 
 import {
   type ProjectStatus,
@@ -21,6 +21,7 @@ import { formatDate } from "~/lib/dates";
 type ProjectCardProps = {
   name: string | null;
   description: string | null;
+  projectUrl?: string | null;
   githubUrl: string | null;
   creatorName: string;
   createdOn: Date;
@@ -34,6 +35,7 @@ const VISIBLE_TAGS = 3;
 export function ProjectCard({
   name,
   description,
+  projectUrl,
   githubUrl,
   creatorName,
   createdOn,
@@ -52,6 +54,7 @@ export function ProjectCard({
 
   const shownTags = tags.slice(0, VISIBLE_TAGS);
   const extraCount = Math.max(0, tags.length - VISIBLE_TAGS);
+  const trimmedProjectUrl = projectUrl?.trim() ?? "";
 
   return (
     <Card className="relative h-full transition-shadow hover:shadow-md">
@@ -104,20 +107,35 @@ export function ProjectCard({
         <div className="flex w-full items-end justify-between gap-4">
           <div className="space-y-1 text-xs text-neutral-500">
             <p>Created: {formatDate(createdOn)}</p>
+
             <p>Updated: {formatDate(updatedOn)}</p>
           </div>
 
-          {githubUrl && (
-            <Link
-              href={githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative z-20 text-neutral-600 hover:text-blue-600"
-            >
-              <Github className="h-6 w-6" />
-              <span className="sr-only">GitHub</span>
-            </Link>
-          )}
+          <div className="relative z-20 flex items-center gap-3">
+            {trimmedProjectUrl.length > 0 && (
+              <Link
+                href={trimmedProjectUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-neutral-600 hover:text-blue-600"
+              >
+                <ExternalLink className="h-6 w-6" />
+                <span className="sr-only">Open project site</span>
+              </Link>
+            )}
+
+            {githubUrl && (
+              <Link
+                href={githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-neutral-600 hover:text-blue-600"
+              >
+                <Github className="h-6 w-6" />
+                <span className="sr-only">GitHub</span>
+              </Link>
+            )}
+          </div>
         </div>
       </CardFooter>
     </Card>

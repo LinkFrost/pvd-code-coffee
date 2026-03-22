@@ -18,6 +18,7 @@ export const projectsRouter = createTRPCRouter({
       .select({
         id: projects_table.id,
         github_url: projects_table.github_url,
+        project_url: projects_table.project_url,
         name: projects_table.name,
         description: projects_table.description,
         tags: projects_table.tags,
@@ -44,6 +45,7 @@ export const projectsRouter = createTRPCRouter({
         .select({
           id: projects_table.id,
           github_url: projects_table.github_url,
+          project_url: projects_table.project_url,
           name: projects_table.name,
           description: projects_table.description,
           tags: projects_table.tags,
@@ -90,6 +92,7 @@ export const projectsRouter = createTRPCRouter({
           id: projects_table.id,
           github_id: projects_table.github_id,
           github_url: projects_table.github_url,
+          project_url: projects_table.project_url,
           name: projects_table.name,
           description: projects_table.description,
           tags: projects_table.tags,
@@ -124,6 +127,7 @@ export const projectsRouter = createTRPCRouter({
         username: z.string(),
         github_id: z.number().int(),
         github_url: z.string().url(),
+        project_url: z.string().max(2048).optional(),
         name: z.string().trim().min(1),
         description: z.string().trim().optional(),
         tags: projectTagsInputSchema,
@@ -152,6 +156,7 @@ export const projectsRouter = createTRPCRouter({
           user_id: BigInt(foundUser.id),
           github_id: input.github_id,
           github_url: input.github_url,
+          project_url: input.project_url ? input.project_url.trim() : null,
           name: nameToUse,
           description: input.description?.trim() ?? null,
           tags: serializeProjectTags(input.tags),
@@ -179,6 +184,9 @@ export const projectsRouter = createTRPCRouter({
           name: z.string().trim().min(1).optional(),
           description: z.string().trim().optional(),
           github_url: z.string().url().optional(),
+          project_url: z
+            .union([z.literal(""), z.null(), z.string().max(2048)])
+            .optional(),
           tags: projectTagsInputSchema.optional(),
           status: projectStatusSchema.optional(),
         })
@@ -187,6 +195,7 @@ export const projectsRouter = createTRPCRouter({
             input.name !== undefined ||
             input.description !== undefined ||
             input.github_url !== undefined ||
+            input.project_url !== undefined ||
             input.tags !== undefined ||
             input.status !== undefined,
           {
@@ -212,6 +221,7 @@ export const projectsRouter = createTRPCRouter({
         name?: string;
         description?: string | null;
         github_url?: string;
+        project_url?: string | null;
         tags?: string;
         status?: string;
         updated_on: Date;
@@ -229,6 +239,15 @@ export const projectsRouter = createTRPCRouter({
 
       if (input.github_url !== undefined) {
         updateValues.github_url = input.github_url;
+      }
+
+      if (input.project_url !== undefined) {
+        if (input.project_url === "" || input.project_url === null) {
+          updateValues.project_url = null;
+        } else {
+          const t = input.project_url.trim();
+          updateValues.project_url = t.length > 0 ? t : null;
+        }
       }
 
       if (input.tags !== undefined) {

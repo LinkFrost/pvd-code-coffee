@@ -1,4 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
+import { notFound } from "next/navigation";
+
+import { isPlausibleProfileUsername } from "~/lib/route-slugs";
 import { api, apiResult, HydrateClient } from "~/trpc/server";
 import Image from "next/image";
 import { EditProfileDialog } from "~/components/profile/EditProfileDialog";
@@ -11,15 +14,21 @@ export default async function Profile(props: {
   params: Promise<{ username: string }>;
 }) {
   const params = await props.params;
+  const username = decodeURIComponent(params.username);
+
+  if (!isPlausibleProfileUsername(username)) {
+    notFound();
+  }
+
   const session = await auth();
 
   const userResult = await apiResult(
-    api.users.getUserByUsername({ username: params.username }),
+    api.users.getUserByUsername({ username }),
   );
 
   const projectsResult = await apiResult(
     api.projects.getProjectsByUsername({
-      username: params.username,
+      username,
     }),
   );
 
@@ -96,7 +105,7 @@ export default async function Profile(props: {
             {isLoggedInUser && (
               <Suspense fallback={<Spinner className="size-6" />}>
                 <NewProjectSection
-                  username={user.username ?? params.username}
+                  username={user.username ?? username}
                   userId={session?.userId}
                 />
               </Suspense>
@@ -120,8 +129,9 @@ export default async function Profile(props: {
                   key={project.id}
                   name={project.name}
                   description={project.description}
+                  projectUrl={project.project_url}
                   githubUrl={project.github_url}
-                  creatorName={user?.username ?? params.username}
+                  creatorName={user?.username ?? username}
                   createdOn={project.created_on}
                   updatedOn={project.updated_on}
                   tags={project.tags}

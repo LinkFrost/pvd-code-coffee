@@ -72,6 +72,7 @@ export default async function Projects() {
                     key={project.id}
                     name={project.name}
                     description={project.description}
+                    projectUrl={project.project_url}
                     githubUrl={project.github_url}
                     creatorName={project.creator_username ?? "member"}
                     createdOn={project.created_on}

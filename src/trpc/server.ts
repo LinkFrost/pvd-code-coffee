@@ -48,6 +48,8 @@ export async function apiResult<T>(
       data: await promise,
     };
   } catch (error) {
+    console.error(error);
+
     return {
       success: false,
       error,
