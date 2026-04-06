@@ -28,7 +28,9 @@ export default function RootLayout({
       className={`${GeistSans.variable}`}
       suppressHydrationWarning
     >
-      <body className={`${dinFont.variable} flex min-h-screen flex-col`}>
+      <body
+        className={`${dinFont.variable} flex min-h-screen flex-col bg-black`}
+      >
         <ClerkProvider>
           <TRPCReactProvider>
             <TopNav font={dinFont.variable} />

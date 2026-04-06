@@ -9,6 +9,10 @@ import {
 } from "~/lib/projects";
 import { fetchProjectReadme } from "~/server/lib/github-readme";
 import { api, apiResult, HydrateClient } from "~/trpc/server";
+import { Button } from "~/components/ui/button";
+import { ExternalLink, Github } from "lucide-react";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default async function ProjectDetails(props: {
   params: Promise<{ projectName: string }>;
@@ -45,19 +49,21 @@ export default async function ProjectDetails(props: {
       <div className="flex flex-col justify-center align-middle">
         <section className="bg-accent">
           <div className="responsiveContainer flex flex-col gap-6 py-12 sm:py-16">
-            <h1 className="break-words text-center font-din text-3xl font-bold md:text-4xl">
-              {project.name}
-            </h1>
+            <div className="flex flex-col items-center justify-center gap-2">
+              <h1 className="break-words text-center font-din text-3xl font-bold md:text-4xl">
+                {project.name}
+              </h1>
 
-            <p className="text-center text-lg sm:text-xl">
-              By{" "}
-              <Link
-                href={`/profile/${encodeURIComponent(project.creator_username ?? "")}`}
-                className="font-medium hover:text-accentRed"
-              >
-                {project.creator_username}
-              </Link>
-            </p>
+              <p className="text-center text-lg sm:text-xl">
+                By{" "}
+                <Link
+                  href={`/profile/${encodeURIComponent(project.creator_username ?? "")}`}
+                  className="font-medium hover:text-accentRed"
+                >
+                  {project.creator_username}
+                </Link>
+              </p>
+            </div>
 
             <div className="flex flex-wrap items-center justify-center gap-2">
               <Badge
@@ -79,6 +85,32 @@ export default async function ProjectDetails(props: {
                 </Badge>
               ))}
             </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <Button variant="cncDefault">
+                <Link
+                  href={project.project_url ?? ""}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  Project Link
+                </Link>
+              </Button>
+
+              <Button variant="default">
+                <Link
+                  href={project.github_url ?? ""}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2"
+                >
+                  <Github className="h-4 w-4" />
+                  GitHub
+                </Link>
+              </Button>
+            </div>
           </div>
         </section>
 
@@ -93,9 +125,14 @@ export default async function ProjectDetails(props: {
             </p>
 
             {projectReadme ? (
-              <pre className="whitespace-pre-wrap font-sans text-sm text-neutral-800">
-                {projectReadme}
-              </pre>
+              // <pre className="whitespace-pre-wrap font-sans text-sm text-neutral-800">
+              //   {projectReadme}
+              // </pre>
+              <div className="flex flex-col gap-4">
+                <h3 className="font-din text-xl font-semibold">README.md</h3>
+
+                <Markdown remarkPlugins={[remarkGfm]}>{projectReadme}</Markdown>
+              </div>
             ) : (
               <p>No README available.</p>
             )}
