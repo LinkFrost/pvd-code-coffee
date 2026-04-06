@@ -5,10 +5,8 @@ import { isPlausibleProfileUsername } from "~/lib/route-slugs";
 import { api, apiResult, HydrateClient } from "~/trpc/server";
 import Image from "next/image";
 import { EditProfileDialog } from "~/components/profile/EditProfileDialog";
-import { NewProjectSection } from "~/components/projects/NewProjectButton";
+import { NewProjectDialog } from "~/components/profile/NewProjectDialog";
 import { ProjectCard } from "~/components/ProjectCard";
-import { Suspense } from "react";
-import { Spinner } from "~/components/ui/spinner";
 
 export default async function Profile(props: {
   params: Promise<{ username: string }>;
@@ -97,12 +95,7 @@ export default async function Profile(props: {
           <div className="flex items-center justify-between">
             <h2 className="font-din text-3xl font-semibold">Projects</h2>
             {isLoggedInUser && (
-              <Suspense fallback={<Spinner className="size-6" />}>
-                <NewProjectSection
-                  username={user.username ?? username}
-                  userId={session?.userId}
-                />
-              </Suspense>
+              <NewProjectDialog username={user.username ?? username} />
             )}
           </div>
 

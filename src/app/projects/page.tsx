@@ -1,9 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
-import { Suspense } from "react";
 
-import { NewProjectSection } from "~/components/projects/NewProjectButton";
+import { NewProjectDialog } from "~/components/profile/NewProjectDialog";
 import { ProjectCard } from "~/components/ProjectCard";
-import { Spinner } from "~/components/ui/spinner";
 import { api, apiResult, HydrateClient } from "~/trpc/server";
 
 export default async function Projects() {
@@ -49,12 +47,7 @@ export default async function Projects() {
               <h2 className="font-din text-3xl font-semibold">All Projects</h2>
 
               {showNewProject && currentUsername && (
-                <Suspense fallback={<Spinner className="size-6" />}>
-                  <NewProjectSection
-                    username={currentUsername}
-                    userId={session.userId}
-                  />
-                </Suspense>
+                <NewProjectDialog username={currentUsername} />
               )}
             </div>
 

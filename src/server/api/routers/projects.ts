@@ -1,5 +1,6 @@
 import { and, desc, eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { z } from "zod";
 import {
   parseProjectTags,
@@ -8,6 +9,7 @@ import {
   projectTagsInputSchema,
   serializeProjectTags,
 } from "~/lib/projects";
+import { provider } from "~/lib/constants";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { db } from "~/server/db";
 import { projects_table, users_table } from "~/server/db/schema";
@@ -99,6 +101,57 @@ export const projectsRouter = createTRPCRouter({
         status: p.status as ProjectStatus,
       }));
     }),
+  getUserGithubRepos: publicProcedure.query(async () => {
+    const session = await auth();
+    const userId = session.userId;
+
+    if (!userId) {
+      return [];
+    }
+
+    try {
+      const clerk = await clerkClient();
+      const tokenResponse = await clerk.users.getUserOauthAccessToken(
+        userId,
+        provider,
+      );
+      const accessToken = tokenResponse.data[0]?.token;
+
+      if (!accessToken) {
+        return [];
+      }
+
+      const response = await fetch("https://api.github.com/user/repos", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: "application/vnd.github.v3+json",
+        },
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        return [];
+      }
+
+      const gitHubResponse: unknown = await response.json();
+
+      const parsedGitHubResponse = z
+        .array(
+          z.object({
+            id: z.number(),
+            name: z.string(),
+            description: z.string().nullable(),
+            html_url: z.string(),
+          }),
+        )
+        .safeParse(gitHubResponse);
+
+      return parsedGitHubResponse.success ? parsedGitHubResponse.data : [];
+    } catch (error) {
+      console.error("Unable to load user GitHub repositories", error);
+      return [];
+    }
+  }),
   isProjectNameAvailable: publicProcedure
     .input(z.object({ name: z.string().trim().min(1) }))
     .query(async ({ input }) => {

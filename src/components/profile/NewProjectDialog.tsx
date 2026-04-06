@@ -33,22 +33,9 @@ import {
 import { api } from "~/trpc/react";
 import { Spinner } from "../ui/spinner";
 
-type GithubRepo = {
-  id: number;
-  name: string;
-  description: string | null;
-  html_url: string;
-};
-
 type NameStatus = "idle" | "checking" | "available" | "taken";
 
-export function NewProjectDialog({
-  username,
-  githubRepos,
-}: {
-  username: string;
-  githubRepos: GithubRepo[];
-}) {
+export function NewProjectDialog({ username }: { username: string }) {
   const [open, setOpen] = useState(false);
   const [nameStatus, setNameStatus] = useState<NameStatus>("idle");
 
@@ -63,6 +50,14 @@ export function NewProjectDialog({
       router.refresh();
     },
   });
+
+  const userReposQuery = api.projects.getUserGithubRepos.useQuery(undefined, {
+    enabled: open,
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
+  const githubRepos = userReposQuery.data ?? [];
+  const isReposLoading = userReposQuery.isLoading || userReposQuery.isFetching;
 
   const repoMap = useMemo(
     () => new Map(githubRepos.map((repo) => [String(repo.id), repo])),
@@ -168,6 +163,7 @@ export function NewProjectDialog({
 
                 <Select
                   value={field.state.value}
+                  disabled={isReposLoading || githubRepos.length === 0}
                   onOpenChange={(isOpen) => {
                     if (!isOpen) {
                       field.handleBlur();
@@ -192,7 +188,15 @@ export function NewProjectDialog({
                   }}
                 >
                   <SelectTrigger id="repoId" name={field.name}>
-                    <SelectValue placeholder="Select a repository" />
+                    <SelectValue
+                      placeholder={
+                        isReposLoading
+                          ? "Loading repositories..."
+                          : githubRepos.length === 0
+                            ? "No repositories found"
+                            : "Select a repository"
+                      }
+                    />
                   </SelectTrigger>
 
                   <SelectContent>
