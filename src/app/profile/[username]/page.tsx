@@ -20,17 +20,11 @@ export default async function Profile(props: {
     notFound();
   }
 
-  const session = await auth();
-
-  const userResult = await apiResult(
-    api.users.getUserByUsername({ username }),
-  );
-
-  const projectsResult = await apiResult(
-    api.projects.getProjectsByUsername({
-      username,
-    }),
-  );
+  const [session, userResult, projectsResult] = await Promise.all([
+    auth(),
+    apiResult(api.users.getUserByUsername({ username })),
+    apiResult(api.projects.getProjectsByUsername({ username })),
+  ]);
 
   const user = userResult.success ? userResult.data : undefined;
   const projects = projectsResult.success ? projectsResult.data : [];

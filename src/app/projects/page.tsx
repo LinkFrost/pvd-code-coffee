@@ -7,7 +7,10 @@ import { Spinner } from "~/components/ui/spinner";
 import { api, apiResult, HydrateClient } from "~/trpc/server";
 
 export default async function Projects() {
-  const session = await auth();
+  const [session, projectsResult] = await Promise.all([
+    auth(),
+    apiResult(api.projects.getAllProjects()),
+  ]);
 
   const clerkUserResult = session.userId
     ? await apiResult(api.users.getUserByClerkId({ clerkId: session.userId }))
@@ -18,9 +21,9 @@ export default async function Projects() {
       ? clerkUserResult.data
       : null;
   const currentUsername = currentUser?.username?.trim() ?? null;
+
   const showNewProject = Boolean(session.userId && currentUsername);
 
-  const projectsResult = await apiResult(api.projects.getAllProjects());
   const projects = projectsResult.success ? projectsResult.data : [];
 
   return (

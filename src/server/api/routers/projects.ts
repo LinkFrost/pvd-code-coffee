@@ -76,17 +76,6 @@ export const projectsRouter = createTRPCRouter({
   getProjectsByUsername: publicProcedure
     .input(z.object({ username: z.string() }))
     .query(async ({ input }) => {
-      const user = await db
-        .select({ id: users_table.id })
-        .from(users_table)
-        .where(eq(users_table.username, input.username));
-
-      const foundUser = user[0];
-
-      if (!foundUser) {
-        return [];
-      }
-
       const projects = await db
         .select({
           id: projects_table.id,
@@ -101,15 +90,14 @@ export const projectsRouter = createTRPCRouter({
           updated_on: projects_table.updated_on,
         })
         .from(projects_table)
-        .where(eq(projects_table.user_id, BigInt(foundUser.id)));
-
-      return projects
-        .map((p) => ({
-          ...p,
-          tags: parseProjectTags(p.tags),
-          status: p.status as ProjectStatus,
-        }))
-        .sort((a, b) => b.updated_on.getTime() - a.updated_on.getTime());
+        .innerJoin(users_table, eq(projects_table.user_id, users_table.id))
+        .where(eq(users_table.username, input.username))
+        .orderBy(desc(projects_table.updated_on));
+      return projects.map((p) => ({
+        ...p,
+        tags: parseProjectTags(p.tags),
+        status: p.status as ProjectStatus,
+      }));
     }),
   isProjectNameAvailable: publicProcedure
     .input(z.object({ name: z.string().trim().min(1) }))
