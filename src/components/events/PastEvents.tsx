@@ -5,7 +5,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "./ui/carousel";
+} from "../ui/carousel";
 import PastEventCard from "./PastEventCard";
 
 export const PastEvents = async () => {

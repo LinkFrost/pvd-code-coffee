@@ -1,8 +1,8 @@
 import { HydrateClient } from "../trpc/server";
-import { UpcomingEventCard } from "~/components/UpcomingEventCard";
+import { UpcomingEventCard } from "~/components/events/UpcomingEventCard";
 import { Suspense } from "react";
 import { UpcomingEventCard_Loading } from "~/components/loading/EventCard_Loading";
-import { PastEvents } from "~/components/PastEvents";
+import { PastEvents } from "~/components/events/PastEvents";
 
 export default async function HomePage() {
   return (
