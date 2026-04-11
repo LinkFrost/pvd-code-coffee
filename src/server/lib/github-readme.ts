@@ -25,8 +25,8 @@ const parseGithubOwnerRepo = (
 };
 
 /**
- * Fetches README.md from the default branch (main, then master) via raw.githubusercontent.com.
- * Logs the outcome for debugging.
+ * Fetches README.md via the GitHub API, which resolves the default branch
+ * automatically in a single request.
  */
 export const fetchProjectReadme = async (
   githubUrl: string | null | undefined,
@@ -42,25 +42,28 @@ export const fetchProjectReadme = async (
     return null;
   }
 
-  for (const branch of ["main", "master"] as const) {
-    const rawUrl = `https://raw.githubusercontent.com/${parsed.owner}/${parsed.repo}/${branch}/README.md`;
-    const res = await fetch(rawUrl, { next: { revalidate: 3600 } });
+  const apiUrl = `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/readme`;
+  const res = await fetch(apiUrl, {
+    headers: {
+      Accept: "application/vnd.github.raw+json",
+    },
+    next: { revalidate: 3600 },
+  });
 
-    if (res.ok) {
-      const text = await res.text();
-      console.log("[project readme] fetched", {
-        githubUrl,
-        branch,
-        bytes: text.length,
-      });
-      return text;
-    }
+  if (!res.ok) {
+    console.log("[project readme] not found", {
+      githubUrl,
+      owner: parsed.owner,
+      repo: parsed.repo,
+      status: res.status,
+    });
+    return null;
   }
 
-  console.log("[project readme] not found on main/master", {
+  const text = await res.text();
+  console.log("[project readme] fetched", {
     githubUrl,
-    owner: parsed.owner,
-    repo: parsed.repo,
+    bytes: text.length,
   });
-  return null;
+  return text;
 };

@@ -1,18 +1,19 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 import { Badge } from "~/components/ui/badge";
+import { Spinner } from "~/components/ui/spinner";
 import { cn } from "~/lib/twUtils";
 import {
   projectStatusBadgeClassName,
   projectTagBadgeClassName,
 } from "~/lib/projects";
+import { ProjectReadmeAccordion } from "~/components/projects/ProjectReadmeAccordion";
 import { fetchProjectReadme } from "~/server/lib/github-readme";
 import { api, apiResult, HydrateClient } from "~/trpc/server";
 import { Button } from "~/components/ui/button";
 import { ExternalLink, Github } from "lucide-react";
-import Markdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 
 export default async function ProjectDetails(props: {
   params: Promise<{ projectName: string }>;
@@ -42,7 +43,19 @@ export default async function ProjectDetails(props: {
     notFound();
   }
 
-  const projectReadme = await fetchProjectReadme(project.github_url);
+  const ProjectReadme = async ({
+    githubUrl,
+  }: {
+    githubUrl: string | null | undefined;
+  }) => {
+    const readme = await fetchProjectReadme(githubUrl);
+
+    if (!readme) {
+      return <p>No README available.</p>;
+    }
+
+    return <ProjectReadmeAccordion readme={readme} />;
+  };
 
   return (
     <HydrateClient>
@@ -124,18 +137,16 @@ export default async function ProjectDetails(props: {
                 : "No description provided yet."}
             </p>
 
-            {projectReadme ? (
-              // <pre className="whitespace-pre-wrap font-sans text-sm text-neutral-800">
-              //   {projectReadme}
-              // </pre>
-              <div className="flex flex-col gap-4">
-                <h3 className="font-din text-xl font-semibold">README.md</h3>
-
-                <Markdown remarkPlugins={[remarkGfm]}>{projectReadme}</Markdown>
-              </div>
-            ) : (
-              <p>No README available.</p>
-            )}
+            <Suspense
+              fallback={
+                <div className="flex items-center gap-2 text-neutral-500">
+                  <Spinner className="size-5" />
+                  <span>Loading README...</span>
+                </div>
+              }
+            >
+              <ProjectReadme githubUrl={project.github_url} />
+            </Suspense>
           </div>
         </section>
       </div>

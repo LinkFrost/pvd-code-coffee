@@ -60,8 +60,11 @@ export function NewProjectDialog({ username }: { username: string }) {
   const isReposLoading = userReposQuery.isLoading || userReposQuery.isFetching;
 
   const repoMap = useMemo(
-    () => new Map(githubRepos.map((repo) => [String(repo.id), repo])),
-    [githubRepos],
+    () =>
+      new Map(
+        (userReposQuery.data ?? []).map((repo) => [String(repo.id), repo]),
+      ),
+    [userReposQuery.data],
   );
 
   const form = useForm({
