@@ -66,7 +66,7 @@ export default function About() {
         <div className="responsiveContainer flex flex-col gap-8 py-12">
           <h2 className="font-din text-3xl font-semibold">Organizers</h2>
 
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-2">
             {organizers.map((organizer) => (
               <OrganizerCard
                 key={organizer.id}

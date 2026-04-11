@@ -24,18 +24,6 @@ export const organizers = [
       website: "https://linkfrost.com",
     },
   },
-  {
-    id: 3,
-    name: "Darren Harris",
-    role: "Event and Venue Coordinator",
-    image:
-      "https://media.licdn.com/dms/image/v2/D4E03AQHuciwv9HtcXA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1706901520490?e=1750896000&v=beta&t=5MjCQwAd-vN4MSJexJo1-7ooyuoMFX_w42EelG-i0Rs",
-    bio: "Darren is a Freelance Full-Stack Engineer with a passion for create a tech space in Providence. He currently is the event coordinator for Code and Coffee. After graduating from Rhode Island College he attended Hack Diversity as a fellow 2024 and is looking to share those core values of fellowship with the community.",
-    links: {
-      github: "https://github.com/theHarrisCode",
-      linkedIn: "https://www.linkedin.com/in/theharriscode/",
-    },
-  },
 ];
 
 export const eventStructureSteps = [
