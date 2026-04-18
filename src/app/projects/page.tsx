@@ -31,9 +31,9 @@ export default async function Projects() {
             </h1>
 
             <p className="max-w-3xl text-center text-lg sm:text-2xl">
-              Check out what the community is building. Whether it&apos;s a side
-              project, a new tool, or a full fledged application, we want to
-              showcase it here.
+              Check out what the community is building! Whether it&apos;s a
+              quick side project, a new tool, or a full fledged live
+              application, we want to showcase it here.
             </p>
           </div>
         </section>
