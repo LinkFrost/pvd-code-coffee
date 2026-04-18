@@ -13,7 +13,7 @@ export const OrganizerCard = (organizer: {
   return (
     <div
       key={organizer.id}
-      className="overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
+      className="flex flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
     >
       <div className="relative h-64 bg-gray-100">
         <Image
@@ -24,16 +24,16 @@ export const OrganizerCard = (organizer: {
         />
       </div>
 
-      <div className="p-6">
+      <div className="flex flex-1 flex-col p-6">
         <h3 className="font-din text-xl">{organizer.name}</h3>
 
-        <p className="text-accentRed mb-3 text-base font-medium">
+        <p className="mb-3 text-base font-medium text-accentRed">
           {organizer.role}
         </p>
 
         <p className="mb-4 text-base text-gray-600">{organizer.bio}</p>
 
-        <div className="flex space-x-3 pt-2">
+        <div className="mt-auto flex space-x-3 pt-2">
           {organizer.links.github && (
             <Link
               href={organizer.links.github}
@@ -41,7 +41,7 @@ export const OrganizerCard = (organizer: {
               className="text-gray-500 hover:text-accent"
               aria-label={`${organizer.name}'s GitHub`}
             >
-              <Github className="text-accentRed h-5 w-5" />
+              <Github className="h-5 w-5 text-accentRed" />
             </Link>
           )}
 
@@ -52,7 +52,7 @@ export const OrganizerCard = (organizer: {
               className="text-gray-500 hover:text-accent"
               aria-label={`${organizer.name}'s LinkedIn`}
             >
-              <Linkedin className="text-accentRed h-5 w-5" />
+              <Linkedin className="h-5 w-5 text-accentRed" />
             </Link>
           )}
 
@@ -63,7 +63,7 @@ export const OrganizerCard = (organizer: {
               className="text-gray-500 hover:text-accent"
               aria-label={`${organizer.name}'s Website`}
             >
-              <ExternalLink className="text-accentRed h-5 w-5" />
+              <ExternalLink className="h-5 w-5 text-accentRed" />
             </Link>
           )}
         </div>
