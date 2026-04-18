@@ -41,16 +41,17 @@ export const projectsRouter = createTRPCRouter({
       }
 
       const tagList = params.tags?.filter((t) => t.length > 0) ?? [];
+      /** Tags are stored as a JSON array string; match each tag’s JSON-encoded token. (SingleStore here does not expose MySQL’s JSON_CONTAINS.) */
       if (tagList.length === 1) {
-        const jsonScalar = JSON.stringify(tagList[0]);
+        const needle = JSON.stringify(tagList[0]);
         conditions.push(
-          sql`JSON_CONTAINS(${projects_table.tags}, ${jsonScalar}, '$')`,
+          sql`LOCATE(${needle}, ${projects_table.tags}) > 0`,
         );
       } else if (tagList.length > 1) {
         const tagOr = or(
           ...tagList.map((tag) => {
-            const jsonScalar = JSON.stringify(tag);
-            return sql`JSON_CONTAINS(${projects_table.tags}, ${jsonScalar}, '$')`;
+            const needle = JSON.stringify(tag);
+            return sql`LOCATE(${needle}, ${projects_table.tags}) > 0`;
           }),
         );
         if (tagOr) {
