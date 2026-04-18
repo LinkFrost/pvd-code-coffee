@@ -90,7 +90,9 @@ export const TopNav = ({ font }: { font: string }) => {
         <nav className="hidden items-center gap-6 lg:flex">
           <NavLink href="/news" name="News" />
 
-          <NavLink href="/projects" name="Projects" />
+          <SignedIn>
+            <NavLink href="/projects" name="Projects" />
+          </SignedIn>
 
           <NavLink href="/about" name="About" />
 
