@@ -1,14 +1,13 @@
 import { auth } from "@clerk/nextjs/server";
+import { Suspense } from "react";
 
 import { NewProjectDialog } from "~/components/profile/NewProjectDialog";
-import { ProjectCard } from "~/components/ProjectCard";
+import { ProjectsCatalog } from "~/components/projects/ProjectsCatalog";
+import { Spinner } from "~/components/ui/spinner";
 import { api, apiResult, HydrateClient } from "~/trpc/server";
 
 export default async function Projects() {
-  const [session, projectsResult] = await Promise.all([
-    auth(),
-    apiResult(api.projects.getAllProjects()),
-  ]);
+  const session = await auth();
 
   const clerkUserResult = session.userId
     ? await apiResult(api.users.getUserByClerkId({ clerkId: session.userId }))
@@ -21,8 +20,6 @@ export default async function Projects() {
   const currentUsername = currentUser?.username?.trim() ?? null;
 
   const showNewProject = Boolean(session.userId && currentUsername);
-
-  const projects = projectsResult.success ? projectsResult.data : [];
 
   return (
     <HydrateClient>
@@ -51,34 +48,16 @@ export default async function Projects() {
               )}
             </div>
 
-            {!projectsResult.success ? (
-              <p className="text-xl text-neutral-600">
-                We couldn&apos;t load projects right now. Please try again
-                later.
-              </p>
-            ) : projects.length === 0 ? (
-              <p className="text-xl text-neutral-600">
-                No projects yet. Check back soon, or add your own when
-                you&apos;re signed in.
-              </p>
-            ) : (
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {projects.map((project) => (
-                  <ProjectCard
-                    key={project.id}
-                    name={project.name}
-                    description={project.description}
-                    projectUrl={project.project_url}
-                    githubUrl={project.github_url}
-                    creatorName={project.creator_username ?? "member"}
-                    createdOn={project.created_on}
-                    updatedOn={project.updated_on}
-                    tags={project.tags}
-                    status={project.status}
-                  />
-                ))}
-              </div>
-            )}
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center gap-2 py-16 text-neutral-600">
+                  <Spinner className="size-8" />
+                  <span>Loading projects…</span>
+                </div>
+              }
+            >
+              <ProjectsCatalog />
+            </Suspense>
           </div>
         </section>
       </div>

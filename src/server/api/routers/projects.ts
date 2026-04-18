@@ -1,4 +1,5 @@
-import { and, desc, eq } from "drizzle-orm";
+import type { SQL } from "drizzle-orm";
+import { and, asc, desc, eq, or, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { z } from "zod";
@@ -14,31 +15,89 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 import { db } from "~/server/db";
 import { projects_table, users_table } from "~/server/db/schema";
 
-export const projectsRouter = createTRPCRouter({
-  getAllProjects: publicProcedure.query(async () => {
-    const rows = await db
-      .select({
-        id: projects_table.id,
-        github_url: projects_table.github_url,
-        project_url: projects_table.project_url,
-        name: projects_table.name,
-        description: projects_table.description,
-        tags: projects_table.tags,
-        status: projects_table.status,
-        created_on: projects_table.created_on,
-        updated_on: projects_table.updated_on,
-        creator_username: users_table.username,
-      })
-      .from(projects_table)
-      .innerJoin(users_table, eq(projects_table.user_id, users_table.id))
-      .orderBy(desc(projects_table.updated_on));
+/** Input for `getProjects`; exported for UI / validation reuse. */
+export const getProjectsInputSchema = z.object({
+  search: z.string().trim().max(500).optional(),
+  tags: z.array(z.string().trim().min(1)).max(32).optional(),
+  status: projectStatusSchema.optional().nullable(),
+  sortBy: z.enum(["updated_on", "created_on", "name"]).default("updated_on"),
+  sortDir: z.enum(["asc", "desc"]).default("desc"),
+});
 
-    return rows.map((row) => ({
-      ...row,
-      tags: parseProjectTags(row.tags),
-      status: row.status as ProjectStatus,
-    }));
-  }),
+export const projectsRouter = createTRPCRouter({
+  getProjects: publicProcedure
+    .input(getProjectsInputSchema.optional())
+    .query(async ({ input }) => {
+      const params = getProjectsInputSchema.parse(input ?? {});
+
+      const conditions: SQL[] = [];
+
+      const searchTerm = params.search?.trim();
+      if (searchTerm) {
+        const needle = searchTerm.toLowerCase();
+        conditions.push(
+          sql`LOCATE(${needle}, LOWER(${projects_table.name})) > 0`,
+        );
+      }
+
+      const tagList = params.tags?.filter((t) => t.length > 0) ?? [];
+      if (tagList.length === 1) {
+        const jsonScalar = JSON.stringify(tagList[0]);
+        conditions.push(
+          sql`JSON_CONTAINS(${projects_table.tags}, ${jsonScalar}, '$')`,
+        );
+      } else if (tagList.length > 1) {
+        const tagOr = or(
+          ...tagList.map((tag) => {
+            const jsonScalar = JSON.stringify(tag);
+            return sql`JSON_CONTAINS(${projects_table.tags}, ${jsonScalar}, '$')`;
+          }),
+        );
+        if (tagOr) {
+          conditions.push(tagOr);
+        }
+      }
+
+      if (params.status != null) {
+        conditions.push(eq(projects_table.status, params.status));
+      }
+
+      const orderColumn =
+        params.sortBy === "created_on"
+          ? projects_table.created_on
+          : params.sortBy === "name"
+            ? sql`LOWER(${projects_table.name})`
+            : projects_table.updated_on;
+
+      const orderFn = params.sortDir === "asc" ? asc : desc;
+
+      const whereClause =
+        conditions.length > 0 ? and(...conditions) : sql`TRUE`;
+
+      const rows = await db
+        .select({
+          id: projects_table.id,
+          github_url: projects_table.github_url,
+          project_url: projects_table.project_url,
+          name: projects_table.name,
+          description: projects_table.description,
+          tags: projects_table.tags,
+          status: projects_table.status,
+          created_on: projects_table.created_on,
+          updated_on: projects_table.updated_on,
+          creator_username: users_table.username,
+        })
+        .from(projects_table)
+        .innerJoin(users_table, eq(projects_table.user_id, users_table.id))
+        .where(whereClause)
+        .orderBy(orderFn(orderColumn));
+
+      return rows.map((row) => ({
+        ...row,
+        tags: parseProjectTags(row.tags),
+        status: row.status as ProjectStatus,
+      }));
+    }),
 
   getProjectByName: publicProcedure
     .input(z.object({ name: z.string().trim().min(1) }))
