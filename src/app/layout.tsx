@@ -1,10 +1,10 @@
 import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
-import { TopNav } from "~/components/TopNav";
+import { TopNav } from "~/components/layout/TopNav";
 import localFont from "next/font/local";
 import { TRPCReactProvider } from "~/trpc/react";
-import { Footer } from "~/components/Footer";
+import { Footer } from "~/components/layout/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {

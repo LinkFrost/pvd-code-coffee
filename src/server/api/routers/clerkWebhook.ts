@@ -53,6 +53,7 @@ export const clearkWebhookRouter = createTRPCRouter({
 
       return { success: true };
     }),
+
   clerkDeleteUser: publicProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ input }) => {

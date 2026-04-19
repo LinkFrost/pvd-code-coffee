@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ListFilter, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { ProjectCard } from "~/components/ProjectCard";
+import { ProjectCard } from "~/components/projects/ProjectCard";
 import { ProjectTagsCombobox } from "~/components/projects/ProjectTagsCombobox";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";

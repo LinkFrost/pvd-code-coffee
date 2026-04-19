@@ -43,6 +43,7 @@ export const fetchProjectReadme = async (
   }
 
   const apiUrl = `https://api.github.com/repos/${parsed.owner}/${parsed.repo}/readme`;
+
   const res = await fetch(apiUrl, {
     headers: {
       Accept: "application/vnd.github.raw+json",

@@ -15,6 +15,7 @@ export const usersRouter = createTRPCRouter({
 
       return user[0] ?? null;
     }),
+
   getUserByUsername: publicProcedure
     .input(z.object({ username: z.string() }))
     .query(async ({ input }) => {
@@ -25,6 +26,7 @@ export const usersRouter = createTRPCRouter({
 
       return user[0];
     }),
+
   updateUserProfile: publicProcedure
     .input(z.object({ username: z.string(), bio: z.string() }))
     .mutation(async ({ input }) => {

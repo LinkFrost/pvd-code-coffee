@@ -44,9 +44,7 @@ export const projectsRouter = createTRPCRouter({
       /** Tags are stored as a JSON array string; match each tag’s JSON-encoded token. (SingleStore here does not expose MySQL’s JSON_CONTAINS.) */
       if (tagList.length === 1) {
         const needle = JSON.stringify(tagList[0]);
-        conditions.push(
-          sql`LOCATE(${needle}, ${projects_table.tags}) > 0`,
-        );
+        conditions.push(sql`LOCATE(${needle}, ${projects_table.tags}) > 0`);
       } else if (tagList.length > 1) {
         const tagOr = or(
           ...tagList.map((tag) => {
@@ -161,6 +159,7 @@ export const projectsRouter = createTRPCRouter({
         status: p.status as ProjectStatus,
       }));
     }),
+
   getUserGithubRepos: publicProcedure.query(async () => {
     const session = await auth();
     const userId = session.userId;
@@ -212,6 +211,7 @@ export const projectsRouter = createTRPCRouter({
       return [];
     }
   }),
+
   isProjectNameAvailable: publicProcedure
     .input(z.object({ name: z.string().trim().min(1) }))
     .query(async ({ input }) => {
@@ -222,6 +222,7 @@ export const projectsRouter = createTRPCRouter({
 
       return existingProject.length === 0;
     }),
+
   createProject: publicProcedure
     .input(
       z.object({
@@ -276,6 +277,7 @@ export const projectsRouter = createTRPCRouter({
         throw error;
       }
     }),
+
   updateProject: publicProcedure
     .input(
       z
