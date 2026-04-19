@@ -66,6 +66,7 @@ export const DEFAULT_PROJECT_TAG_SUGGESTIONS = [
   "API",
   "Spring Boot",
   "Open Source",
+  "Other",
 ] as const;
 
 /** Tailwind classes for status badges (full control; merge with Badge base). */
@@ -143,6 +144,8 @@ export const PROJECT_TAG_BADGE_CLASSES = {
   /** Distinct from Live (blue-600) and Python */
   "Open Source":
     "border-indigo-500/70 bg-indigo-600 text-white dark:border-indigo-500 dark:bg-indigo-600 dark:text-white",
+  Other:
+    "border-neutral-200 bg-neutral-100 text-neutral-700 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-200",
 } as const satisfies Record<
   (typeof DEFAULT_PROJECT_TAG_SUGGESTIONS)[number],
   string
