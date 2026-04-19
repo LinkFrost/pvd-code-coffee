@@ -5,7 +5,7 @@ import {
   NavigationMenu,
   NavigationMenuLink,
   navigationMenuTriggerStyle,
-} from "./ui/navigation-menu";
+} from "~/components/ui/navigation-menu";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -16,8 +16,8 @@ import {
   SheetContent,
   SheetTitle,
   SheetTrigger,
-} from "./ui/sheet";
-import { Button } from "./ui/button";
+} from "~/components/ui/sheet";
+import { Button } from "~/components/ui/button";
 import { useRouter } from "next/navigation";
 import {
   SignedOut,

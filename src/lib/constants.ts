@@ -8,7 +8,7 @@ export const organizers = [
     bio: "Joshua Milcette is a Platform Engineer at Citizens Bank and the lead organizer of PVD Code & Coffee. With a background in Computer Science from URI, he’s focused on building a strong, accessible developer community in Providence. While leveling up his own skills, he’s working to create a space where people in tech—no matter their background—can connect, learn, and build something meaningful.",
     links: {
       linkedIn: "https://www.linkedin.com/in/joshua-milcette/",
-      github: "https://github.com/Jmilcette2",
+      github: "https://github.com/Jblic",
     },
   },
   {

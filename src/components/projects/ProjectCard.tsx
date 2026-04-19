@@ -7,7 +7,7 @@ import {
   projectTagBadgeClassName,
 } from "~/lib/projects";
 import { cn } from "~/lib/twUtils";
-import { Badge } from "./ui/badge";
+import { Badge } from "~/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -15,7 +15,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "~/components/ui/card";
 import { formatDate } from "~/lib/dates";
 
 type ProjectCardProps = {
