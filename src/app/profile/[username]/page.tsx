@@ -5,7 +5,7 @@ import { isPlausibleProfileUsername } from "~/lib/route-slugs";
 import { api, apiResult, HydrateClient } from "~/trpc/server";
 import Image from "next/image";
 import { EditProfileDialog } from "~/components/profile/EditProfileDialog";
-import { NewProjectDialog } from "~/components/profile/NewProjectDialog";
+import { NewProjectDialog } from "~/components/projects/NewProjectDialog";
 import { ProjectCard } from "~/components/projects/ProjectCard";
 
 export default async function Profile(props: {

@@ -1,7 +1,9 @@
+import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
+import { EditProjectDialog } from "~/components/projects/EditProjectDialog";
 import { Badge } from "~/components/ui/badge";
 import { Spinner } from "~/components/ui/spinner";
 import { cn } from "~/lib/twUtils";
@@ -42,6 +44,14 @@ export default async function ProjectDetails(props: {
   if (!project) {
     notFound();
   }
+
+  const session = await auth();
+
+  const canEdit = Boolean(
+    session.userId &&
+      project.creator_clerk_id &&
+      session.userId === project.creator_clerk_id,
+  );
 
   const ProjectReadme = async ({
     githubUrl,
@@ -99,30 +109,45 @@ export default async function ProjectDetails(props: {
               ))}
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Button variant="cncDefault">
-                <Link
-                  href={project.project_url ?? ""}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2"
-                >
-                  <ExternalLink className="h-4 w-4" />
-                  Project Link
-                </Link>
-              </Button>
+            <div className="flex flex-col items-center gap-4">
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <Button variant="default">
+                  <Link
+                    href={project.project_url ?? ""}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                    Project Link
+                  </Link>
+                </Button>
 
-              <Button variant="default">
-                <Link
-                  href={project.github_url ?? ""}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2"
-                >
-                  <Github className="h-4 w-4" />
-                  GitHub
-                </Link>
-              </Button>
+                <Button variant="default">
+                  <Link
+                    href={project.github_url ?? ""}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2"
+                  >
+                    <Github className="h-4 w-4" />
+                    GitHub
+                  </Link>
+                </Button>
+
+                {canEdit && (
+                  <EditProjectDialog
+                    project={{
+                      id: project.id,
+                      name: project.name ?? "",
+                      description: project.description,
+                      project_url: project.project_url,
+                      tags: project.tags,
+                      status: project.status,
+                    }}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </section>

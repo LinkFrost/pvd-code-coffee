@@ -1,5 +1,5 @@
 import type { SQL } from "drizzle-orm";
-import { and, asc, desc, eq, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, ne, or, sql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { z } from "zod";
@@ -113,6 +113,7 @@ export const projectsRouter = createTRPCRouter({
           created_on: projects_table.created_on,
           updated_on: projects_table.updated_on,
           creator_username: users_table.username,
+          creator_clerk_id: users_table.clerk_id,
           creator_first_name: users_table.first_name,
           creator_last_name: users_table.last_name,
         })
@@ -213,12 +214,23 @@ export const projectsRouter = createTRPCRouter({
   }),
 
   isProjectNameAvailable: publicProcedure
-    .input(z.object({ name: z.string().trim().min(1) }))
+    .input(
+      z.object({
+        name: z.string().trim().min(1),
+        excludeProjectId: z.number().int().optional(),
+      }),
+    )
     .query(async ({ input }) => {
+      const nameClause = eq(projects_table.name, input.name.trim());
+      const whereClause =
+        input.excludeProjectId !== undefined
+          ? and(nameClause, ne(projects_table.id, input.excludeProjectId))
+          : nameClause;
+
       const existingProject = await db
         .select({ id: projects_table.id })
         .from(projects_table)
-        .where(eq(projects_table.name, input.name.trim()));
+        .where(whereClause);
 
       return existingProject.length === 0;
     }),
@@ -282,7 +294,6 @@ export const projectsRouter = createTRPCRouter({
     .input(
       z
         .object({
-          username: z.string(),
           projectId: z.number().int(),
           name: z.string().trim().min(1).optional(),
           description: z.string().trim().optional(),
@@ -307,10 +318,20 @@ export const projectsRouter = createTRPCRouter({
         ),
     )
     .mutation(async ({ input }) => {
+      const session = await auth();
+      const clerkUserId = session.userId;
+
+      if (!clerkUserId) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Not signed in",
+        });
+      }
+
       const user = await db
         .select({ id: users_table.id })
         .from(users_table)
-        .where(eq(users_table.username, input.username));
+        .where(eq(users_table.clerk_id, clerkUserId));
 
       const foundUser = user[0];
       if (!foundUser) {

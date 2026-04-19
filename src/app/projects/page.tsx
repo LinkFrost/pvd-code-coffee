@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { Suspense } from "react";
 
-import { NewProjectDialog } from "~/components/profile/NewProjectDialog";
+import { NewProjectDialog } from "~/components/projects/NewProjectDialog";
 import { ProjectsCatalog } from "~/components/projects/ProjectsCatalog";
 import { Spinner } from "~/components/ui/spinner";
 import { api, apiResult, HydrateClient } from "~/trpc/server";
