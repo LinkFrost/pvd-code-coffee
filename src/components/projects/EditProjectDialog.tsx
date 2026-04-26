@@ -48,6 +48,7 @@ type EditProjectDialogProps = {
 };
 
 export function EditProjectDialog({ project }: EditProjectDialogProps) {
+  const originalName = project.name.trim();
   const [open, setOpen] = useState(false);
   const [nameStatus, setNameStatus] = useState<NameStatus>("idle");
 
@@ -77,19 +78,22 @@ export function EditProjectDialog({ project }: EditProjectDialogProps) {
       status: project.status,
     },
     onSubmit: async ({ value }) => {
-      const isAvailable = await utils.projects.isProjectNameAvailable.fetch({
-        name: value.name.trim(),
-        excludeProjectId: project.id,
-      });
+      const nameTrimmed = value.name.trim();
+      if (nameTrimmed !== originalName) {
+        const isAvailable = await utils.projects.isProjectNameAvailable.fetch({
+          name: nameTrimmed,
+          excludeProjectId: project.id,
+        });
 
-      if (!isAvailable) {
-        setNameStatus("taken");
-        return;
+        if (!isAvailable) {
+          setNameStatus("taken");
+          return;
+        }
       }
 
       await updateProject.mutateAsync({
         projectId: project.id,
-        name: value.name.trim(),
+        name: nameTrimmed,
         description: value.description.trim(),
         project_url: value.project_url.trim() || null,
         tags: value.tags,
@@ -178,6 +182,11 @@ export function EditProjectDialog({ project }: EditProjectDialogProps) {
                     const name = event.target.value.trim();
 
                     if (!name) return;
+
+                    if (name === originalName) {
+                      setNameStatus("available");
+                      return;
+                    }
 
                     setNameStatus("checking");
 
