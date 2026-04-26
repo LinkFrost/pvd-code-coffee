@@ -68,7 +68,7 @@ export const TopNav = ({ font }: { font: string }) => {
   return (
     <header className="sticky top-0 z-50 w-full bg-black text-white">
       <NavigationMenu>
-        <Link href="/" passHref legacyBehavior>
+        <Link href="/" passHref>
           <div className="flex flex-row items-center gap-2 hover:cursor-pointer md:mr-auto md:gap-4">
             <span
               className={`text-2xl font-semibold text-accent md:text-5xl ${font} font-din`}

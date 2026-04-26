@@ -6,6 +6,7 @@ import localFont from "next/font/local";
 import { TRPCReactProvider } from "~/trpc/react";
 import { Footer } from "~/components/layout/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
+import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
   title: "PVD Code & Coffee",
@@ -29,6 +30,12 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className={`${dinFont.variable} flex min-h-screen flex-col`}>
+        <NextTopLoader
+          color="hsl(48, 98%, 50%)"
+          showSpinner={false}
+          height={3}
+        />
+
         <ClerkProvider>
           <TRPCReactProvider>
             <TopNav font={dinFont.variable} />
