@@ -1,0 +1,56 @@
+.mdxeditor-root-contenteditable {
+  @apply rounded-b-md bg-white;
+
+  a {
+    @apply text-blue-500;
+    &:hover {
+      @apply text-blue-600;
+    }
+    &:active {
+      @apply text-blue-700;
+    }
+    &:visited {
+      @apply text-blue-800;
+    }
+  }
+
+  h1 {
+    @apply text-3xl;
+  }
+
+  h2 {
+    @apply text-2xl;
+  }
+
+  h3 {
+    @apply text-xl;
+  }
+
+  h4 {
+    @apply text-lg;
+  }
+
+  h5 {
+    @apply text-base;
+  }
+
+  h6 {
+    @apply text-sm;
+  }
+
+  blockquote {
+    @apply border-l-4 border-gray-300 pl-4;
+  }
+
+  ul {
+    @apply list-disc pl-4;
+  }
+
+  ol {
+    @apply list-decimal pl-4;
+  }
+}
+
+.mdxeditor-toolbar {
+  @apply rounded-b-none bg-gray-200;
+}
