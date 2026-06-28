@@ -10,7 +10,15 @@ Hello **world**!
 `;
 
   const editorRef = useRef<MDXEditorMethods>(null);
-  console.log("markdown", editorRef.current?.getMarkdown());
+  // console.log("markdown", editorRef.current?.getMarkdown());
 
-  return <ForwardRefEditor ref={editorRef} markdown={markdown} />;
+  return (
+    <>
+      <button onClick={() => console.log(editorRef.current?.getMarkdown())}>
+        Get markdown
+      </button>
+
+      <ForwardRefEditor ref={editorRef} markdown={markdown} />
+    </>
+  );
 }

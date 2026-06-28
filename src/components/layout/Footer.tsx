@@ -8,7 +8,9 @@ export const Footer = ({ font }: { font: string }) => {
     <footer className="bg-black py-4 text-white">
       <div className="responsiveContainer">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-          <Link href="/" passHref legacyBehavior>
+          <Link href="/">
+            {/* @next-codemod-error This Link previously used the now removed `legacyBehavior` prop, and has a child that might not be an anchor. The codemod bailed out of lifting the child props to the Link. Check that the child component does not render an anchor, and potentially move the props manually to Link. */
+            }
             <div className="flex flex-row items-center gap-4 hover:cursor-pointer md:mr-auto">
               <span
                 className={`text-2xl font-semibold text-accent sm:text-5xl ${font} font-din`}
