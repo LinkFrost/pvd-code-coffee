@@ -6,13 +6,13 @@ import { Suspense } from "react";
 import { EditProjectDialog } from "~/components/projects/EditProjectDialog";
 import { Badge } from "~/components/ui/badge";
 import { Spinner } from "~/components/ui/spinner";
-import { cn } from "~/lib/twUtils";
+import { cn } from "~/utils/tailwindUtils";
 import {
   projectStatusBadgeClassName,
   projectTagBadgeClassName,
-} from "~/lib/projects";
+} from "~/utils/projectUtils";
 import { ProjectReadmeAccordion } from "~/components/projects/ProjectReadmeAccordion";
-import { fetchProjectReadme } from "~/server/lib/github-readme";
+import { fetchProjectReadme } from "~/server/lib/githubUtils";
 import { api, apiResult, HydrateClient } from "~/trpc/server";
 import { Button } from "~/components/ui/button";
 import { ExternalLink, Github } from "lucide-react";

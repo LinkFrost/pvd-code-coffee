@@ -3,15 +3,20 @@ const parseGithubOwnerRepo = (
 ): { owner: string; repo: string } | null => {
   try {
     const u = new URL(url);
+
     if (u.hostname !== "github.com" && u.hostname !== "www.github.com") {
       return null;
     }
+
     const parts = u.pathname.replace(/\/$/, "").split("/").filter(Boolean);
+
     if (parts.length < 2) {
       return null;
     }
+
     const owner = parts[0];
     const repoSegment = parts[1];
+
     if (!owner || !repoSegment) {
       return null;
     }
@@ -58,13 +63,16 @@ export const fetchProjectReadme = async (
       repo: parsed.repo,
       status: res.status,
     });
+
     return null;
   }
 
   const text = await res.text();
+
   console.log("[project readme] fetched", {
     githubUrl,
     bytes: text.length,
   });
+
   return text;
 };

@@ -3,6 +3,7 @@ import { meetupRouter } from "./routers/meetup";
 import { clearkWebhookRouter } from "./routers/clerkWebhook";
 import { usersRouter } from "./routers/users";
 import { projectsRouter } from "./routers/projects";
+import { newsRouter } from "./routers/news";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   clearkWebhookRouter: clearkWebhookRouter,
   users: usersRouter,
   projects: projectsRouter,
+  news: newsRouter,
 });
 
 // export type definition of API

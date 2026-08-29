@@ -18,11 +18,11 @@ import {
 } from "~/components/ui/select";
 import { Spinner } from "~/components/ui/spinner";
 import {
-  DEFAULT_PROJECT_TAG_SUGGESTIONS,
-  PROJECT_STATUSES,
+  projectTagOptions,
+  projectStatusOptions,
   type ProjectStatus,
-} from "~/lib/projects";
-import { cn } from "~/lib/twUtils";
+} from "~/utils/projectUtils";
+import { cn } from "~/utils/tailwindUtils";
 import { api } from "~/trpc/react";
 
 export type UrlProjectFilters = {
@@ -51,7 +51,7 @@ const parseSearchParams = (
 
   const statusRaw = searchParams.get("status");
   const status =
-    statusRaw && (PROJECT_STATUSES as readonly string[]).includes(statusRaw)
+    statusRaw && (projectStatusOptions as readonly string[]).includes(statusRaw)
       ? (statusRaw as ProjectStatus)
       : null;
 
@@ -207,7 +207,7 @@ export function ProjectsCatalog() {
               <ProjectTagsCombobox
                 value={filters.tags}
                 onChange={(next) => replaceFilters({ tags: next })}
-                options={DEFAULT_PROJECT_TAG_SUGGESTIONS}
+                options={projectTagOptions}
                 placeholder="Search tags…"
               />
             </div>
@@ -229,7 +229,7 @@ export function ProjectsCatalog() {
 
                 <SelectContent>
                   <SelectItem value="any">Any</SelectItem>
-                  {PROJECT_STATUSES.map((s) => (
+                  {projectStatusOptions.map((s) => (
                     <SelectItem key={s} value={s}>
                       {s}
                     </SelectItem>

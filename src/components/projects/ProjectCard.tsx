@@ -5,8 +5,8 @@ import {
   type ProjectStatus,
   projectStatusBadgeClassName,
   projectTagBadgeClassName,
-} from "~/lib/projects";
-import { cn } from "~/lib/twUtils";
+} from "~/utils/projectUtils";
+import { cn } from "~/utils/tailwindUtils";
 import { Badge } from "~/components/ui/badge";
 import {
   Card,
@@ -16,7 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { formatDate } from "~/lib/dates";
+import { formatDate } from "~/utils/dateUtils";
 
 type ProjectCardProps = {
   name: string | null;
@@ -66,7 +66,13 @@ export function ProjectCard({
         </Link>
 
         <CardDescription>
-          Built by <span className="font-medium">{creatorName}</span>
+          Built by{" "}
+          <Link
+            href={`/profile/${encodeURIComponent(creatorName)}`}
+            className="font-medium hover:text-accentRed"
+          >
+            {creatorName}
+          </Link>
         </CardDescription>
       </CardHeader>
 

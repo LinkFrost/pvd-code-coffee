@@ -57,3 +57,23 @@ export const projects_table = createTable(
     index("name_index").on(table.name),
   ],
 );
+
+export const news_posts_table = createTable(
+  "news_posts",
+  {
+    id: int("id").primaryKey().autoincrement(),
+    user_id: bigint({ mode: "bigint" }).notNull(),
+    title: text().notNull(),
+    short_description: text().notNull(),
+    content: text().notNull(),
+    status: text().notNull().default("unpublished"),
+    created_on: timestamp("created_on", { mode: "date" }).notNull(),
+    updated_on: timestamp("updated_on", { mode: "date" }).notNull(),
+  },
+  (table) => [
+    index("user_id_index").on(table.user_id),
+    index("news_title_index").on(table.title),
+    index("status_index").on(table.status),
+    index("updated_on_index").on(table.updated_on),
+  ],
+);

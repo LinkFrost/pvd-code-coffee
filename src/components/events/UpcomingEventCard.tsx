@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Calendar, MapPin, ArrowRight, Clock } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
-import { dateConstructor } from "~/lib/dates";
+import { dateConstructor } from "~/utils/dateUtils";
 import { api } from "~/trpc/server";
 
 export const UpcomingEventCard = async () => {

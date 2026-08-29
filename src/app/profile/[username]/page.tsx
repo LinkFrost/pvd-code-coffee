@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
 
-import { isPlausibleProfileUsername } from "~/lib/route-slugs";
+import { isPlausibleProfileUsername } from "~/utils/routeUtils";
 import { api, apiResult, HydrateClient } from "~/trpc/server";
 import Image from "next/image";
 import { EditProfileDialog } from "~/components/profile/EditProfileDialog";

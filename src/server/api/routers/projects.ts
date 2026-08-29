@@ -9,8 +9,8 @@ import {
   projectStatusSchema,
   projectTagsInputSchema,
   serializeProjectTags,
-} from "~/lib/projects";
-import { provider } from "~/lib/constants";
+} from "~/utils/projectUtils";
+import { provider } from "~/utils/constants";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { db } from "~/server/db";
 import { projects_table, users_table } from "~/server/db/schema";

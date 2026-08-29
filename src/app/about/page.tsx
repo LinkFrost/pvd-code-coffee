@@ -1,6 +1,6 @@
 import { InfoCard } from "~/components/about/InfoCard";
 import { OrganizerCard } from "~/components/about/OrganizerCard";
-import { eventStructureSteps, organizers, principles } from "~/lib/constants";
+import { eventStructureSteps, organizers, principles } from "~/utils/constants";
 
 export default function About() {
   return (

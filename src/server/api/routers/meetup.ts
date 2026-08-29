@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { graphqlClient } from "~/lib/graphQLClient";
+import { graphqlClient } from "~/utils/graphQLUtils";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 

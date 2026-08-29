@@ -1,10 +1,14 @@
 import { z } from "zod";
 
-export const PROJECT_STATUSES = ["In Development", "Live", "Inactive"] as const;
+export const projectStatusOptions = [
+  "In Development",
+  "Live",
+  "Inactive",
+] as const;
 
-export type ProjectStatus = (typeof PROJECT_STATUSES)[number];
+export type ProjectStatus = (typeof projectStatusOptions)[number];
 
-export const projectStatusSchema = z.enum(PROJECT_STATUSES);
+export const projectStatusSchema = z.enum(projectStatusOptions);
 
 /** Required on create / when updating tags */
 export const projectTagsInputSchema = z
@@ -42,7 +46,7 @@ export function serializeProjectTags(tags: string[]): string {
   return JSON.stringify(cleaned);
 }
 
-export const DEFAULT_PROJECT_TAG_SUGGESTIONS = [
+export const projectTagOptions = [
   "TypeScript",
   "JavaScript",
   "Java",
@@ -70,7 +74,7 @@ export const DEFAULT_PROJECT_TAG_SUGGESTIONS = [
 ] as const;
 
 /** Tailwind classes for status badges (full control; merge with Badge base). */
-export const PROJECT_STATUS_BADGE_CLASSES: Record<ProjectStatus, string> = {
+export const projectStatusBadgeClasses: Record<ProjectStatus, string> = {
   "In Development":
     "border-transparent bg-emerald-600 text-white hover:bg-emerald-600/90 dark:bg-emerald-600 dark:text-white dark:hover:bg-emerald-600/90",
   Live: "border-transparent bg-blue-600 text-white hover:bg-blue-600/90 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-600/90",
@@ -82,7 +86,7 @@ export const PROJECT_STATUS_BADGE_CLASSES: Record<ProjectStatus, string> = {
  * Tag badge colors (brand-adjacent hues). Keys must match stored tag strings exactly.
  * Unknown tags fall back to neutral styling via `projectTagBadgeClassName`.
  */
-export const PROJECT_TAG_BADGE_CLASSES = {
+export const projectTagBadgeClasses = {
   /** TypeScript logo ~#3178C6 — light fill + deep blue text */
   TypeScript:
     "border-sky-300 bg-sky-100 text-[#235a97] dark:border-sky-700 dark:bg-sky-950/80 dark:text-sky-200",
@@ -146,19 +150,16 @@ export const PROJECT_TAG_BADGE_CLASSES = {
     "border-indigo-500/70 bg-indigo-600 text-white dark:border-indigo-500 dark:bg-indigo-600 dark:text-white",
   Other:
     "border-neutral-200 bg-neutral-100 text-neutral-700 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-200",
-} as const satisfies Record<
-  (typeof DEFAULT_PROJECT_TAG_SUGGESTIONS)[number],
-  string
->;
+} as const satisfies Record<(typeof projectTagOptions)[number], string>;
 
 export function projectStatusBadgeClassName(status: ProjectStatus): string {
-  return PROJECT_STATUS_BADGE_CLASSES[status];
+  return projectStatusBadgeClasses[status];
 }
 
 export function projectTagBadgeClassName(tag: string): string {
   const key = tag.trim();
   const mapped =
-    PROJECT_TAG_BADGE_CLASSES[key as keyof typeof PROJECT_TAG_BADGE_CLASSES];
+    projectTagBadgeClasses[key as keyof typeof projectTagBadgeClasses];
   if (mapped) {
     return mapped;
   }

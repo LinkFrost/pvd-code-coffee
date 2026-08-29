@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Calendar, Clock, Users } from "lucide-react";
 import { Card, CardContent } from "~/components/ui/card";
-import { dateConstructor } from "~/lib/dates";
+import { dateConstructor } from "~/utils/dateUtils";
 import type { MeetupEvent } from "~/server/api/routers/meetup";
 import Link from "next/link";
 

@@ -1,0 +1,1 @@
+CREATE INDEX `news_title_index` ON `development_news_posts` (`title`);

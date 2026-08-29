@@ -12,7 +12,7 @@ Replace `getAllProjects` with a generic `getProjects` procedure that supports op
 
 - **`search`** — string (trimmed). Empty string means “no search.”
 - **`tags`** — `string[]`. **OR semantics:** a project matches if **any** of its tags is in this list (intersection of selected tag chips with the project’s tag set is non-empty when multiple tags are selected). If the array is empty or omitted, do not filter by tags.
-- **`status`** — **single** optional value: one of `In Development` | `Live` | `Inactive` (aligned with `PROJECT_STATUSES`). Omit or null means “any status.” **Not** a multi-select.
+- **`status`** — **single** optional value: one of `In Development` | `Live` | `Inactive` (aligned with `projectStatusOptions`). Omit or null means “any status.” **Not** a multi-select.
 - **`sort`** — **required** default or optional with a default in API:
   - **`updated_on`** — newest / oldest by `updated_on` (match current product default: typically **desc** = most recently updated first).
   - **`created_on`** — by `created_on` (specify asc vs desc in enum, e.g. `created_on_desc` / `created_on_asc`, or a pair `sortBy` + `sortDir`; see below).
@@ -20,7 +20,7 @@ Replace `getAllProjects` with a generic `getProjects` procedure that supports op
 Practical shape options:
 
 - **`sortBy`:** `updated_on` | `created_on` | `name`
-- **`sortDir`:** `asc` | `desc`  
+- **`sortDir`:** `asc` | `desc`
 
 Defaults: e.g. `sortBy: updated_on`, `sortDir: desc` to preserve today’s list behavior.
 
@@ -152,14 +152,14 @@ Expose the three dimensions (field + direction) via the `sortBy` / `sortDir` (or
 
 ## Quick reference
 
-| Concern      | Recommendation                                                                 |
-|-------------|-----------------------------------------------------------------------------------|
+| Concern     | Recommendation                                                                    |
+| ----------- | --------------------------------------------------------------------------------- |
 | Name search | `LIKE`, case-insensitive, parameterized                                           |
 | Tags        | **OR** — project matches if it has any selected tag                               |
 | Status      | **Single** value or “any”                                                         |
 | Sort        | `updated_on` \| `created_on` \| `name`, each with `asc` \| `desc`                 |
 | UI          | shadcn components; `pnpm dlx shadcn@latest add [package-name]` for new primitives |
-| Layout      | Search + Search button + Filters toggle; collapsible row for tags, status, sort  |
+| Layout      | Search + Search button + Filters toggle; collapsible row for tags, status, sort   |
 
 ---
 

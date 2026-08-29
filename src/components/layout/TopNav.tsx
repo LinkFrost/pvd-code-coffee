@@ -3,7 +3,11 @@
 import Link from "next/link";
 import {
   NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
   NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "~/components/ui/navigation-menu";
 import Image from "next/image";
@@ -26,6 +30,22 @@ import {
   UserButton,
   useUser,
 } from "@clerk/nextjs";
+
+type NestedNavItem = {
+  href: string;
+  name: string;
+};
+
+const adminNavItems: NestedNavItem[] = [
+  {
+    href: "/admin/dashboard",
+    name: "Dashboard",
+  },
+  {
+    href: "/admin/social-media",
+    name: "Social Media",
+  },
+];
 
 const NavLink = ({
   href,
@@ -54,8 +74,55 @@ const NavLink = ({
   );
 };
 
+const NavDropdown = ({
+  name,
+  items,
+}: {
+  name: string;
+  items: NestedNavItem[];
+}) => {
+  const pathname = usePathname();
+  const isActive = items.some(
+    ({ href }) => pathname === href || pathname.startsWith(`${href}/`),
+  );
+
+  return (
+    <NavigationMenuItem className="relative">
+      <NavigationMenuTrigger
+        className="font-din text-xl"
+        data-active={isActive ? "" : undefined}
+      >
+        {name}
+      </NavigationMenuTrigger>
+
+      <NavigationMenuContent className="top-full z-50 mt-1.5 w-auto overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md">
+        <ul className="w-48 p-2">
+          {items.map((item) => (
+            <li key={item.href}>
+              <NavigationMenuLink
+                active={
+                  pathname === item.href || pathname.startsWith(`${item.href}/`)
+                }
+                asChild
+              >
+                <Link
+                  href={item.href}
+                  className="block rounded-md px-4 py-3 font-din text-lg transition-colors hover:bg-accent hover:text-accent-foreground data-[active]:bg-accent data-[active]:text-accent-foreground"
+                >
+                  {item.name}
+                </Link>
+              </NavigationMenuLink>
+            </li>
+          ))}
+        </ul>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  );
+};
+
 export const TopNav = ({ font }: { font: string }) => {
   const user = useUser();
+  const isAdmin = user.user?.publicMetadata.role === "admin";
 
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
@@ -87,34 +154,52 @@ export const TopNav = ({ font }: { font: string }) => {
           </div>
         </Link>
 
-        <nav className="hidden items-center gap-6 lg:flex">
-          <NavLink href="/news" name="News" />
+        <nav className="hidden items-center lg:flex">
+          <NavigationMenuList className="gap-6 space-x-0">
+            <NavigationMenuItem>
+              <NavLink href="/news" name="News" />
+            </NavigationMenuItem>
 
-          <SignedIn>
-            <NavLink href="/projects" name="Projects" />
-          </SignedIn>
+            <SignedIn>
+              <NavigationMenuItem>
+                <NavLink href="/projects" name="Projects" />
+              </NavigationMenuItem>
+            </SignedIn>
 
-          <NavLink href="/about" name="About" />
+            {isAdmin && (
+              <SignedIn>
+                <NavDropdown name="Admin" items={adminNavItems} />
+              </SignedIn>
+            )}
 
-          <SignedOut>
-            <SignInButton mode="modal">
-              <span className="font-din text-xl hover:cursor-pointer">
-                Sign In
-              </span>
-            </SignInButton>
-          </SignedOut>
+            <NavigationMenuItem>
+              <NavLink href="/about" name="About" />
+            </NavigationMenuItem>
 
-          <SignedIn>
-            <UserButton>
-              <UserButton.MenuItems>
-                <UserButton.Link
-                  label="My Profile"
-                  href={`/profile/${user.user?.username}`}
-                  labelIcon={<User className="!h-4 !w-4" />}
-                />
-              </UserButton.MenuItems>
-            </UserButton>
-          </SignedIn>
+            <SignedOut>
+              <NavigationMenuItem>
+                <SignInButton mode="modal">
+                  <span className="font-din text-xl hover:cursor-pointer">
+                    Sign In
+                  </span>
+                </SignInButton>
+              </NavigationMenuItem>
+            </SignedOut>
+
+            <SignedIn>
+              <NavigationMenuItem>
+                <UserButton>
+                  <UserButton.MenuItems>
+                    <UserButton.Link
+                      label="My Profile"
+                      href={`/profile/${user.user?.username}`}
+                      labelIcon={<User className="!h-4 !w-4" />}
+                    />
+                  </UserButton.MenuItems>
+                </UserButton>
+              </NavigationMenuItem>
+            </SignedIn>
+          </NavigationMenuList>
         </nav>
 
         <Sheet open={isOpen} onOpenChange={setIsOpen} modal={false}>
@@ -173,6 +258,26 @@ export const TopNav = ({ font }: { font: string }) => {
                   handleClick={() => handleNavigation("/projects")}
                 />
               </SheetClose>
+
+              {isAdmin && (
+                <SignedIn>
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="font-din text-xl text-gray-300 !underline">
+                      Admin
+                    </span>
+
+                    {adminNavItems.map((item) => (
+                      <SheetClose asChild key={item.href}>
+                        <NavLink
+                          href={item.href}
+                          name={item.name}
+                          handleClick={() => handleNavigation(item.href)}
+                        />
+                      </SheetClose>
+                    ))}
+                  </div>
+                </SignedIn>
+              )}
 
               <SheetClose asChild>
                 <NavLink

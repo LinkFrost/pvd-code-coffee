@@ -26,10 +26,10 @@ import {
 import { Textarea } from "~/components/ui/textarea";
 import { ProjectTagsCombobox } from "~/components/projects/ProjectTagsCombobox";
 import {
-  DEFAULT_PROJECT_TAG_SUGGESTIONS,
-  PROJECT_STATUSES,
+  projectTagOptions,
+  projectStatusOptions,
   type ProjectStatus,
-} from "~/lib/projects";
+} from "~/utils/projectUtils";
 import { api } from "~/trpc/react";
 import { Spinner } from "../ui/spinner";
 import { Pencil } from "lucide-react";
@@ -266,7 +266,7 @@ export function EditProjectDialog({ project }: EditProjectDialogProps) {
                 <ProjectTagsCombobox
                   id="editProjectTags"
                   inModalDialog
-                  options={DEFAULT_PROJECT_TAG_SUGGESTIONS}
+                  options={projectTagOptions}
                   value={field.state.value}
                   onChange={(next) => field.handleChange(next)}
                   placeholder="Search tags…"
@@ -287,11 +287,11 @@ export function EditProjectDialog({ project }: EditProjectDialogProps) {
             name="status"
             validators={{
               onChange: ({ value }) =>
-                !PROJECT_STATUSES.includes(value as ProjectStatus)
+                !projectStatusOptions.includes(value as ProjectStatus)
                   ? "Select a status."
                   : undefined,
               onSubmit: ({ value }) =>
-                !PROJECT_STATUSES.includes(value as ProjectStatus)
+                !projectStatusOptions.includes(value as ProjectStatus)
                   ? "Select a status."
                   : undefined,
             }}
@@ -308,7 +308,9 @@ export function EditProjectDialog({ project }: EditProjectDialogProps) {
                     }
                   }}
                   onValueChange={(v) =>
-                    field.handleChange(v as (typeof PROJECT_STATUSES)[number])
+                    field.handleChange(
+                      v as (typeof projectStatusOptions)[number],
+                    )
                   }
                 >
                   <SelectTrigger id="editProjectStatus" name={field.name}>
@@ -316,7 +318,7 @@ export function EditProjectDialog({ project }: EditProjectDialogProps) {
                   </SelectTrigger>
 
                   <SelectContent>
-                    {PROJECT_STATUSES.map((s) => (
+                    {projectStatusOptions.map((s) => (
                       <SelectItem key={s} value={s}>
                         {s}
                       </SelectItem>
@@ -352,7 +354,7 @@ export function EditProjectDialog({ project }: EditProjectDialogProps) {
                   disabled={
                     isSubmitting ||
                     tags.length < 1 ||
-                    !PROJECT_STATUSES.includes(status) ||
+                    !projectStatusOptions.includes(status) ||
                     nameStatus === "taken" ||
                     nameStatus === "checking"
                   }

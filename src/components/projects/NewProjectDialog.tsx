@@ -26,10 +26,10 @@ import {
 import { Textarea } from "~/components/ui/textarea";
 import { ProjectTagsCombobox } from "~/components/projects/ProjectTagsCombobox";
 import {
-  DEFAULT_PROJECT_TAG_SUGGESTIONS,
-  PROJECT_STATUSES,
+  projectTagOptions,
+  projectStatusOptions,
   type ProjectStatus,
-} from "~/lib/projects";
+} from "~/utils/projectUtils";
 import { api } from "~/trpc/react";
 import { Spinner } from "../ui/spinner";
 
@@ -76,7 +76,7 @@ export function NewProjectDialog({ username }: { username: string }) {
       github_id: 0,
       github_url: "",
       tags: [] as string[],
-      status: "In Development" as (typeof PROJECT_STATUSES)[number],
+      status: "In Development" as (typeof projectStatusOptions)[number],
     },
     onSubmit: async ({ value }) => {
       const selectedRepo = repoMap.get(value.repoId);
@@ -341,7 +341,7 @@ export function NewProjectDialog({ username }: { username: string }) {
                         <ProjectTagsCombobox
                           id="projectTags"
                           inModalDialog
-                          options={DEFAULT_PROJECT_TAG_SUGGESTIONS}
+                          options={projectTagOptions}
                           value={field.state.value}
                           onChange={(next) => field.handleChange(next)}
                           placeholder="Search tags…"
@@ -362,11 +362,11 @@ export function NewProjectDialog({ username }: { username: string }) {
                     name="status"
                     validators={{
                       onChange: ({ value }) =>
-                        !PROJECT_STATUSES.includes(value as ProjectStatus)
+                        !projectStatusOptions.includes(value as ProjectStatus)
                           ? "Select a status."
                           : undefined,
                       onSubmit: ({ value }) =>
-                        !PROJECT_STATUSES.includes(value as ProjectStatus)
+                        !projectStatusOptions.includes(value as ProjectStatus)
                           ? "Select a status."
                           : undefined,
                     }}
@@ -384,7 +384,7 @@ export function NewProjectDialog({ username }: { username: string }) {
                           }}
                           onValueChange={(v) =>
                             field.handleChange(
-                              v as (typeof PROJECT_STATUSES)[number],
+                              v as (typeof projectStatusOptions)[number],
                             )
                           }
                         >
@@ -393,7 +393,7 @@ export function NewProjectDialog({ username }: { username: string }) {
                           </SelectTrigger>
 
                           <SelectContent>
-                            {PROJECT_STATUSES.map((s) => (
+                            {projectStatusOptions.map((s) => (
                               <SelectItem key={s} value={s}>
                                 {s}
                               </SelectItem>
@@ -435,7 +435,7 @@ export function NewProjectDialog({ username }: { username: string }) {
                     isSubmitting ||
                     !repoId ||
                     tags.length < 1 ||
-                    !PROJECT_STATUSES.includes(status) ||
+                    !projectStatusOptions.includes(status) ||
                     nameStatus === "taken" ||
                     nameStatus === "checking"
                   }

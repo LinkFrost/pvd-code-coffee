@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "~/lib/twUtils";
+import { cn } from "~/utils/tailwindUtils";
 
 const badgeVariants = cva(
   "inline-flex items-center rounded-md border border-oklch(0.922 0 0) px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-oklch(0.708 0 0) focus:ring-offset-2 dark:border-oklch(1 0 0 / 10%) dark:focus:ring-oklch(0.556 0 0)",
