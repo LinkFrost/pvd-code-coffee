@@ -1,19 +1,6 @@
-import type { Components } from "react-markdown";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-
-const markdownComponents: Components = {
-  h1: ({ children }) => (
-    <h1 className="font-din text-3xl font-bold">{children}</h1>
-  ),
-  h2: ({ children }) => (
-    <h2 className="font-din text-2xl font-semibold">{children}</h2>
-  ),
-  h3: ({ children }) => (
-    <h3 className="font-din text-xl font-semibold">{children}</h3>
-  ),
-  p: ({ children }) => <p className="leading-7">{children}</p>,
-};
+import { markdownComponents } from "~/utils/markdownUtils";
 
 export function NewsPostContent({ content }: { content: string }) {
   return (

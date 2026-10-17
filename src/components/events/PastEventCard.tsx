@@ -1,9 +1,10 @@
 import Image from "next/image";
-import { Calendar, Clock, Users } from "lucide-react";
-import { Card, CardContent } from "~/components/ui/card";
+import { Calendar, Clock, ExternalLink, Users } from "lucide-react";
+import { Card, CardContent, CardFooter } from "~/components/ui/card";
 import { dateConstructor } from "~/utils/dateUtils";
 import type { MeetupEvent } from "~/server/api/routers/meetup";
 import Link from "next/link";
+import { eventPageHref } from "~/utils/eventUtils";
 
 export default function PastEventCard(event: MeetupEvent) {
   return (
@@ -17,8 +18,8 @@ export default function PastEventCard(event: MeetupEvent) {
         />
       </div>
 
-      <CardContent className="p-4">
-        <Link href={event.eventUrl} target="_blank" rel="noopener noreferrer">
+      <CardContent className="flex flex-1 flex-col p-4">
+        <Link href={eventPageHref(event.name)}>
           <h4 className="font-din hover:text-accentRed">{event.name}</h4>
         </Link>
 
@@ -42,6 +43,18 @@ export default function PastEventCard(event: MeetupEvent) {
           </div>
         </div>
       </CardContent>
+
+      <CardFooter className="justify-end p-4 pt-0">
+        <Link
+          href={event.eventUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="relative z-20 text-neutral-600 hover:text-blue-600"
+        >
+          <ExternalLink className="h-6 w-6" />
+          <span className="sr-only">View event on Meetup</span>
+        </Link>
+      </CardFooter>
     </Card>
   );
 }
