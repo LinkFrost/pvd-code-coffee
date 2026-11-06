@@ -24,13 +24,13 @@ export default async function Projects() {
   return (
     <HydrateClient>
       <div className="flex flex-col justify-center align-middle">
-        <section className="bg-accent">
-          <div className="responsiveContainer flex h-full flex-col items-center justify-between gap-6 py-12 sm:py-12">
+        <section className="h-44 bg-accent">
+          <div className="responsiveContainer flex h-full flex-col items-center justify-between py-6 sm:py-10">
             <h1 className="break-words text-center font-din text-3xl font-bold">
               Projects
             </h1>
 
-            <p className="max-w-3xl text-center text-lg sm:text-2xl">
+            <p className="max-w-3xl text-center text-base sm:text-xl">
               Check out what the community is building! Whether it&apos;s a
               quick side project, a new tool, or a full fledged live
               application, we want to showcase it here.

@@ -84,8 +84,10 @@ export default async function Profile(props: {
             )}
           </div>
 
-          <p className="p-2 text-lg sm:p-4">
-            {user.bio ?? 'Click "Edit Profile" to add a bio'}
+          <p className="text-lg">
+            {(user.bio ?? isLoggedInUser)
+              ? 'Click "Edit Profile" to add a bio'
+              : ""}
           </p>
         </div>
       </section>

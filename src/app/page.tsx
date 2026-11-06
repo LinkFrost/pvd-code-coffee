@@ -9,8 +9,8 @@ export default async function HomePage() {
   return (
     <HydrateClient>
       <div className="flex flex-col justify-center align-middle">
-        <section className="h-48 bg-accent md:h-56">
-          <div className="responsiveContainer flex h-full flex-col items-center justify-between py-10">
+        <section className="h-44 bg-accent">
+          <div className="responsiveContainer flex h-full flex-col items-center justify-between py-6 sm:py-10">
             <h1 className="break-words text-center font-din text-3xl font-bold">
               Welcome to Code & Coffee!
             </h1>
