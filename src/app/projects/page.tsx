@@ -25,7 +25,7 @@ export default async function Projects() {
     <HydrateClient>
       <div className="flex flex-col justify-center align-middle">
         <section className="bg-accent">
-          <div className="responsiveContainer flex h-full flex-col items-center justify-between gap-6 py-12 sm:py-16">
+          <div className="responsiveContainer flex h-full flex-col items-center justify-between gap-6 py-12 sm:py-12">
             <h1 className="break-words text-center font-din text-3xl font-bold">
               Projects
             </h1>

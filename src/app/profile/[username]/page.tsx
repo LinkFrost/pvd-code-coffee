@@ -54,7 +54,7 @@ export default async function Profile(props: {
   return (
     <div className="flex h-full flex-col justify-center align-middle">
       <section className="bg-accent">
-        <div className="responsiveContainer flex h-full flex-col items-start gap-4 py-4 sm:gap-8 sm:py-12">
+        <div className="responsiveContainer flex h-full flex-col items-start gap-4 py-8 sm:gap-8">
           <div className="flex w-full flex-col items-center gap-4 sm:gap-8 md:flex-row md:justify-between md:gap-0">
             <div className="flex items-center gap-8">
               <Image
