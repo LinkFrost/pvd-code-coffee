@@ -37,13 +37,13 @@ export default async function EventPage(props: {
 
   return (
     <article className="flex flex-col">
-      <header className="bg-accent">
-        <div className="responsiveContainer flex flex-col items-center gap-5 py-12 text-center sm:py-16">
+      <section className="h-full bg-accent py-10">
+        <div className="responsiveContainer flex h-full flex-col items-center justify-between gap-4">
           <h1 className="max-w-4xl break-words font-din text-3xl font-bold md:text-4xl">
             {event.name}
           </h1>
 
-          <div className="flex flex-col items-center gap-4 text-lg text-neutral-800 md:flex-row">
+          <div className="flex flex-col items-center gap-2 text-lg text-neutral-800 sm:gap-4 md:flex-row">
             <div className="flex items-center">
               <Calendar className="mr-2 h-4 w-4 text-black" />
               <span>{eventDate}</span>
@@ -58,18 +58,20 @@ export default async function EventPage(props: {
               <MapPin className="mr-2 h-4 w-4 text-black" />
               <span>{location}</span>
             </div>
+
+            {event.attendeeCount > 0 ? (
+              <div className="flex items-center text-lg text-neutral-800">
+                <Users className="mr-2 h-4 w-4 text-black" />
+                <span>{event.attendeeCount} attendees</span>
+              </div>
+            ) : null}
           </div>
 
-          {short ? <p className="max-w-3xl text-lg">{short}</p> : null}
-
-          {event.attendeeCount > 0 ? (
-            <div className="flex items-center text-lg text-neutral-800">
-              <Users className="mr-2 h-4 w-4 text-black" />
-              <span>{event.attendeeCount} attendees</span>
-            </div>
+          {short ? (
+            <p className="max-w-3xl text-base sm:text-lg">{short}</p>
           ) : null}
         </div>
-      </header>
+      </section>
 
       <section className="bg-gray-100">
         <div className="responsiveContainer py-10">

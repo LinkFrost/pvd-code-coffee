@@ -101,8 +101,8 @@ export default async function NewsPostPage(props: {
       </header>
 
       <section className="bg-gray-100">
-        <div className="responsiveContainer py-10">
-          <div className="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm sm:p-10">
+        <div className="responsiveContainer py-4">
+          <div className="rounded-xl border border-neutral-200 bg-white p-4 shadow-sm">
             <NewsPostContent content={post.content} />
           </div>
         </div>
