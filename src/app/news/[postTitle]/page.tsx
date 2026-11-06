@@ -50,20 +50,10 @@ export default async function NewsPostPage(props: {
   return (
     <article className="flex flex-col">
       <header className="bg-accent">
-        <div className="responsiveContainer flex flex-col items-center gap-5 py-12 text-center sm:py-16">
+        <div className="responsiveContainer flex flex-col items-center gap-5 py-12 text-center">
           <h1 className="max-w-4xl break-words font-din text-3xl font-bold md:text-4xl">
             {post.title}
           </h1>
-
-          <Badge
-            variant="secondary"
-            className={cn(
-              "font-normal",
-              newsPostCategoryBadgeClasses[post.category],
-            )}
-          >
-            {post.category}
-          </Badge>
 
           <p className="max-w-3xl text-lg">{post.short_description}</p>
 
@@ -83,9 +73,19 @@ export default async function NewsPostPage(props: {
                 </span>
               )}
             </p>
+
             <p>
               Created {formatDate(post.created_on)} · Updated{" "}
-              {formatDate(post.updated_on)}
+              {formatDate(post.updated_on)} ·{" "}
+              <Badge
+                variant="secondary"
+                className={cn(
+                  "font-normal",
+                  newsPostCategoryBadgeClasses[post.category],
+                )}
+              >
+                {post.category}
+              </Badge>
             </p>
           </div>
 
