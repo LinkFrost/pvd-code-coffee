@@ -160,11 +160,11 @@ export const TopNav = ({ font }: { font: string }) => {
               <NavLink href="/news" name="News" />
             </NavigationMenuItem>
 
-            <SignedIn>
-              <NavigationMenuItem>
-                <NavLink href="/projects" name="Projects" />
-              </NavigationMenuItem>
-            </SignedIn>
+            {/* <SignedIn> */}
+            <NavigationMenuItem>
+              <NavLink href="/projects" name="Projects" />
+            </NavigationMenuItem>
+            {/* </SignedIn> */}
 
             {/* {isAdmin && (
               <SignedIn>
