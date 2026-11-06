@@ -166,11 +166,11 @@ export const TopNav = ({ font }: { font: string }) => {
               </NavigationMenuItem>
             </SignedIn>
 
-            {isAdmin && (
+            {/* {isAdmin && (
               <SignedIn>
                 <NavDropdown name="Admin" items={adminNavItems} />
               </SignedIn>
-            )}
+            )} */}
 
             <NavigationMenuItem>
               <NavLink href="/about" name="About" />
@@ -259,7 +259,7 @@ export const TopNav = ({ font }: { font: string }) => {
                 />
               </SheetClose>
 
-              {isAdmin && (
+              {/* {isAdmin && (
                 <SignedIn>
                   <div className="flex flex-col items-center gap-2">
                     <span className="font-din text-xl text-gray-300 !underline">
@@ -277,7 +277,7 @@ export const TopNav = ({ font }: { font: string }) => {
                     ))}
                   </div>
                 </SignedIn>
-              )}
+              )} */}
 
               <SheetClose asChild>
                 <NavLink

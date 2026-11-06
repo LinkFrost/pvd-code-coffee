@@ -30,8 +30,8 @@ export default async function HomePage() {
 
               <p className="max-w-3xl text-center text-xl">
                 Join in on discussions surrounding tech, present a project you
-                are working on, meet other people with similar (or completely
-                different) interests, or simply use this space as a workspace!
+                are working on, meet other people with similar or completely
+                different interests, or simply use this space as a workspace!
               </p>
             </div>
 

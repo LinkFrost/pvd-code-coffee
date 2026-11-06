@@ -15,7 +15,7 @@ export const OrganizerCard = (organizer: {
       key={organizer.id}
       className="flex flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
     >
-      <div className="relative h-64 bg-gray-100">
+      <div className="relative h-96 bg-gray-100">
         <Image
           src={organizer.image || "/placeholder.svg"}
           alt={organizer.name}

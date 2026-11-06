@@ -24,6 +24,19 @@ export const organizers = [
       website: "https://linkfrost.com",
     },
   },
+  {
+    id: 3,
+    name: "Louis Martins",
+    role: "Organizer",
+    image:
+      "https://k3ss83nfoe.ufs.sh/f/SkDqcSrWrmeXA3gJzLGY7tgFmw4Rf2bNE3hpZUBqSdvWuI5a",
+    bio: "TODO: Add Louis bio here",
+    links: {
+      linkedIn: "https://www.linkedin.com/in/lmartins18/?isSelfProfile=false",
+      github: "https://github.com/lmartins18",
+      website: "https://lmartins18.com/",
+    },
+  },
 ];
 
 export const eventStructureSteps = [
