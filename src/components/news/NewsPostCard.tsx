@@ -65,18 +65,21 @@ export function NewsPostCard({
         <p className="text-neutral-700">{shortDescription}</p>
       </CardContent>
 
-      <CardFooter className="flex flex-col items-start gap-4">
-        <Badge
-          variant="secondary"
-          className={cn("font-normal", newsPostCategoryBadgeClasses[category])}
-        >
-          {category}
-        </Badge>
-
+      <CardFooter className="flex items-end justify-between gap-4">
         <div className="space-y-1 text-xs text-neutral-500">
           <p>Created: {formatDate(createdOn)}</p>
           <p>Updated: {formatDate(updatedOn)}</p>
         </div>
+
+        <Badge
+          variant="secondary"
+          className={cn(
+            "shrink-0 font-normal",
+            newsPostCategoryBadgeClasses[category],
+          )}
+        >
+          {category}
+        </Badge>
       </CardFooter>
     </Card>
   );
