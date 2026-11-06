@@ -3,7 +3,9 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import {
+  type NewsPostCategory,
   type NewsPostStatus,
+  newsPostCategorySchema,
   newsPostContentSchema,
   newsPostStatusSchema,
 } from "~/utils/newsUtils";
@@ -21,6 +23,7 @@ const newsPostIdSchema = z.object({
 
 export const getPublishedPostsInputSchema = z.object({
   search: z.string().trim().max(500).optional(),
+  category: newsPostCategorySchema.optional(),
   sortBy: z.enum(["updated_on", "created_on", "title"]).default("updated_on"),
   sortDir: z.enum(["asc", "desc"]).default("desc"),
 });
@@ -76,9 +79,13 @@ export const newsRouter = createTRPCRouter({
         titleMatch && descriptionMatch
           ? or(titleMatch, descriptionMatch)
           : null;
-      const whereClause = searchClause
-        ? and(eq(news_posts_table.status, "published"), searchClause)
-        : eq(news_posts_table.status, "published");
+      const whereClause = and(
+        eq(news_posts_table.status, "published"),
+        searchClause ?? undefined,
+        params.category
+          ? eq(news_posts_table.category, params.category)
+          : undefined,
+      );
       const orderColumn =
         params.sortBy === "created_on"
           ? news_posts_table.created_on
@@ -99,6 +106,7 @@ export const newsRouter = createTRPCRouter({
         .select({
           id: news_posts_table.id,
           title: news_posts_table.title,
+          category: news_posts_table.category,
           short_description: news_posts_table.short_description,
           status: news_posts_table.status,
           created_on: news_posts_table.created_on,
@@ -114,6 +122,7 @@ export const newsRouter = createTRPCRouter({
 
       return rows.map((row) => ({
         ...row,
+        category: row.category as NewsPostCategory,
         status: row.status as NewsPostStatus,
       }));
     }),
@@ -125,6 +134,7 @@ export const newsRouter = createTRPCRouter({
         .select({
           id: news_posts_table.id,
           title: news_posts_table.title,
+          category: news_posts_table.category,
           short_description: news_posts_table.short_description,
           content: news_posts_table.content,
           status: news_posts_table.status,
@@ -147,7 +157,13 @@ export const newsRouter = createTRPCRouter({
 
       const post = rows[0];
 
-      return post ? { ...post, status: post.status as NewsPostStatus } : null;
+      return post
+        ? {
+            ...post,
+            category: post.category as NewsPostCategory,
+            status: post.status as NewsPostStatus,
+          }
+        : null;
     }),
 
   isPostTitleAvailable: newsAuthorProcedure
@@ -170,6 +186,7 @@ export const newsRouter = createTRPCRouter({
       .select({
         id: news_posts_table.id,
         title: news_posts_table.title,
+        category: news_posts_table.category,
         short_description: news_posts_table.short_description,
         status: news_posts_table.status,
         created_on: news_posts_table.created_on,
@@ -185,6 +202,7 @@ export const newsRouter = createTRPCRouter({
 
     return rows.map((row) => ({
       ...row,
+      category: row.category as NewsPostCategory,
       status: row.status as NewsPostStatus,
     }));
   }),
@@ -205,6 +223,7 @@ export const newsRouter = createTRPCRouter({
         .select({
           id: news_posts_table.id,
           title: news_posts_table.title,
+          category: news_posts_table.category,
           short_description: news_posts_table.short_description,
           content: news_posts_table.content,
           status: news_posts_table.status,
@@ -224,7 +243,11 @@ export const newsRouter = createTRPCRouter({
         });
       }
 
-      return { ...post, status: post.status as NewsPostStatus };
+      return {
+        ...post,
+        category: post.category as NewsPostCategory,
+        status: post.status as NewsPostStatus,
+      };
     }),
 
   createPost: newsAuthorProcedure
@@ -247,6 +270,7 @@ export const newsRouter = createTRPCRouter({
       await db.insert(news_posts_table).values({
         user_id: BigInt(user.id),
         title: input.title,
+        category: input.category,
         short_description: input.short_description,
         content: input.content,
         status: input.status,
@@ -298,12 +322,43 @@ export const newsRouter = createTRPCRouter({
         .update(news_posts_table)
         .set({
           title: input.title,
+          category: input.category,
           short_description: input.short_description,
           content: input.content,
           status: input.status,
           updated_on: new Date(),
         })
         .where(ownershipClause);
+
+      return { success: true };
+    }),
+
+  deletePost: newsAuthorProcedure
+    .input(newsPostIdSchema)
+    .mutation(async ({ ctx, input }) => {
+      const user = await getDbUser(ctx.clerkUserId);
+      const ownershipClause =
+        ctx.role === "admin"
+          ? eq(news_posts_table.id, input.postId)
+          : and(
+              eq(news_posts_table.id, input.postId),
+              eq(news_posts_table.user_id, BigInt(user.id)),
+            );
+
+      const existingRows = await db
+        .select({ id: news_posts_table.id })
+        .from(news_posts_table)
+        .where(ownershipClause)
+        .limit(1);
+
+      if (!existingRows[0]) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "News post not found",
+        });
+      }
+
+      await db.delete(news_posts_table).where(ownershipClause);
 
       return { success: true };
     }),

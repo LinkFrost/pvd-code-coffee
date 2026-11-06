@@ -15,11 +15,20 @@ import {
   FieldLabel,
 } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
 import {
+  newsPostCategories,
   newsPostContentSchema,
   newsPostStatusBadgeClasses,
   newsPostStatusLabels,
+  type NewsPostCategory,
   type NewsPostStatus,
 } from "~/utils/newsUtils";
 import { api, type RouterOutputs } from "~/trpc/react";
@@ -36,6 +45,9 @@ export function NewsEditor({ post }: NewsEditorProps) {
   const utils = api.useUtils();
   const editorRef = useRef<MDXEditorMethods>(null);
   const [title, setTitle] = useState(post?.title ?? "");
+  const [category, setCategory] = useState<NewsPostCategory>(
+    post?.category ?? "News",
+  );
   const [shortDescription, setShortDescription] = useState(
     post?.short_description ?? "",
   );
@@ -46,14 +58,18 @@ export function NewsEditor({ post }: NewsEditorProps) {
 
   const createPost = api.news.createPost.useMutation();
   const updatePost = api.news.updatePost.useMutation();
+  const deletePost = api.news.deletePost.useMutation();
   const isSaving = createPost.isPending || updatePost.isPending;
+  const isDeleting = deletePost.isPending;
+  const isWorking = isSaving || isDeleting;
   const isComplete = newsPostContentSchema.safeParse({
     title,
+    category,
     short_description: shortDescription,
     content,
   }).success;
   const isSubmitDisabled =
-    isSaving ||
+    isWorking ||
     !isComplete ||
     titleStatus === "checking" ||
     titleStatus === "taken";
@@ -90,6 +106,7 @@ export function NewsEditor({ post }: NewsEditorProps) {
     const latestContent = editorRef.current?.getMarkdown() ?? content;
     const parsed = newsPostContentSchema.safeParse({
       title,
+      category,
       short_description: shortDescription,
       content: latestContent,
     });
@@ -135,6 +152,7 @@ export function NewsEditor({ post }: NewsEditorProps) {
 
       if (!post) {
         setTitle("");
+        setCategory("News");
         setShortDescription("");
         setContent("");
         setTitleStatus("idle");
@@ -147,6 +165,34 @@ export function NewsEditor({ post }: NewsEditorProps) {
         error instanceof Error
           ? error.message
           : "The post could not be saved. Please try again.",
+      );
+    }
+  };
+
+  const handleDeletePost = async () => {
+    if (
+      !post ||
+      !window.confirm(`Delete "${post.title}"? This action cannot be undone.`)
+    ) {
+      return;
+    }
+
+    setMessage(null);
+
+    try {
+      await deletePost.mutateAsync({ postId: post.id });
+      await Promise.all([
+        utils.news.getManageablePosts.invalidate(),
+        utils.news.getPublishedPosts.invalidate(),
+      ]);
+
+      router.push("/news/editor");
+      router.refresh();
+    } catch (error) {
+      setMessage(
+        error instanceof Error
+          ? error.message
+          : "The post could not be deleted. Please try again.",
       );
     }
   };
@@ -177,7 +223,7 @@ export function NewsEditor({ post }: NewsEditorProps) {
             }}
             onBlur={() => void checkTitleAvailability()}
             maxLength={200}
-            disabled={isSaving}
+            disabled={isWorking}
           />
           <FieldError
             errors={errors.title?.map((error) => ({ message: error }))}
@@ -195,6 +241,30 @@ export function NewsEditor({ post }: NewsEditorProps) {
           )}
         </Field>
 
+        <Field data-invalid={Boolean(errors.category)}>
+          <FieldLabel htmlFor="news-category">Category</FieldLabel>
+          <Select
+            value={category}
+            onValueChange={(value) => setCategory(value as NewsPostCategory)}
+            disabled={isWorking}
+          >
+            <SelectTrigger id="news-category">
+              <SelectValue placeholder="Select a category" />
+            </SelectTrigger>
+
+            <SelectContent>
+              {newsPostCategories.map((option) => (
+                <SelectItem key={option} value={option}>
+                  {option}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <FieldError
+            errors={errors.category?.map((error) => ({ message: error }))}
+          />
+        </Field>
+
         <Field data-invalid={Boolean(errors.short_description)}>
           <FieldLabel htmlFor="news-description">Short description</FieldLabel>
           <Textarea
@@ -203,7 +273,7 @@ export function NewsEditor({ post }: NewsEditorProps) {
             onChange={(event) => setShortDescription(event.target.value)}
             maxLength={500}
             rows={4}
-            disabled={isSaving}
+            disabled={isWorking}
           />
           <FieldDescription>
             This summary appears on the News feed.
@@ -222,7 +292,7 @@ export function NewsEditor({ post }: NewsEditorProps) {
               ref={editorRef}
               markdown={post?.content ?? ""}
               onChange={setContent}
-              readOnly={isSaving}
+              readOnly={isWorking}
             />
           </div>
           <FieldDescription>
@@ -241,6 +311,17 @@ export function NewsEditor({ post }: NewsEditorProps) {
       )}
 
       <div className="mt-6 flex flex-wrap justify-end gap-3">
+        {post && (
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isWorking}
+            onClick={handleDeletePost}
+          >
+            {isDeleting ? "Deleting…" : "Delete post"}
+          </Button>
+        )}
+
         <Button
           type="button"
           variant="outline"

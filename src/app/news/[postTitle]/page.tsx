@@ -4,9 +4,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { NewsPostContent } from "~/components/news/NewsPostContent";
+import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { api, apiResult } from "~/trpc/server";
 import { formatDate } from "~/utils/dateUtils";
+import { newsPostCategoryBadgeClasses } from "~/utils/newsUtils";
+import { cn } from "~/utils/tailwindUtils";
 
 export default async function NewsPostPage(props: {
   params: Promise<{ postTitle: string }>;
@@ -51,6 +54,16 @@ export default async function NewsPostPage(props: {
           <h1 className="max-w-4xl break-words font-din text-3xl font-bold md:text-4xl">
             {post.title}
           </h1>
+
+          <Badge
+            variant="secondary"
+            className={cn(
+              "font-normal",
+              newsPostCategoryBadgeClasses[post.category],
+            )}
+          >
+            {post.category}
+          </Badge>
 
           <p className="max-w-3xl text-lg">{post.short_description}</p>
 

@@ -16,6 +16,7 @@ import { Spinner } from "~/components/ui/spinner";
 import { api, type RouterOutputs } from "~/trpc/react";
 import { formatDate } from "~/utils/dateUtils";
 import {
+  newsPostCategoryBadgeClasses,
   newsPostStatusBadgeClasses,
   newsPostStatusLabels,
 } from "~/utils/newsUtils";
@@ -68,9 +69,22 @@ export function ManageableNewsPosts() {
           <CardHeader>
             <div className="flex items-start justify-between gap-3">
               <CardTitle className="font-din text-xl">{post.title}</CardTitle>
-              <Badge className={cn(newsPostStatusBadgeClasses[post.status])}>
-                {newsPostStatusLabels[post.status]}
-              </Badge>
+
+              <div className="flex flex-wrap justify-end gap-2">
+                <Badge
+                  variant="secondary"
+                  className={cn(
+                    "font-normal",
+                    newsPostCategoryBadgeClasses[post.category],
+                  )}
+                >
+                  {post.category}
+                </Badge>
+
+                <Badge className={cn(newsPostStatusBadgeClasses[post.status])}>
+                  {newsPostStatusLabels[post.status]}
+                </Badge>
+              </div>
             </div>
           </CardHeader>
 

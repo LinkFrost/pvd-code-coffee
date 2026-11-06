@@ -64,6 +64,7 @@ export const news_posts_table = createTable(
     id: int("id").primaryKey().autoincrement(),
     user_id: bigint({ mode: "bigint" }).notNull(),
     title: text().notNull(),
+    category: text().notNull().default("News"),
     short_description: text().notNull(),
     content: text().notNull(),
     status: text().notNull().default("unpublished"),

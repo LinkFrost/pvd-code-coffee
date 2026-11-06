@@ -17,10 +17,12 @@ import {
 } from "~/components/ui/select";
 import { Spinner } from "~/components/ui/spinner";
 import { api } from "~/trpc/react";
+import { newsPostCategories, type NewsPostCategory } from "~/utils/newsUtils";
 import { cn } from "~/utils/tailwindUtils";
 
 type UrlNewsFilters = {
   appliedSearch: string;
+  category: NewsPostCategory | "";
   sortBy: "updated_on" | "created_on" | "title";
   sortDir: "asc" | "desc";
 };
@@ -30,6 +32,9 @@ const DEFAULT_SORT_DIR: UrlNewsFilters["sortDir"] = "desc";
 
 const parseSearchParams = (searchParams: URLSearchParams): UrlNewsFilters => {
   const appliedSearch = searchParams.get("q")?.trim() ?? "";
+  const categoryParam = searchParams.get("category");
+  const category =
+    newsPostCategories.find((option) => option === categoryParam) ?? "";
   const sort = searchParams.get("sort");
   const sortBy =
     sort === "created_on" || sort === "title" || sort === "updated_on"
@@ -39,7 +44,7 @@ const parseSearchParams = (searchParams: URLSearchParams): UrlNewsFilters => {
   const sortDir =
     direction === "asc" || direction === "desc" ? direction : DEFAULT_SORT_DIR;
 
-  return { appliedSearch, sortBy, sortDir };
+  return { appliedSearch, category, sortBy, sortDir };
 };
 
 const serializeFilters = (filters: UrlNewsFilters) => {
@@ -47,6 +52,10 @@ const serializeFilters = (filters: UrlNewsFilters) => {
 
   if (filters.appliedSearch.trim()) {
     params.set("q", filters.appliedSearch.trim());
+  }
+
+  if (filters.category) {
+    params.set("category", filters.category);
   }
 
   if (filters.sortBy !== DEFAULT_SORT_BY) {
@@ -91,6 +100,7 @@ export function NewsFeed() {
       sortBy: filters.sortBy,
       sortDir: filters.sortDir,
       ...(filters.appliedSearch ? { search: filters.appliedSearch } : {}),
+      ...(filters.category ? { category: filters.category } : {}),
     }),
     [filters],
   );
@@ -106,6 +116,7 @@ export function NewsFeed() {
 
   const hasActiveFilters =
     filters.appliedSearch.length > 0 ||
+    filters.category.length > 0 ||
     filters.sortBy !== DEFAULT_SORT_BY ||
     filters.sortDir !== DEFAULT_SORT_DIR;
 
@@ -158,7 +169,33 @@ export function NewsFeed() {
 
       {filtersOpen && (
         <div className="flex flex-col gap-5 rounded-xl border border-neutral-200 bg-neutral-50/80 p-4">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-3">
+            <div className="flex flex-col gap-2">
+              <Label>Category</Label>
+              <Select
+                value={filters.category || "all"}
+                onValueChange={(value) =>
+                  replaceFilters({
+                    category:
+                      value === "all" ? "" : (value as NewsPostCategory),
+                  })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+
+                <SelectContent>
+                  <SelectItem value="all">All categories</SelectItem>
+                  {newsPostCategories.map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="flex flex-col gap-2">
               <Label>Sort by</Label>
               <Select
@@ -241,6 +278,7 @@ export function NewsFeed() {
             <NewsPostCard
               key={post.id}
               title={post.title}
+              category={post.category}
               shortDescription={post.short_description}
               authorUsername={post.author_username}
               createdOn={post.created_on}
