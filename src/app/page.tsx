@@ -3,18 +3,19 @@ import { UpcomingEventCard } from "~/components/events/UpcomingEventCard";
 import { Suspense } from "react";
 import { UpcomingEventCard_Loading } from "~/components/loading/EventCard_Loading";
 import { PastEvents } from "~/components/events/PastEvents";
+import { LatestNews } from "~/components/news/LatestNews";
 
 export default async function HomePage() {
   return (
     <HydrateClient>
       <div className="flex flex-col justify-center align-middle">
-        <section className="h-56 bg-accent md:h-56">
-          <div className="responsiveContainer flex h-full flex-col items-center justify-between py-12">
-            <h1 className="mb-4 break-words text-center font-din text-3xl font-bold">
+        <section className="h-48 bg-accent md:h-56">
+          <div className="responsiveContainer flex h-full flex-col items-center justify-between py-10">
+            <h1 className="break-words text-center font-din text-3xl font-bold">
               Welcome to Code & Coffee!
             </h1>
 
-            <p className="max-w-3xl text-center text-2xl">
+            <p className="max-w-3xl text-center text-lg sm:text-2xl">
               The community-led meetup for devs to get together and
               professionally grow.
             </p>
@@ -22,18 +23,18 @@ export default async function HomePage() {
         </section>
 
         <section className="bg-gray-100">
-          <div className="responsiveContainer flex flex-col gap-8 py-12">
-            <div className="flex flex-col items-center">
+          <div className="responsiveContainer flex flex-col gap-8 py-8">
+            {/* <div className="flex flex-col items-center">
               <h2 className="mb-4 text-center font-din text-3xl font-bold">
                 Our Events
               </h2>
 
-              <p className="max-w-3xl text-center text-xl">
+              <p className="max-w-3xl text-center text-lg sm:text-xl">
                 Join in on discussions surrounding tech, present a project you
                 are working on, meet other people with similar or completely
                 different interests, or simply use this space as a workspace!
               </p>
-            </div>
+            </div> */}
 
             <div>
               <h3 className="mb-4 font-din text-2xl font-semibold">
@@ -42,6 +43,22 @@ export default async function HomePage() {
 
               <Suspense fallback={<UpcomingEventCard_Loading />}>
                 <UpcomingEventCard />
+              </Suspense>
+            </div>
+
+            <div>
+              <h3 className="mb-4 font-din text-2xl font-semibold">
+                Latest News
+              </h3>
+
+              <Suspense
+                fallback={
+                  <p className="text-center text-lg text-neutral-600">
+                    Loading latest news…
+                  </p>
+                }
+              >
+                <LatestNews />
               </Suspense>
             </div>
 

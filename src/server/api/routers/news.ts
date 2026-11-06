@@ -64,6 +64,29 @@ const isTitleAvailable = async (title: string, excludePostId?: number) => {
 };
 
 export const newsRouter = createTRPCRouter({
+  getLatestPublishedPosts: publicProcedure.query(async () => {
+    const rows = await db
+      .select({
+        id: news_posts_table.id,
+        title: news_posts_table.title,
+        category: news_posts_table.category,
+        short_description: news_posts_table.short_description,
+        created_on: news_posts_table.created_on,
+        updated_on: news_posts_table.updated_on,
+        author_username: users_table.username,
+      })
+      .from(news_posts_table)
+      .innerJoin(users_table, eq(news_posts_table.user_id, users_table.id))
+      .where(eq(news_posts_table.status, "published"))
+      .orderBy(desc(news_posts_table.created_on))
+      .limit(6);
+
+    return rows.map((row) => ({
+      ...row,
+      category: row.category as NewsPostCategory,
+    }));
+  }),
+
   getPublishedPosts: publicProcedure
     .input(getPublishedPostsInputSchema.optional())
     .query(async ({ input }) => {
