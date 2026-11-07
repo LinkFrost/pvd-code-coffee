@@ -42,8 +42,11 @@ type TitleStatus = "idle" | "checking" | "available" | "taken";
 
 export function NewsEditor({ post }: NewsEditorProps) {
   const router = useRouter();
+
   const utils = api.useUtils();
+
   const editorRef = useRef<MDXEditorMethods>(null);
+
   const [title, setTitle] = useState(post?.title ?? "");
   const [category, setCategory] = useState<NewsPostCategory>(
     post?.category ?? "News",
@@ -59,6 +62,7 @@ export function NewsEditor({ post }: NewsEditorProps) {
   const createPost = api.news.createPost.useMutation();
   const updatePost = api.news.updatePost.useMutation();
   const deletePost = api.news.deletePost.useMutation();
+
   const isSaving = createPost.isPending || updatePost.isPending;
   const isDeleting = deletePost.isPending;
   const isWorking = isSaving || isDeleting;
@@ -214,6 +218,7 @@ export function NewsEditor({ post }: NewsEditorProps) {
       <FieldGroup>
         <Field data-invalid={Boolean(errors.title)}>
           <FieldLabel htmlFor="news-title">Title</FieldLabel>
+
           <Input
             id="news-title"
             value={title}
@@ -225,17 +230,21 @@ export function NewsEditor({ post }: NewsEditorProps) {
             maxLength={200}
             disabled={isWorking}
           />
+
           <FieldError
             errors={errors.title?.map((error) => ({ message: error }))}
           />
+
           {titleStatus === "checking" && (
             <FieldDescription>Checking title availability…</FieldDescription>
           )}
+
           {titleStatus === "available" && (
             <FieldDescription className="text-blue-700">
               This title is available.
             </FieldDescription>
           )}
+
           {titleStatus === "taken" && (
             <FieldError>A news post with this title already exists.</FieldError>
           )}
@@ -243,6 +252,7 @@ export function NewsEditor({ post }: NewsEditorProps) {
 
         <Field data-invalid={Boolean(errors.category)}>
           <FieldLabel htmlFor="news-category">Category</FieldLabel>
+
           <Select
             value={category}
             onValueChange={(value) => setCategory(value as NewsPostCategory)}
@@ -260,6 +270,7 @@ export function NewsEditor({ post }: NewsEditorProps) {
               ))}
             </SelectContent>
           </Select>
+
           <FieldError
             errors={errors.category?.map((error) => ({ message: error }))}
           />
@@ -267,6 +278,7 @@ export function NewsEditor({ post }: NewsEditorProps) {
 
         <Field data-invalid={Boolean(errors.short_description)}>
           <FieldLabel htmlFor="news-description">Short description</FieldLabel>
+
           <Textarea
             id="news-description"
             value={shortDescription}
@@ -275,9 +287,11 @@ export function NewsEditor({ post }: NewsEditorProps) {
             rows={4}
             disabled={isWorking}
           />
+
           <FieldDescription>
             This summary appears on the News feed.
           </FieldDescription>
+
           <FieldError
             errors={errors.short_description?.map((error) => ({
               message: error,
@@ -287,6 +301,7 @@ export function NewsEditor({ post }: NewsEditorProps) {
 
         <Field data-invalid={Boolean(errors.content)}>
           <FieldLabel>Post content</FieldLabel>
+
           <div className="min-h-96 overflow-hidden rounded-md border border-neutral-200">
             <ForwardRefEditor
               ref={editorRef}
@@ -295,9 +310,12 @@ export function NewsEditor({ post }: NewsEditorProps) {
               readOnly={isWorking}
             />
           </div>
+
           <FieldDescription>
-            Write and format the post using Markdown.
+            Write and format the post using Markdown. Press Shift+Enter to add a
+            line break without starting a new paragraph.
           </FieldDescription>
+
           <FieldError
             errors={errors.content?.map((error) => ({ message: error }))}
           />

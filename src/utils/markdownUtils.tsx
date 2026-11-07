@@ -11,8 +11,13 @@ export const markdownComponents: Components = {
     <h3 className="font-din text-xl font-semibold">{children}</h3>
   ),
   p: ({ children }) => <p className="leading-7">{children}</p>,
-  a: ({ children }) => (
-    <a className="leading-7 underline hover:cursor-pointer hover:text-accentRed">
+  a: ({ children, href }) => (
+    <a
+      className="leading-7 underline hover:cursor-pointer hover:text-accentRed"
+      target="_blank"
+      rel="noopener noreferrer"
+      href={href}
+    >
       {children}
     </a>
   ),

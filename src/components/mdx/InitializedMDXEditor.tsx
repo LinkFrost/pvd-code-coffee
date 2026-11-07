@@ -28,9 +28,13 @@ import {
   tablePlugin,
   InsertThematicBreak,
   ListsToggle,
+  DiffSourceToggleWrapper,
+  diffSourcePlugin,
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
 import "./MDXEditor.css";
+
+const LINE_BREAK_CONTINUATION = "\u200B";
 
 // Only import this to the next file
 export default function InitializedMDXEditor({
@@ -77,10 +81,13 @@ export default function InitializedMDXEditor({
         listsPlugin(),
         quotePlugin(),
         headingsPlugin(),
+        diffSourcePlugin({
+          viewMode: "rich-text",
+        }),
         toolbarPlugin({
           toolbarClassName: "mdxeditor-toolbar",
           toolbarContents: () => (
-            <>
+            <DiffSourceToggleWrapper options={["rich-text", "source"]}>
               <UndoRedo />
               <BoldItalicUnderlineToggles />
               <BlockTypeSelect />
@@ -106,11 +113,28 @@ export default function InitializedMDXEditor({
               />
 
               <CreateLink />
-            </>
+            </DiffSourceToggleWrapper>
           ),
         }),
       ]}
       {...props}
+      toMarkdownOptions={{
+        handlers: {
+          text: (node: unknown, _, state, info) => {
+            const value =
+              typeof node === "object" &&
+              node !== null &&
+              "value" in node &&
+              typeof node.value === "string"
+                ? node.value
+                : "";
+
+            return state
+              .safe(value, info)
+              .replace(/\n\u200B?/g, `\\\n${LINE_BREAK_CONTINUATION}`);
+          },
+        },
+      }}
       ref={editorRef}
     />
   );
