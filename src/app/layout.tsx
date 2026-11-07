@@ -1,12 +1,12 @@
 import "~/styles/globals.css";
-
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
-import { TopNav } from "~/components/TopNav";
+import { TopNav } from "~/components/layout/TopNav";
 import localFont from "next/font/local";
-
 import { TRPCReactProvider } from "~/trpc/react";
-import { Footer } from "~/components/Footer";
+import { Footer } from "~/components/layout/Footer";
+import { ClerkProvider } from "@clerk/nextjs";
+import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
   title: "PVD Code & Coffee",
@@ -24,13 +24,25 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html
+      lang="en"
+      className={`${GeistSans.variable}`}
+      suppressHydrationWarning
+    >
       <body className={`${dinFont.variable} flex min-h-screen flex-col`}>
-        <TRPCReactProvider>
-          <TopNav font={dinFont.variable} />
-          <main className="flex-1">{children}</main>
-          <Footer font={dinFont.variable} />
-        </TRPCReactProvider>
+        <NextTopLoader
+          color="hsl(48, 98%, 50%)"
+          showSpinner={false}
+          height={3}
+        />
+
+        <ClerkProvider>
+          <TRPCReactProvider>
+            <TopNav font={dinFont.variable} />
+            <main className="flex-1">{children}</main>
+            <Footer font={dinFont.variable} />
+          </TRPCReactProvider>
+        </ClerkProvider>
       </body>
     </html>
   );

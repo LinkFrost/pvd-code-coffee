@@ -1,0 +1,1 @@
+ALTER TABLE `development_news_posts` ADD `category` text DEFAULT 'News' NOT NULL;

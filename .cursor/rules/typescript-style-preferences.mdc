@@ -1,0 +1,19 @@
+---
+description: TS/TSX style preferences from recent profile/projects work
+globs: **/*.{ts,tsx}
+alwaysApply: false
+---
+
+# TypeScript/TSX Style Preferences
+
+- Prefer minimal type declarations; do not add extra local types/interfaces when inference is clear.
+- Especially around DB/tRPC results, avoid redundant mirror types unless they add real safety or readability.
+
+- Keep vertical spacing readable:
+  - Leave blank lines between logical code blocks (imports, state/hooks, handlers, JSX sections).
+  - Do not over-condense code into dense blocks.
+
+- Prefer arrow functions for most declarations (helpers, handlers, callbacks, exported non-page components).
+- Use normal function declarations for page-level components in `src/app/**/page.tsx`.
+
+- When editing existing files, follow the local spacing and formatting pattern already present in that file.

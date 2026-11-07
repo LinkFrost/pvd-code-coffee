@@ -8,11 +8,11 @@ _Note: This website is a work in progress, we are currently working on V0._
 
 - [x] Setup repo
 - [x] Deploy to Vercel
-- [-] Create basic layout (navbar, footer)
-- [-] Create pages (home, about us)
-- [ ] Scaffold home page layout
-- [ ] Fill in basic content (about us, contact, organizers)
+- [x] Create basic layout (navbar, footer)
+- [x] Create pages (home, about us)
+- [x] Scaffold home page layout
+- [x] Fill in basic content (about us, contact, organizers)
 - [ ] Create Contact form
-- [ ] Show some sort of MeetUp information on home page (TBD)
-- [ ] Finalize/cleanup design language and layout
+- [x] Show some sort of MeetUp information on home page (TBD)
+- [x] Finalize/cleanup design language and layout
 - [x] Attach to domain

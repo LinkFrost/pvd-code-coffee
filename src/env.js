@@ -8,7 +8,14 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string().url(),
+    SINGLESTORE_USER: z.string(),
+    SINGLESTORE_PASSWORD: z.string(),
+    SINGLESTORE_HOST: z.string(),
+    SINGLESTORE_PORT: z.string(),
+    SINGLESTORE_DB_NAME: z.string(),
     MEETUP_GRAPHQL_ENDPOINT: z.string().url(),
+    CLERK_SECRET_KEY: z.string(),
+    CLERK_SIGNING_SECRET: z.string(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -28,8 +35,15 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
-    MEETUP_GRAPHQL_ENDPOINT: process.env.MEETUP_GRAPHQL_ENDPOINT,
     DATABASE_URL: process.env.DATABASE_URL,
+    MEETUP_GRAPHQL_ENDPOINT: process.env.MEETUP_GRAPHQL_ENDPOINT,
+    SINGLESTORE_USER: process.env.SINGLESTORE_USER,
+    SINGLESTORE_PASSWORD: process.env.SINGLESTORE_PASSWORD,
+    SINGLESTORE_HOST: process.env.SINGLESTORE_HOST,
+    SINGLESTORE_PORT: process.env.SINGLESTORE_PORT,
+    SINGLESTORE_DB_NAME: process.env.SINGLESTORE_DB_NAME,
+    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+    CLERK_SIGNING_SECRET: process.env.CLERK_SIGNING_SECRET,
     NODE_ENV: process.env.NODE_ENV,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },

@@ -6,7 +6,8 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from "@trpc/server";
+import { auth } from "@clerk/nextjs/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
@@ -103,4 +104,34 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
-export const publicProcedure = t.procedure.use(timingMiddleware);
+// export const publicProcedure = t.procedure.use(timingMiddleware);
+export const publicProcedure = t.procedure;
+
+const newsAuthorMiddleware = t.middleware(async ({ next }) => {
+  const { userId, sessionClaims } = await auth();
+
+  if (!userId) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "You must be signed in to manage news posts",
+    });
+  }
+
+  const role = sessionClaims?.metadata?.role;
+
+  if (role !== "admin" && role !== "author") {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "You do not have permission to manage news posts",
+    });
+  }
+
+  return next({
+    ctx: {
+      clerkUserId: userId,
+      role,
+    },
+  });
+});
+
+export const newsAuthorProcedure = t.procedure.use(newsAuthorMiddleware);

@@ -1,17 +1,17 @@
-import { InfoCard } from "~/components/InfoCard";
-import { OrganizerCard } from "~/components/OrganizerCard";
-import { eventStructureSteps, organizers, principles } from "~/lib/constants";
+import { InfoCard } from "~/components/about/InfoCard";
+import { OrganizerCard } from "~/components/about/OrganizerCard";
+import { eventStructureSteps, organizers, principles } from "~/utils/constants";
 
 export default function About() {
   return (
     <div className="flex flex-col justify-center align-middle">
-      <section className="h-72 bg-accent md:h-56">
-        <div className="responsiveContainer flex h-full flex-col items-center justify-between py-16">
+      <section className="h-44 bg-accent">
+        <div className="responsiveContainer flex h-full flex-col items-center justify-between py-10">
           <h1 className="break-words text-center font-din text-3xl font-bold">
             About PVD Code & Coffee!
           </h1>
 
-          <p className="max-w-3xl text-center text-2xl">
+          <p className="max-w-3xl text-center text-xl sm:text-xl">
             A little bit about who we are and what we do.
           </p>
         </div>
@@ -19,7 +19,7 @@ export default function About() {
 
       <section className="bg-gray-100">
         <div className="responsiveContainer flex flex-col gap-8 py-12">
-          <h3 className="font-din text-3xl font-semibold">What we do</h3>
+          <h2 className="font-din text-3xl font-semibold">What we do</h2>
 
           <p className="text-xl">
             We are the Providence chapter for the community-led meetup for devs
@@ -36,6 +36,7 @@ export default function About() {
             <a
               className="text-accentRed hover:text-red-700"
               target="_blank"
+              rel="noopener noreferrer"
               href="https://codeandcoffee.org/"
             >
               {" "}
@@ -45,9 +46,9 @@ export default function About() {
         </div>
       </section>
 
-      <section className="bg-yellow-50">
+      <section className="bg-yellow-100">
         <div className="responsiveContainer flex flex-col gap-8 py-12">
-          <h3 className="font-din text-3xl font-semibold">Event Structure</h3>
+          <h2 className="font-din text-3xl font-semibold">Event Structure</h2>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {eventStructureSteps.map((eventStructure, index) => (
@@ -63,9 +64,9 @@ export default function About() {
 
       <section className="bg-gray-100">
         <div className="responsiveContainer flex flex-col gap-8 py-12">
-          <h3 className="font-din text-3xl font-semibold">Organizers</h3>
+          <h2 className="font-din text-3xl font-semibold">Organizers</h2>
 
-          <div className="grid gap-8 md:grid-cols-3">
+          <div className="grid gap-8 md:grid-cols-2">
             {organizers.map((organizer) => (
               <OrganizerCard
                 key={organizer.id}
@@ -81,11 +82,11 @@ export default function About() {
         </div>
       </section>
 
-      <section className="bg-yellow-50">
+      <section className="bg-yellow-100">
         <div className="responsiveContainer flex flex-col gap-8 py-12">
-          <h3 className="font-din text-3xl font-semibold">
+          <h2 className="font-din text-3xl font-semibold">
             Guidelines & Principles
-          </h3>
+          </h2>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
             {principles.map((principle, index) => (

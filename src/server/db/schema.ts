@@ -1,14 +1,12 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
-
-import { sql } from "drizzle-orm";
 import {
-  index,
-  integer,
-  pgTableCreator,
+  int,
+  bigint,
+  text,
   timestamp,
-  varchar,
-} from "drizzle-orm/pg-core";
+  index,
+  singlestoreTableCreator,
+} from "drizzle-orm/singlestore-core";
+import { env } from "~/env";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -16,21 +14,67 @@ import {
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `pvd-code-coffee_${name}`);
+export const createTable = singlestoreTableCreator(
+  (name) => `${env.NODE_ENV}_${name}`,
+);
 
-export const posts = createTable(
-  "post",
+export const users_table = createTable(
+  "users",
   {
-    id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
-    name: varchar("name", { length: 256 }),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date()
-    ),
+    id: int("id").primaryKey().autoincrement(),
+    clerk_id: text(),
+    first_name: text(),
+    last_name: text(),
+    email_address: text(),
+    username: text(),
+    image_url: text(),
+    bio: text(),
   },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
+  (table) => [
+    index("clerk_id_index").on(table.clerk_id),
+    index("username_index").on(table.username),
+  ],
+);
+
+export const projects_table = createTable(
+  "projects",
+  {
+    id: int("id").primaryKey().autoincrement(),
+    user_id: bigint({ mode: "bigint" }),
+    github_id: int("github_id"),
+    github_url: text(),
+    project_url: text(),
+    name: text(),
+    description: text(),
+    tags: text().notNull().default("[]"),
+    status: text().notNull().default("In Development"),
+    created_on: timestamp("created_on", { mode: "date" }).notNull(),
+    updated_on: timestamp("updated_on", { mode: "date" }).notNull(),
+  },
+  (table) => [
+    index("user_id_index").on(table.user_id),
+    index("github_id_index").on(table.github_id),
+    index("name_index").on(table.name),
+  ],
+);
+
+export const news_posts_table = createTable(
+  "news_posts",
+  {
+    id: int("id").primaryKey().autoincrement(),
+    user_id: bigint({ mode: "bigint" }).notNull(),
+    title: text().notNull(),
+    category: text().notNull().default("News"),
+    short_description: text().notNull(),
+    content: text().notNull(),
+    status: text().notNull().default("unpublished"),
+    created_on: timestamp("created_on", { mode: "date" }).notNull(),
+    updated_on: timestamp("updated_on", { mode: "date" }).notNull(),
+  },
+  (table) => [
+    index("user_id_index").on(table.user_id),
+    index("news_title_index").on(table.title),
+    index("status_index").on(table.status),
+    index("updated_on_index").on(table.updated_on),
+  ],
 );
