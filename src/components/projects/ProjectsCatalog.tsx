@@ -158,7 +158,7 @@ export function ProjectsCatalog() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:gap-3">
-        <div className="flex min-w-0 flex-1 flex-col gap-2 sm:flex-row sm:items-center">
+        <div className="flex min-w-0 flex-1 gap-2 sm:flex-row sm:items-center">
           <Input
             placeholder="Search by project name…"
             value={searchDraft}

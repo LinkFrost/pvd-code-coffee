@@ -30,7 +30,7 @@ export const organizers = [
     role: "Organizer",
     image:
       "https://k3ss83nfoe.ufs.sh/f/SkDqcSrWrmeXA3gJzLGY7tgFmw4Rf2bNE3hpZUBqSdvWuI5a",
-    bio: "TODO: Add Louis bio here",
+    bio: "Louis is a Software Developer, lifelong tinkerer, and hacker at heart. He loves pushing technology beyond its intended limits, exploring how things work under the hood, and experimenting with homebrew and open-source software.",
     links: {
       linkedIn: "https://www.linkedin.com/in/lmartins18/?isSelfProfile=false",
       github: "https://github.com/lmartins18",

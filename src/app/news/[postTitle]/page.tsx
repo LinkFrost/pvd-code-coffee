@@ -50,53 +50,55 @@ export default async function NewsPostPage(props: {
   return (
     <article className="flex flex-col">
       <header className="bg-accent">
-        <div className="responsiveContainer flex flex-col items-center gap-5 py-12 text-center">
-          <h1 className="max-w-4xl break-words font-din text-3xl font-bold md:text-4xl">
+        <div className="responsiveContainer flex flex-col items-center gap-5 py-8 text-center">
+          <h1 className="max-w-4xl break-words font-din text-2xl font-bold sm:text-3xl">
             {post.title}
           </h1>
 
-          <p className="max-w-3xl text-lg">{post.short_description}</p>
+          <p className="max-w-3xl text-lg sm:text-xl">
+            {post.short_description}
+          </p>
 
-          <div className="space-y-1 text-sm text-neutral-700">
-            <p className="text-center text-lg text-black sm:text-xl">
-              By{" "}
-              {post.author_username ? (
-                <Link
-                  href={`/profile/${encodeURIComponent(post.author_username)}`}
-                  className="font-medium hover:text-accentRed"
-                >
-                  {post.author_username}
-                </Link>
-              ) : (
-                <span className="font-medium">
-                  {post.author_username ?? "Unknown author"}
-                </span>
-              )}
-            </p>
-
-            <p>
-              Created {formatDate(post.created_on)} · Updated{" "}
-              {formatDate(post.updated_on)} ·{" "}
-              <Badge
-                variant="secondary"
-                className={cn(
-                  "font-normal",
-                  newsPostCategoryBadgeClasses[post.category],
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-end sm:gap-8">
+            <div className="space-y-1 text-sm text-neutral-700">
+              <p className="text-center text-lg text-black sm:text-xl">
+                By{" "}
+                {post.author_username ? (
+                  <Link
+                    href={`/profile/${encodeURIComponent(post.author_username)}`}
+                    className="font-medium hover:text-accentRed"
+                  >
+                    {post.author_username}
+                  </Link>
+                ) : (
+                  <span className="font-medium">
+                    {post.author_username ?? "Unknown author"}
+                  </span>
                 )}
-              >
-                {post.category}
-              </Badge>
-            </p>
+              </p>
+              <p>
+                Created {formatDate(post.created_on)} · Updated{" "}
+                {formatDate(post.updated_on)} ·{" "}
+                <Badge
+                  variant="secondary"
+                  className={cn(
+                    "font-normal",
+                    newsPostCategoryBadgeClasses[post.category],
+                  )}
+                >
+                  {post.category}
+                </Badge>
+              </p>
+            </div>
+            {canEdit && (
+              <Button asChild variant="outline">
+                <Link href={`/news/editor/${post.id}`}>
+                  <Pencil className="h-4 w-4" />
+                  Edit
+                </Link>
+              </Button>
+            )}
           </div>
-
-          {canEdit && (
-            <Button asChild variant="outline">
-              <Link href={`/news/editor/${post.id}`}>
-                <Pencil className="h-4 w-4" />
-                Edit
-              </Link>
-            </Button>
-          )}
         </div>
       </header>
 

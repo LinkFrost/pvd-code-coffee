@@ -14,7 +14,7 @@ export default async function News() {
   return (
     <div className="flex flex-col justify-center align-middle">
       <section className="h-44 bg-accent">
-        <div className="responsiveContainer flex h-full flex-col items-center justify-between py-6 sm:py-10">
+        <div className="responsiveContainer duo:py-8 flex h-full flex-col items-center justify-between py-6 sm:py-10">
           <h1 className="break-words text-center font-din text-3xl font-bold">
             News
           </h1>

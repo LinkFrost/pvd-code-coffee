@@ -18,10 +18,10 @@ export default function About() {
       </section>
 
       <section className="bg-gray-100">
-        <div className="responsiveContainer flex flex-col gap-8 py-12">
+        <div className="responsiveContainer duo:py-8 flex flex-col gap-8 py-4 sm:py-12">
           <h2 className="font-din text-3xl font-semibold">What we do</h2>
 
-          <p className="text-xl">
+          <p className="text-lg sm:text-xl">
             We are the Providence chapter for the community-led meetup for devs
             to get together and professionally grow! Join us as at our events
             where we share projects, ideas, stories, and of course, coffee. From
@@ -30,7 +30,7 @@ export default function About() {
             community.
           </p>
 
-          <p className="text-xl">
+          <p className="text-lg sm:text-xl">
             To learn more about the wider Code & Coffee organization and see how
             you can join this experience in other locations,
             <a
@@ -47,7 +47,7 @@ export default function About() {
       </section>
 
       <section className="bg-yellow-100">
-        <div className="responsiveContainer flex flex-col gap-8 py-12">
+        <div className="responsiveContainer duo:py-8 flex flex-col gap-8 py-4 sm:py-12">
           <h2 className="font-din text-3xl font-semibold">Event Structure</h2>
 
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
@@ -63,7 +63,7 @@ export default function About() {
       </section>
 
       <section className="bg-gray-100">
-        <div className="responsiveContainer flex flex-col gap-8 py-12">
+        <div className="responsiveContainer duo:py-8 flex flex-col gap-8 py-4 sm:py-12">
           <h2 className="font-din text-3xl font-semibold">Organizers</h2>
 
           <div className="grid gap-8 md:grid-cols-2">
@@ -83,7 +83,7 @@ export default function About() {
       </section>
 
       <section className="bg-yellow-100">
-        <div className="responsiveContainer flex flex-col gap-8 py-12">
+        <div className="responsiveContainer duo:py-8 flex flex-col gap-8 py-4 sm:py-12">
           <h2 className="font-din text-3xl font-semibold">
             Guidelines & Principles
           </h2>

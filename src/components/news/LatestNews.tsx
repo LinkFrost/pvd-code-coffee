@@ -23,7 +23,7 @@ export const LatestNews = async () => {
     <Carousel className="w-full">
       <CarouselContent>
         {posts.map((post) => (
-          <CarouselItem key={post.id} className="md:basis-1/2 lg:basis-1/3">
+          <CarouselItem key={post.id} className="basis-1/2">
             <NewsPostCard
               title={post.title}
               category={post.category}
@@ -35,6 +35,7 @@ export const LatestNews = async () => {
           </CarouselItem>
         ))}
       </CarouselContent>
+
       <CarouselPrevious className="left-2" />
       <CarouselNext className="right-2" />
     </Carousel>
