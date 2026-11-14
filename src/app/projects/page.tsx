@@ -1,10 +1,17 @@
 import { auth } from "@clerk/nextjs/server";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { NewProjectDialog } from "~/components/projects/NewProjectDialog";
 import { ProjectsCatalog } from "~/components/projects/ProjectsCatalog";
 import { Spinner } from "~/components/ui/spinner";
 import { api, apiResult, HydrateClient } from "~/trpc/server";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description:
+    "Check out what the community is building! Whether it's a quick side project, a new tool, or a full fledged live application, we want to showcase it here.",
+};
 
 export default async function Projects() {
   const session = await auth();

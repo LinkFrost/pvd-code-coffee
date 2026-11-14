@@ -1,10 +1,17 @@
 import { auth } from "@clerk/nextjs/server";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 
 import { NewsFeed } from "~/components/news/NewsFeed";
 import { Button } from "~/components/ui/button";
 import { Spinner } from "~/components/ui/spinner";
+
+export const metadata: Metadata = {
+  title: "News",
+  description:
+    "Stay up to date with the latest news and events in the PVD Code & Coffee community!",
+};
 
 export default async function News() {
   const session = await auth();

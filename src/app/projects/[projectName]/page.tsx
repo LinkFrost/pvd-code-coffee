@@ -2,7 +2,6 @@ import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-
 import { EditProjectDialog } from "~/components/projects/EditProjectDialog";
 import { Badge } from "~/components/ui/badge";
 import { Spinner } from "~/components/ui/spinner";
@@ -16,6 +15,26 @@ import { fetchProjectReadme } from "~/server/lib/githubUtils";
 import { api, apiResult, HydrateClient } from "~/trpc/server";
 import { Button } from "~/components/ui/button";
 import { ExternalLink, Github } from "lucide-react";
+import type { Metadata } from "next";
+
+export async function generateMetadata(props: {
+  params: Promise<{ projectName: string }>;
+}): Promise<Metadata> {
+  const { projectName } = await props.params;
+  const title = decodeURIComponent(projectName);
+  const projectResult = await apiResult(
+    api.projects.getProjectByName({ name: title }),
+  );
+
+  if (!projectResult.success || !projectResult.data) {
+    return { title: "Project" };
+  }
+
+  return {
+    title: projectResult.data.name,
+    description: projectResult.data.description ?? "",
+  };
+}
 
 export default async function ProjectDetails(props: {
   params: Promise<{ projectName: string }>;

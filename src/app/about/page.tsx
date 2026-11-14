@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import { InfoCard } from "~/components/about/InfoCard";
 import { OrganizerCard } from "~/components/about/OrganizerCard";
 import { eventStructureSteps, organizers, principles } from "~/utils/constants";
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "A little bit about who we are and what we do.",
+};
 
 export default function About() {
   return (

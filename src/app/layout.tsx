@@ -9,7 +9,10 @@ import { ClerkProvider } from "@clerk/nextjs";
 import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
-  title: "PVD Code & Coffee",
+  title: {
+    default: "PVD Code & Coffee",
+    template: "%s | PVD Code & Coffee",
+  },
   description:
     "Providence chapter for the community-led meetup for devs to make friends, do projects and professionally grow.",
   icons: [{ rel: "icon", url: "/favicon.ico" }],

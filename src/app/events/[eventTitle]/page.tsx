@@ -1,12 +1,31 @@
 import { Calendar, Clock, MapPin, Users } from "lucide-react";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-
 import { api, apiResult } from "~/trpc/server";
 import { dateConstructor } from "~/utils/dateUtils";
 import { parseEventDescription } from "~/utils/eventUtils";
 import { markdownComponents } from "~/utils/markdownUtils";
+
+export async function generateMetadata(props: {
+  params: Promise<{ eventTitle: string }>;
+}): Promise<Metadata> {
+  const { eventTitle } = await props.params;
+  const title = decodeURIComponent(eventTitle);
+  const eventResult = await apiResult(api.meetup.getEventByTitle({ title }));
+
+  if (!eventResult.success || !eventResult.data) {
+    return { title: "Event Not Found", description: "Event Not Found" };
+  }
+
+  return {
+    title: eventResult.data.name,
+    description: eventResult.success
+      ? (eventResult.data.description ?? "Event description")
+      : "Event description",
+  };
+}
 
 export default async function EventPage(props: {
   params: Promise<{ eventTitle: string }>;

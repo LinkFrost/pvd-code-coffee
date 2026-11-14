@@ -1,12 +1,31 @@
 import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
-
 import { isPlausibleProfileUsername } from "~/utils/routeUtils";
 import { api, apiResult, HydrateClient } from "~/trpc/server";
 import Image from "next/image";
 import { EditProfileDialog } from "~/components/profile/EditProfileDialog";
 import { NewProjectDialog } from "~/components/projects/NewProjectDialog";
 import { ProjectCard } from "~/components/projects/ProjectCard";
+import type { Metadata } from "next";
+
+export async function generateMetadata(props: {
+  params: Promise<{ username: string }>;
+}): Promise<Metadata> {
+  const { username } = await props.params;
+  const title = decodeURIComponent(username);
+  const userResult = await apiResult(
+    api.users.getUserByUsername({ username: title }),
+  );
+
+  if (!userResult.success || !userResult.data) {
+    return { title: "User Not Found", description: "User Not Found" };
+  }
+
+  return {
+    title: userResult.data.username,
+    description: `View ${userResult.data.username}'s profile`,
+  };
+}
 
 export default async function Profile(props: {
   params: Promise<{ username: string }>;

@@ -2,7 +2,6 @@ import { auth } from "@clerk/nextjs/server";
 import { Pencil } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
 import { NewsPostContent } from "~/components/news/NewsPostContent";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
@@ -10,6 +9,26 @@ import { api, apiResult } from "~/trpc/server";
 import { formatDate } from "~/utils/dateUtils";
 import { newsPostCategoryBadgeClasses } from "~/utils/newsUtils";
 import { cn } from "~/utils/tailwindUtils";
+import type { Metadata } from "next";
+
+export async function generateMetadata(props: {
+  params: Promise<{ postTitle: string }>;
+}): Promise<Metadata> {
+  const { postTitle } = await props.params;
+  const title = decodeURIComponent(postTitle);
+  const postResult = await apiResult(
+    api.news.getPublishedPostByTitle({ title }),
+  );
+
+  if (!postResult.success || !postResult.data) {
+    return { title: "News Post" };
+  }
+
+  return {
+    title: postResult.data.title,
+    description: postResult.data.short_description,
+  };
+}
 
 export default async function NewsPostPage(props: {
   params: Promise<{ postTitle: string }>;
